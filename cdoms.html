@@ -1,0 +1,230 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <!-- Required meta tags -->
+    <meta charset="utf-8" />
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1, shrink-to-fit=no"
+    />
+    <title>Hello, Bootstrap Table!</title>
+
+    <link
+      rel="stylesheet"
+      href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
+    />
+    <link
+      rel="stylesheet"
+      href="https://use.fontawesome.com/releases/v5.6.3/css/all.css"
+    />
+    <link
+      rel="stylesheet"
+      href="https://unpkg.com/bootstrap-table@1.19.1/dist/bootstrap-table.min.css"
+    />
+    <link rel="stylesheet" href="./bootstrap-editable.css" />
+    <link rel="stylesheet" href="./table.css" />
+  </head>
+  <body>
+    <div style="padding: 30px"></div>
+
+    <div style="padding: 20px">
+      <table
+        data-toggle="table"
+        id="table"
+        data-detail-view="true"
+        data-search="true"
+        data-show-export="true"
+      >
+        <thead>
+          <tr>
+            <th data-field="id">Id</th>
+            <th data-field="name" data-editable="true">Name</th>
+            <th data-field="city">City</th>
+            <th data-field="region">Region</th>
+            <th data-field="education">Education</th>
+            <th data-field="age">Age</th>
+            <th data-field="fake1">Fake1</th>
+            <th data-field="fake2">Fake2</th>
+            <th data-field="fake3">Fake3</th>
+            <th data-field="fake4">Fake4</th>
+            <th data-field="fake5">Fake5</th>
+            <th data-field="fake1">Fake6</th>
+            <th data-field="fake2">Fake7</th>
+            <th data-field="fake3">Fake8</th>
+            <th data-field="fake4">Fake9</th>
+            <th data-field="fake5">Fake10</th>
+          </tr>
+        </thead>
+      </table>
+    </div>
+    <div
+      class="modal fade bd-example-modal-lg"
+      tabindex="-1"
+      role="dialog"
+      aria-labelledby="myLargeModalLabel"
+      aria-hidden="true"
+    >
+      <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+          <div class="modal-body">
+            <form>
+              <div class="form-group">
+                <label for="recipient-name" class="col-form-label"
+                  >Recipient:</label
+                >
+                <input type="text" class="form-control" id="recipient-name" />
+              </div>
+              <div class="form-group">
+                <label for="message-text" class="col-form-label"
+                  >Message:</label
+                >
+                <textarea class="form-control" id="message-text"></textarea>
+              </div>
+            </form>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/jquery/dist/jquery.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
+    <script src="https://unpkg.com/bootstrap-table@1.19.1/dist/bootstrap-table.min.js"></script>
+    <script src="https://unpkg.com/bootstrap-table@1.19.1/dist/extensions/editable/bootstrap-table-editable.min.js"></script>
+    <script src="./bootstrap-editable.js"></script>
+    <script src="./bootstrap-editable.min.js"></script>
+
+    <!-- Export -->
+    <script src="https://cdn.jsdelivr.net/npm/tableexport.jquery.plugin@1.10.21/tableExport.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/tableexport.jquery.plugin@1.10.21/libs/jsPDF/jspdf.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/tableexport.jquery.plugin@1.10.21/libs/jsPDF-AutoTable/jspdf.plugin.autotable.js"></script>
+    <script src="https://unpkg.com/bootstrap-table@1.19.1/dist/extensions/export/bootstrap-table-export.min.js"></script>
+    <!-- Export -->
+
+    <script>
+      var data = [
+        {
+          id: "1",
+          name: "Jen",
+          city: "Melbourne",
+          region: "Turkey",
+          education: "Lisans",
+          age: "65",
+          fake1: "fake",
+          fake2: "fake2",
+          fake3: "fake3",
+          fake4: "fake4",
+          fake5: "fake5",
+          fake6: "fake6",
+          fake7: "fake7",
+          fake8: "fake8",
+          fake9: "fake9",
+          fake10: "fake10",
+        },
+        {
+          id: "2",
+          name: "Roger",
+          city: "Melbourne",
+          region: "Turkey",
+          education: "Lisans",
+          age: "34",
+          fake1: "fake",
+          fake2: "fake2",
+          fake3: "fake3",
+          fake4: "fake4",
+          fake5: "fake5",
+          fake6: "fake6",
+          fake7: "fake7",
+          fake8: "fake8",
+          fake9: "fake9",
+          fake10: "fake10",
+        },
+        {
+          id: "3",
+          name: "Rob",
+          city: "Sydney",
+          region: "Turkey",
+          education: "Lisans",
+          age: "23",
+          fake1: "fake5sdflksdlfksldfsdfsdf",
+          fake2: "fakfake5sdflksdlfksldfsdfsdfe2",
+          fake3: "fakfake5sdflksdlfksldfsdfsdfe3",
+          fake4: "fake5sdflksdlfksldfsdfsdf",
+          fake5: "fake5sdflksdlfksldfsdfsdf",
+          fake6: "fake6",
+          fake7: "fake7",
+          fake8: "fake8",
+          fake9: "fake9",
+          fake10: "fake10",
+        },
+      ];
+
+      $(function () {
+        $("#table")
+          .bootstrapTable("destroy")
+          .bootstrapTable({
+            data: data,
+            showColumns: true,
+            exportDataType: $(this).val(),
+            exportTypes: ["excel", "pdf"],
+            columns: [
+              {
+                field: "state",
+                visible: true,
+              },
+            ],
+          });
+
+        $("#exampleModalCenter").on("shown.bs.modal", function () {
+          $("#exampleModalCenter").trigger("focus");
+        });
+
+        const tbody = document.querySelector("tbody");
+        if (tbody) {
+          tbody.addEventListener("click", function (e) {
+            const cell = e.target.closest("td");
+            if (!cell) {
+              return;
+            }
+            const row = cell.parentElement;
+
+            if (cell.cellIndex === 6) {
+              //cell.setAttribute("data-toggle", "modal");
+              //cell.setAttribute("data-target", ".bd-example-modal-lg");
+              $("#recipient-name").val(cell.innerHTML);
+            }
+
+            if (cell.cellIndex === 8) {
+              //cell.setAttribute("data-toggle", "tooltip");
+              //cell.setAttribute("title", cell.innerHTML + "-----");
+              $("#recipient-name").val(cell.innerHTML);
+            }
+          });
+        }
+
+        var table = document.getElementById("table");
+        for (let i in table.rows) {
+          let row = table.rows[i];
+          for (let j in row.cells) {
+            let col = row.cells[j];
+            if (col.cellIndex === 6) {
+              col.setAttribute("data-toggle", "modal");
+              col.setAttribute("data-target", ".bd-example-modal-lg");
+            }
+            if (col.cellIndex === 8) {
+              col.setAttribute("data-toggle", "tooltip");
+              col.setAttribute("data-html", "true");
+              col.setAttribute(
+                "title",
+                "<div>" + col.innerHTML + " + ----<br/>sdfsdf </div>"
+              );
+            }
+            console.log(col.cellIndex);
+          }
+        }
+
+        $('[data-toggle="tooltip"]').tooltip();
+      });
+    </script>
+  </body>
+</html>

@@ -1,27 +1,24 @@
-.bootstrap-table .fixed-table-container .table {
+.fixed-table-container {
   width: 100%;
+  padding: 10px;
   margin-bottom: 0 !important;
   background-color: white;
   border: 1px solid #f2f2f2;
   -webkit-box-shadow: 10px 6px 33px 13px rgb(47 93 143 / 28%);
   box-shadow: 10px 6px 33px 13px rgb(47 93 143 / 28%);
-  border-radius: 15px;
-  overflow: hidden;
 }
 
-.bootstrap-table .fixed-table-container .fixed-table-body {
-  overflow-x: unset;
-  overflow-y: unset;
-}
-
+.table thead th,
+.table-bordered,
 .table-bordered td,
 .table-bordered th {
-  border: unset;
+  border-bottom: unset !important;
+  border: unset !important;
 }
 
-tr {
-  border-bottom: 1px solid #f5f5f5;
-  padding-bottom: 30px !important;
+.table thead tr {
+  background-color: #90adff;
+  color: white;
 }
 
 .detail-icon i {
@@ -34,5 +31,38 @@ tr {
   width: 24px;
   height: 24px;
   border-radius: 100%;
-  background-color: #c3006c;
+  background-color: #90adff;
 }
+
+/**  editable ***/
+
+.editable-click,
+a.editable-click,
+a.editable-click:hover {
+  text-decoration: none;
+  border-bottom: unset !important;
+}
+
+a {
+  color: black;
+}
+
+/**  editable ***/
+
+/*** tooltip ***/
+
+.tooltip-inner {
+  max-width: 200px;
+  padding: 0.25rem 0.5rem;
+  color: #fff;
+  text-align: center;
+  background-color: #0a32a3;
+  border-radius: 0.25rem;
+}
+
+.bs-tooltip-auto[x-placement^="top"] .arrow::before,
+.bs-tooltip-top .arrow::before {
+  border-top-color: #0a32a3 !important;
+}
+
+/*** tooltip ***/
