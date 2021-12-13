@@ -1,11 +1,10 @@
 .fixed-table-container {
   width: 100%;
-  padding: 10px;
   margin-bottom: 0 !important;
   background-color: white;
   border: 1px solid #f2f2f2;
-  -webkit-box-shadow: 10px 6px 33px 13px rgb(47 93 143 / 28%);
-  box-shadow: 10px 6px 33px 13px rgb(47 93 143 / 28%);
+  /* -webkit-box-shadow: 10px 6px 33px 13px rgb(47 93 143 / 28%);
+  box-shadow: 10px 6px 33px 13px rgb(47 93 143 / 28%);*/
 }
 
 .table thead th,
@@ -66,3 +65,16 @@ a {
 }
 
 /*** tooltip ***/
+
+#aaa th {
+  display: none;
+}
+
+#aaa {
+  width: 100%;
+  margin-bottom: unset;
+  background-color: unset;
+  border: unset;
+  -webkit-box-shadow: unset;
+  box-shadow: unset;
+}

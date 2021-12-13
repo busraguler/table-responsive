@@ -21,6 +21,10 @@
       rel="stylesheet"
       href="https://unpkg.com/bootstrap-table@1.19.1/dist/bootstrap-table.min.css"
     />
+    <link
+      rel="stylesheet"
+      href="https://unpkg.com/bootstrap-table@1.19.1/dist/extensions/fixed-columns/bootstrap-table-fixed-columns.css"
+    />
     <link rel="stylesheet" href="./bootstrap-editable.css" />
     <link rel="stylesheet" href="./table.css" />
   </head>
@@ -34,6 +38,9 @@
         data-detail-view="true"
         data-search="true"
         data-show-export="true"
+        data-fixed-columns="true"
+        data-fixed-number="3"
+        data-detail-formatter="detailFormatter"
       >
         <thead>
           <tr>
@@ -94,6 +101,7 @@
     <script src="./bootstrap-editable.js"></script>
     <script src="./bootstrap-editable.min.js"></script>
 
+    <script src="https://unpkg.com/bootstrap-table@1.19.1/dist/extensions/fixed-columns/bootstrap-table-fixed-columns.js"></script>
     <!-- Export -->
     <script src="https://cdn.jsdelivr.net/npm/tableexport.jquery.plugin@1.10.21/tableExport.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/tableexport.jquery.plugin@1.10.21/libs/jsPDF/jspdf.min.js"></script>
@@ -159,6 +167,45 @@
         },
       ];
 
+      var data2 = [
+        {
+          id: "1",
+          name: "Jen",
+          city: "Melbourne",
+          region: "Turkey",
+          education: "Lisans",
+          age: "65",
+          fake1: "fake",
+          fake2: "fake2",
+          fake3: "fake3",
+          fake4: "fake4",
+          fake5: "fake5",
+          fake6: "fake6",
+          fake7: "fake7",
+          fake8: "fake8",
+          fake9: "fake9",
+          fake10: "fake10",
+        },
+        {
+          id: "2",
+          name: "Roger",
+          city: "Melbourne",
+          region: "Turkey",
+          education: "Lisans",
+          age: "34",
+          fake1: "fake",
+          fake2: "fake2",
+          fake3: "fake3",
+          fake4: "fake4",
+          fake5: "fake5",
+          fake6: "fake6",
+          fake7: "fake7",
+          fake8: "fake8",
+          fake9: "fake9",
+          fake10: "fake10",
+        },
+      ];
+
       $(function () {
         $("#table")
           .bootstrapTable("destroy")
@@ -189,14 +236,10 @@
             const row = cell.parentElement;
 
             if (cell.cellIndex === 6) {
-              //cell.setAttribute("data-toggle", "modal");
-              //cell.setAttribute("data-target", ".bd-example-modal-lg");
               $("#recipient-name").val(cell.innerHTML);
             }
 
             if (cell.cellIndex === 8) {
-              //cell.setAttribute("data-toggle", "tooltip");
-              //cell.setAttribute("title", cell.innerHTML + "-----");
               $("#recipient-name").val(cell.innerHTML);
             }
           });
@@ -219,12 +262,27 @@
                 "<div>" + col.innerHTML + " + ----<br/>sdfsdf </div>"
               );
             }
-            console.log(col.cellIndex);
+            // console.log(col.cellIndex);
           }
         }
 
         $('[data-toggle="tooltip"]').tooltip();
       });
+
+      function detailFormatter(index, row) {
+        var newRow = document.getElementById("table").insertRow();
+        // newRow = "<td>New row text</td><td>New row 2nd cell</td>"; <-- won't work
+        var html = "<td></td>";
+        data2.map((item) => {
+          console.log(item);
+          for (const [key, value] of Object.entries(item)) {
+            console.log(`${key}: ${value}`);
+            newRow.innerHTML = html += "<td>New row</td>";
+          }
+        });
+
+        newRow.innerHTML = html;
+      }
     </script>
   </body>
 </html>
