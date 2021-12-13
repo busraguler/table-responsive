@@ -269,20 +269,52 @@
         $('[data-toggle="tooltip"]').tooltip();
       });
 
-      function detailFormatter(index, row) {
-        var newRow = document.getElementById("table").insertRow();
-        // newRow = "<td>New row text</td><td>New row 2nd cell</td>"; <-- won't work
-        var html = "<td></td>";
-        data2.map((item) => {
-          console.log(item);
-          for (const [key, value] of Object.entries(item)) {
-            console.log(`${key}: ${value}`);
-            newRow.innerHTML = html += "<td>New row</td>";
-          }
-        });
 
-        newRow.innerHTML = html;
+      
+      function detailFormatter(index, row) {
+        var html = "";
+        data2.map((item) => {
+           html += "<tr><td></td>";
+          for (const [key, value] of Object.entries(item)) {
+             html += "<td>New</td>";
+          }
+          html += "</tr>";
+        
+         
+        });   
+        document.getElementById("table").rows.item(index + 2).innerHTML = html;
+        index ++;
+
+
       }
+
+
+     /*function detailFormatter(index, row) {
+
+        var aa = document.getElementById("table").rows.item(index +1);
+
+        console.log(aa.querySelector("td").querySelector("a").querySelector("i").className)
+        
+
+        var detailView = [];
+
+        data2.map((item) => {
+        //   var newRow = document.getElementById("table").insertRow(index +2);
+          html = "<tr>";
+          for (const [key, value] of Object.entries(item)) {
+        //   console.log(`${key}: ${value}`);
+          html += "<td>New row</td>";
+          }
+          html += "</tr>"
+          detailView.push(html)
+            console.log(detailView)
+        });
+        return detailView;
+
+      }*/
+
+
     </script>
   </body>
 </html>
+
