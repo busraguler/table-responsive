@@ -1,13 +1,12 @@
 <!DOCTYPE html>
 <html lang="en">
   <head>
-    <!-- Required meta tags -->
     <meta charset="utf-8" />
     <meta
       name="viewport"
       content="width=device-width, initial-scale=1, shrink-to-fit=no"
     />
-    <title>Hello, Bootstrap Table!</title>
+    <title>Table</title>
 
     <link
       rel="stylesheet"
@@ -45,9 +44,9 @@
         <thead>
           <tr>
             <th data-field="id">Id</th>
-            <th data-field="name" data-editable="true">Name</th>
-            <th data-field="city">City</th>
-            <th data-field="region">Region</th>
+            <th data-field="name">Name</th>
+            <th data-field="city" data-editable="true">City</th>
+            <th data-field="region" data-editable="true">Region</th>
             <th data-field="education">Education</th>
             <th data-field="age">Age</th>
             <th data-field="fake1">Fake1</th>
@@ -112,7 +111,7 @@
     <script>
       var data = [
         {
-          id: "1",
+          id: "adasd",
           name: "Jen",
           city: "Melbourne",
           region: "Turkey",
@@ -262,59 +261,67 @@
                 "<div>" + col.innerHTML + " + ----<br/>sdfsdf </div>"
               );
             }
-            // console.log(col.cellIndex);
+          }
+        }
+
+        var table = document.getElementById("table2");
+        for (let i in table.rows) {
+          let row = table.rows[i];
+          for (let j in row.cells) {
+            let col = row.cells[j];
+            if (col.cellIndex === 6) {
+              col.setAttribute("data-toggle", "modal");
+              col.setAttribute("data-target", ".bd-example-modal-lg");
+            }
+            if (col.cellIndex === 8) {
+              col.setAttribute("data-toggle", "tooltip");
+              col.setAttribute("data-html", "true");
+              col.setAttribute(
+                "title",
+                "<div>" + col.innerHTML + " + ----<br/>sdfsdf </div>"
+              );
+            }
           }
         }
 
         $('[data-toggle="tooltip"]').tooltip();
       });
 
-
-      
       function detailFormatter(index, row) {
-        var html = "";
-        data2.map((item) => {
-           html += "<tr><td></td>";
+        var tableDetailView = [];
+
+        data2.map((item, index) => {
+          let i = 0;
+
+          let firstColumnWidth =
+            document.getElementById("table").rows[1].cells[0].offsetWidth;
+
+          let html =
+            "<table data-toggle='table' id='table2'><td style='width:" +
+            firstColumnWidth +
+            "px'></td>";
+
           for (const [key, value] of Object.entries(item)) {
-             html += "<td>New</td>";
+            let columnWidth =
+              document.getElementById("table").rows[1].cells[i + 1].offsetWidth;
+
+            let td =
+              "<td style='width:" +
+              columnWidth +
+              "px' data-editable='true'>" +
+              value +
+              "</td>";
+
+            html += td;
+
+            i++;
           }
-          html += "</tr>";
-        
-         
-        });   
-        document.getElementById("table").rows.item(index + 2).innerHTML = html;
-        index ++;
-
-
-      }
-
-
-     /*function detailFormatter(index, row) {
-
-        var aa = document.getElementById("table").rows.item(index +1);
-
-        console.log(aa.querySelector("td").querySelector("a").querySelector("i").className)
-        
-
-        var detailView = [];
-
-        data2.map((item) => {
-        //   var newRow = document.getElementById("table").insertRow(index +2);
-          html = "<tr>";
-          for (const [key, value] of Object.entries(item)) {
-        //   console.log(`${key}: ${value}`);
-          html += "<td>New row</td>";
-          }
-          html += "</tr>"
-          detailView.push(html)
-            console.log(detailView)
+          html += "</tr></table>";
+          tableDetailView.push(html);
         });
-        return detailView;
 
-      }*/
-
-
+        return tableDetailView;
+      }
     </script>
   </body>
 </html>
-

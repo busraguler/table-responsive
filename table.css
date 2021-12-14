@@ -20,6 +20,13 @@
   color: white;
 }
 
+.detail-view {
+}
+
+.detail-view td:nth-child(1) {
+  padding: 0px;
+}
+
 .detail-icon i {
   font-size: 10px;
   color: #fff;
@@ -65,16 +72,3 @@ a {
 }
 
 /*** tooltip ***/
-
-#aaa th {
-  display: none;
-}
-
-#aaa {
-  width: 100%;
-  margin-bottom: unset;
-  background-color: unset;
-  border: unset;
-  -webkit-box-shadow: unset;
-  box-shadow: unset;
-}
