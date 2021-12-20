@@ -248,9 +248,10 @@
             }
 
             if (row.className !== "detail-tr") {
-              editTable(e.target.id, row.rowIndex, cell.cellIndex);
+              editTable(false, e.target.id, row.rowIndex, cell.cellIndex);
             } else {
               editTable(
+                true,
                 e.target.id,
                 cell.id.split("-")[0] + "-" + cell.id.split("-")[1],
                 cell.id.split("-")[2]
@@ -336,7 +337,7 @@
         return detailTable;
       }
 
-      function editTable(eTargetId, rowIndex, cellIndex) {
+      function editTable(isDetail, eTargetId, rowIndex, cellIndex) {
         console.log(eTargetId, rowIndex + "-" + cellIndex);
         var clickedTd = document.getElementById(rowIndex + "-" + cellIndex);
 
@@ -353,6 +354,9 @@
               event.preventDefault();
               clickedTd.innerHTML = editableInput.value;
               editableInput.remove();
+              if (isDetail) {
+              } else {
+              }
             }
           });
           editableInput.addEventListener("mouseout", function (event) {
