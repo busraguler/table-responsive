@@ -107,103 +107,8 @@
     <script src="https://cdn.jsdelivr.net/npm/tableexport.jquery.plugin@1.10.21/libs/jsPDF-AutoTable/jspdf.plugin.autotable.js"></script>
     <script src="https://unpkg.com/bootstrap-table@1.19.1/dist/extensions/export/bootstrap-table-export.min.js"></script>
     <!-- Export -->
-
+    <script src="./mockTable.js"></script>
     <script>
-      var data = [
-        {
-          id: "adasd",
-          name: "Jen",
-          city: "Melbourne",
-          region: "Turkey",
-          education: "Lisans",
-          age: "65",
-          fake1: "fake",
-          fake2: "fake2",
-          fake3: "fake3",
-          fake4: "fake4",
-          fake5: "fake5",
-          fake6: "fake6",
-          fake7: "fake7",
-          fake8: "fake8",
-          fake9: "fake9",
-          fake10: "fake10",
-        },
-        {
-          id: "2",
-          name: "Roger",
-          city: "Melbourne",
-          region: "Turkey",
-          education: "Lisans",
-          age: "34",
-          fake1: "fake",
-          fake2: "fake2",
-          fake3: "fake3",
-          fake4: "fake4",
-          fake5: "fake5",
-          fake6: "fake6",
-          fake7: "fake7",
-          fake8: "fake8",
-          fake9: "fake9",
-          fake10: "fake10",
-        },
-        {
-          id: "3",
-          name: "Rob",
-          city: "Sydney",
-          region: "Turkey",
-          education: "Lisans",
-          age: "23",
-          fake1: "fake5sdflksdlfksldfsdfsdf",
-          fake2: "fakfake5sdflksdlfksldfsdfsdfe2",
-          fake3: "fakfake5sdflksdlfksldfsdfsdfe3",
-          fake4: "fake5sdflksdlfksldfsdfsdf",
-          fake5: "fake5sdflksdlfksldfsdfsdf",
-          fake6: "fake6",
-          fake7: "fake7",
-          fake8: "fake8",
-          fake9: "fake9",
-          fake10: "fake10",
-        },
-      ];
-
-      var detailTableData = [
-        {
-          id: "1",
-          name: "Jen",
-          city: "Melbourne",
-          region: "Turkey",
-          education: "Lisans",
-          age: "5667",
-          fake1: "fake",
-          fake2: "fake2",
-          fake3: "fake3",
-          fake4: "fake4",
-          fake5: "fake5",
-          fake6: "fake6",
-          fake7: "fake7",
-          fake8: "fake8",
-          fake9: "fake9",
-          fake10: "fake10",
-        },
-        {
-          id: "2",
-          name: "Roger",
-          city: "Melbourne",
-          region: "Turkey",
-          education: "Lisans",
-          age: "767",
-          fake1: "fake",
-          fake2: "fake2",
-          fake3: "fake3",
-          fake4: "fake4",
-          fake5: "fake5",
-          fake6: "fake6",
-          fake7: "fake7",
-          fake8: "fake8",
-          fake9: "fake9",
-          fake10: "fake10",
-        },
-      ];
 
       $(function () {
         $("#table")
@@ -221,51 +126,17 @@
             ],
           });
 
-        $("#exampleModalCenter").on("shown.bs.modal", function () {
-          $("#exampleModalCenter").trigger("focus");
-        });
-
-        const tbody = document.querySelector("tbody");
-
-        if (tbody) {
-          tbody.addEventListener("click", function (e) {
-            const cell = e.target.closest("td");
-            if (!cell) {
-              return;
-            }
-            const row = cell.parentElement;
-            if (cell.cellIndex === 6) {
-              $("#recipient-name").val(cell.innerHTML);
-            }
-            if (cell.cellIndex === 8) {
-              $("#recipient-name").val(cell.innerHTML);
-            }
-            if (
-              row.className !== "detail-tr" &&
-              (cell.cellIndex === 3 || cell.cellIndex === 4)
-            ) {
-              cell.setAttribute("id", row.rowIndex + "-" + cell.cellIndex);
-            }
-
-            if (row.className !== "detail-tr") {
-              editTable(false, e.target.id, row.rowIndex, cell.cellIndex);
-            } else {
-              editTable(
-                true,
-                e.target.id,
-                cell.id.split("-")[0] + "-" + cell.id.split("-")[1],
-                cell.id.split("-")[2]
-              );
-            }
-          });
-        }
-
-        var table = document.getElementById("table");
+        const table = document.getElementById("table");
         for (let i in table.rows) {
           let row = table.rows[i];
           if (row.rowIndex !== 0) {
             for (let j in row.cells) {
               let col = row.cells[j];
+             
+              if (col.cellIndex !== undefined) {
+                col.setAttribute("id", data[row.rowIndex -1].id + "-" + Object.keys(data[row.rowIndex -1])[col.cellIndex -1]);
+              }
+             
               if (col.cellIndex === 6) {
                 col.setAttribute("data-toggle", "modal");
                 col.setAttribute("data-target", ".bd-example-modal-lg");
@@ -282,88 +153,109 @@
           }
         }
 
-        var table = document.getElementById("table-detail");
-        for (let i in table.rows) {
-          let row = table.rows[i];
-          for (let j in row.cells) {
-            let col = row.cells[j];
-            if (col.cellIndex === 6) {
-              col.setAttribute("data-toggle", "modal");
-              col.setAttribute("data-target", ".bd-example-modal-lg");
+
+        const tbody = document.querySelector("tbody");
+        if (tbody) {
+          tbody.addEventListener("click", function (e) {
+            const cell = e.target.closest("td");
+            if (!cell) {
+              return;
             }
-            if (col.cellIndex === 8) {
-              col.setAttribute("data-toggle", "tooltip");
-              col.setAttribute("data-html", "true");
-              col.setAttribute(
-                "title",
-                "<div>" + col.innerHTML + " + ----<br/>sdfsdf </div>"
-              );
+
+            const row = cell.parentElement;
+            if (cell.cellIndex === 6) {
+              $("#recipient-name").val(cell.innerHTML);
             }
-          }
+            if (cell.cellIndex === 8) {
+              $("#recipient-name").val(cell.innerHTML);
+            }
+            /*Tablo detayına tıklanmışsa true gidecek*/
+            editTable(row.className !== "detail-tr" ? false : true,e.target.id, cell.id);
+        
+          });
         }
+
         $('[data-toggle="tooltip"]').tooltip();
+        
+        $("#exampleModalCenter").on("shown.bs.modal", function () {
+          $("#exampleModalCenter").trigger("focus");
+        });
       });
 
       function detailFormatter(index, row) {
-        var detailTable = document.createElement("table");
-        detailTable.setAttribute("id", "table-detail");
-        var detailTableBody = document.createElement("tbody");
-        detailTableData.map((item, dTIndex) => {
-          let i = 0;
-          let firstColumnWidth =
-            document.getElementById("table").rows[1].cells[0].offsetWidth;
+        let detailTable = document.createElement("table");
+
+        let detailTableBody = document.createElement("tbody");
+
+        dataDetail[row.id].map((item, dTIndex) => {
+          
+          let firstColumnWidth = document.getElementById("table").rows[1].cells[0].offsetWidth;
           var tr = document.createElement("tr");
           tr.setAttribute("class", "detail-tr");
+
           var firstTd = document.createElement("td");
           firstTd.setAttribute("style", "width:" + firstColumnWidth + "px;");
           tr.appendChild(firstTd);
 
+          let i = 1;
+
           for (const [key, value] of Object.entries(item)) {
-            let columnWidth =
-              document.getElementById("table").rows[1].cells[i + 1].offsetWidth;
+            let columnWidth = document.getElementById("table").rows[1].cells[i].offsetWidth;
             var td = document.createElement("td");
             td.innerHTML = value;
-            td.appendChild(document.createTextNode("\u0020"));
             td.setAttribute("style", "width:" + columnWidth + "px;");
-            if (key === "city") {
-              td.setAttribute("id", "detail-" + index + "-" + dTIndex + i);
-            }
+            td.setAttribute("id", item.id + "-" + key);
             tr.appendChild(td);
             i++;
           }
           detailTableBody.appendChild(tr);
         });
+
         detailTable.appendChild(detailTableBody);
+
         return detailTable;
       }
 
-      function editTable(isDetail, eTargetId, rowIndex, cellIndex) {
-        console.log(eTargetId, rowIndex + "-" + cellIndex);
-        var clickedTd = document.getElementById(rowIndex + "-" + cellIndex);
+      function editTable(isDetail, eTargetId, tdId) {
 
-        if (eTargetId == rowIndex + "-" + cellIndex) {
+        var clickedTd = document.getElementById(tdId);
+
+         var checkEditableInput = document.getElementById("editable-input");
+
+        console.log("******",checkEditableInput,clickedTd, eTargetId, tdId)
+        if (eTargetId !== '' && tdId !== '' && eTargetId === tdId && checkEditableInput === null) { 
+
           var editableInput = document.createElement("input");
           editableInput.setAttribute("id", "editable-input");
           editableInput.setAttribute("value", clickedTd.innerHTML);
           clickedTd.innerHTML = "";
           clickedTd.appendChild(editableInput);
+         
+
         } else {
+
           var editableInput = document.getElementById("editable-input");
+
           editableInput.addEventListener("keyup", function (event) {
             if (event.keyCode === 13) {
               event.preventDefault();
               clickedTd.innerHTML = editableInput.value;
               editableInput.remove();
-              if (isDetail) {
-              } else {
-              }
+              editAjax(tdId.split("-")[0],tdId.split("-")[1])
+            
             }
           });
+          
           editableInput.addEventListener("mouseout", function (event) {
             clickedTd.innerHTML = editableInput.value;
             editableInput.remove();
+            editAjax()
           });
         }
+      }
+
+      function editAjax(rowId, columnName){
+        alert("id:" +  rowId + ", column: " +columnName)
       }
     </script>
   </body>
