@@ -63,34 +63,164 @@
         </thead>
       </table>
     </div>
+
+    <!-- Order Modal -->
     <div
+      id="orderModal"
       class="modal fade bd-example-modal-lg"
       tabindex="-1"
       role="dialog"
       aria-labelledby="myLargeModalLabel"
       aria-hidden="true"
     >
-      <div class="modal-dialog modal-lg">
+      <div class="modal-dialog modal-xl modal-dialog-centered">
         <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title">Parça Siparişleri ve Toplama</h5>
+            <button
+              type="button"
+              class="close"
+              data-dismiss="modal"
+              aria-label="Close"
+            >
+              <span aria-hidden="true">&times;</span>
+            </button>
+          </div>
           <div class="modal-body">
             <form>
-              <div class="form-group">
-                <label for="recipient-name" class="col-form-label"
-                  >Recipient:</label
-                >
-                <input type="text" class="form-control" id="recipient-name" />
+              <div class="row" style="padding: 20px">
+                <div class="form-check">
+                  <input
+                    class="form-check-input"
+                    type="checkbox"
+                    value=""
+                    id="orderCompleted"
+                  />
+                  <label class="form-check-label" for="orderCompleted">
+                    Sipariş Tamamlanmışlar
+                  </label>
+                </div>
+                <div class="form-check ml-4">
+                  <input
+                    class="form-check-input"
+                    type="checkbox"
+                    value=""
+                    id="collectionNotStarted"
+                  />
+                  <label class="form-check-label" for="collectionNotStarted">
+                    Toplama Başlamamış
+                  </label>
+                </div>
               </div>
-              <div class="form-group">
-                <label for="message-text" class="col-form-label"
-                  >Message:</label
-                >
-                <textarea class="form-control" id="message-text"></textarea>
+              <table data-toggle="table" id="order-table" data-search="true">
+                <thead>
+                  <tr>
+                    <th data-field="id" data-sortable="true">Id</th>
+                    <th data-field="name" data-sortable="true">Name</th>
+                    <th data-field="city" data-sortable="true">City</th>
+                    <th data-field="region" data-sortable="true">Region</th>
+                    <th data-field="education" data-sortable="true">
+                      Education
+                    </th>
+                    <th data-field="age" data-sortable="true">Age</th>
+                    <th data-field="fake1" data-sortable="true">Fake1</th>
+                    <th data-field="fake2" data-sortable="true">Fake2</th>
+                    <th data-field="fake3" data-sortable="true">Fake3</th>
+                    <th data-field="fake4" data-sortable="true">Fake4</th>
+                    <th data-checkbox="true" data-field="addNewPost">Seç</th>
+                  </tr>
+                </thead>
+              </table>
+              <div class="table-footer mt-4">
+                <div class="badge badge-gray mr-2">
+                  <span id="total-selected">0</span>
+                  Tane Seçildi
+                </div>
+                <div class="badge badge-gray ml-2">
+                  Toplam: <span id="total-record"></span> Kayıt
+                </div>
+                <div class="form-inline mt-4">
+                  <div class="form-group">
+                    <label>Beklenen Teslim Tarihi:</label>
+                  </div>
+                  <div class="form-group mx-sm-3 mb-2">
+                    <label for="deliveryDate" class="sr-only"></label>
+                    <input type="text" class="form-control" id="deliveryDate" />
+                  </div>
+                  <button type="submit" class="btn btn-primary mb-2">
+                    Toplama Talebi Oluştur
+                  </button>
+                </div>
               </div>
             </form>
           </div>
         </div>
       </div>
     </div>
+    <!-- Order Modal -->
+    <!-- toDoList Modal -->
+    <div
+      id="toDoListModal"
+      class="modal fade bd-example-modal-lg"
+      tabindex="-1"
+      role="dialog"
+      aria-labelledby="myLargeModalLabel"
+      aria-hidden="true"
+    >
+      <div class="modal-dialog modal-xl modal-dialog-centered">
+        <div class="modal-content">
+          <div class="modal-body p-5">
+            <table data-toggle="table" id="toDoList">
+              <thead>
+                <tr>
+                  <th data-field="segment">Segment</th>
+                  <th data-field="name">Alan Adı</th>
+                  <th data-field="jobCode">Job Code</th>
+                  <th data-field="componentCode">Component Code</th>
+                  <th data-field="startDate">Başl.</th>
+                  <th data-field="endDate">Bitiş</th>
+                </tr>
+              </thead>
+            </table>
+          </div>
+        </div>
+      </div>
+    </div>
+    <!-- toDoList Modal -->
+    <!-- workOrderDetail Modal -->
+    <div
+      id="workOrderDetailModal"
+      class="modal fade bd-example-modal-lg"
+      tabindex="-1"
+      role="dialog"
+      aria-labelledby="myLargeModalLabel"
+      aria-hidden="true"
+    >
+      <div class="modal-dialog modal-xl modal-dialog-centered">
+        <div class="modal-content">
+          <div class="modal-body p-5">
+            <table data-toggle="table" id="workOrderDetail">
+              <thead>
+                <tr>
+                  <th data-field="column1">Talep No</th>
+                  <th data-field="column2">CRS işemri</th>
+                  <th data-field="column3">gönderilen atölye</th>
+                  <th data-field="column4">komponent adı</th>
+                  <th data-field="column5">komponent seri no</th>
+                  <th data-field="column6">kabul tarihi</th>
+                  <th data-field="column7">Teklif durumu</th>
+                  <th data-field="column8">kabul tarihi</th>
+                  <th data-field="column9">kabul tarihi</th>
+                  <th data-field="column10">kabul tarihi</th>
+                  <th data-field="column11">kabul tarihi</th>
+                </tr>
+              </thead>
+            </table>
+          </div>
+        </div>
+      </div>
+    </div>
+    <!-- workOrderDetail Modal -->
 
     <script src="https://cdn.jsdelivr.net/npm/jquery/dist/jquery.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js"></script>
@@ -109,8 +239,35 @@
     <!-- Export -->
     <script src="./mockTable.js"></script>
     <script>
-
       $(function () {
+        $(document).ready(function () {
+          /*****Seçili checkbox sayısı */ //
+          var checkedRows = [];
+          $("#order-table").on("check.bs.table", function (e, row) {
+            let checkRow = checkedRows.find((x) => x.id === row.id);
+            if (!checkRow) {
+              checkedRows.push({ id: row.id });
+            }
+            document.getElementById("total-selected").innerHTML =
+              checkedRows.length;
+          });
+
+          $("#order-table").on("uncheck.bs.table", function (e, row) {
+            $.each(checkedRows, function (index, value) {
+              if (
+                row !== undefined &&
+                value !== undefined &&
+                value.id === row.id
+              ) {
+                checkedRows.splice(index, 1);
+              }
+            });
+            document.getElementById("total-selected").innerHTML =
+              checkedRows.length;
+          });
+          /*****Seçili checkbox sayısı */ //
+        });
+
         $("#table")
           .bootstrapTable("destroy")
           .bootstrapTable({
@@ -118,12 +275,6 @@
             showColumns: true,
             exportDataType: $(this).val(),
             exportTypes: ["excel", "pdf"],
-            columns: [
-              {
-                field: "state",
-                visible: true,
-              },
-            ],
           });
 
         const table = document.getElementById("table");
@@ -132,14 +283,24 @@
           if (row.rowIndex !== 0) {
             for (let j in row.cells) {
               let col = row.cells[j];
-             
+
               if (col.cellIndex !== undefined) {
-                col.setAttribute("id", data[row.rowIndex -1].id + "-" + Object.keys(data[row.rowIndex -1])[col.cellIndex -1]);
+                col.setAttribute(
+                  "id",
+                  data[row.rowIndex - 1].id +
+                    "-" +
+                    Object.keys(data[row.rowIndex - 1])[col.cellIndex - 1]
+                );
               }
-             
+
+              if (col.cellIndex === 2) {
+                col.setAttribute("data-toggle", "modal");
+                col.innerHTML =
+                  col.innerHTML +
+                  "<a class='ml-2' onclick='openToDoListModal(this)' data-toggle='modal'><img src='./workOrder.png' width='20px' height='20px' /></a>";
+              }
               if (col.cellIndex === 6) {
                 col.setAttribute("data-toggle", "modal");
-                col.setAttribute("data-target", ".bd-example-modal-lg");
               }
               if (col.cellIndex === 8) {
                 col.setAttribute("data-toggle", "tooltip");
@@ -153,7 +314,6 @@
           }
         }
 
-
         const tbody = document.querySelector("tbody");
         if (tbody) {
           tbody.addEventListener("click", function (e) {
@@ -161,26 +321,69 @@
             if (!cell) {
               return;
             }
-
             const row = cell.parentElement;
-            if (cell.cellIndex === 6) {
-              $("#recipient-name").val(cell.innerHTML);
+
+            if (cell.cellIndex === 2) {
+              if (e.target.id !== "") {
+                $("#workOrderDetailModal").modal("show");
+                openWorkOrderDetailModal(cell);
+              } else {
+              }
             }
+
+            if (cell.cellIndex === 6) {
+              $("#orderModal").modal("show");
+              openOrderModal(cell);
+            }
+
             if (cell.cellIndex === 8) {
               $("#recipient-name").val(cell.innerHTML);
             }
             /*Tablo detayına tıklanmışsa true gidecek*/
-            editTable(row.className !== "detail-tr" ? false : true,e.target.id, cell.id);
-        
+            if (
+              cell.cellIndex === 3 ||
+              cell.cellIndex === 4 ||
+              cell.cellIndex === 5
+            ) {
+              editTable(
+                row.className !== "detail-tr" ? false : true,
+                e.target.id,
+                cell.id
+              );
+            }
           });
         }
 
         $('[data-toggle="tooltip"]').tooltip();
-        
-        $("#exampleModalCenter").on("shown.bs.modal", function () {
-          $("#exampleModalCenter").trigger("focus");
-        });
       });
+
+      function openToDoListModal(columnInfo) {
+        $("#toDoListModal").modal("show");
+        let Id = columnInfo.parentElement.id.split("-")[0];
+        let columnName = columnInfo.parentElement.id.split("-")[1];
+        $("#toDoList").bootstrapTable("destroy").bootstrapTable({
+          data: toDoListData,
+        });
+      }
+
+      function openWorkOrderDetailModal(columnInfo) {
+        let Id = columnInfo.id.split("-")[0];
+        let columnName = columnInfo.id.split("-")[1];
+        $("#workOrderDetail").bootstrapTable("destroy").bootstrapTable({
+          data: workOrderDetailData,
+        });
+      }
+
+      function openOrderModal(columnInfo) {
+        let Id = columnInfo.id.split("-")[0];
+        let columnName = columnInfo.id.split("-")[1];
+
+        $("#order-table").bootstrapTable("destroy").bootstrapTable({
+          data: modalTableData,
+        });
+        document.getElementById("total-record").innerHTML =
+          modalTableData.length;
+      }
 
       function detailFormatter(index, row) {
         let detailTable = document.createElement("table");
@@ -188,8 +391,8 @@
         let detailTableBody = document.createElement("tbody");
 
         dataDetail[row.id].map((item, dTIndex) => {
-          
-          let firstColumnWidth = document.getElementById("table").rows[1].cells[0].offsetWidth;
+          let firstColumnWidth =
+            document.getElementById("table").rows[1].cells[0].offsetWidth;
           var tr = document.createElement("tr");
           tr.setAttribute("class", "detail-tr");
 
@@ -200,7 +403,8 @@
           let i = 1;
 
           for (const [key, value] of Object.entries(item)) {
-            let columnWidth = document.getElementById("table").rows[1].cells[i].offsetWidth;
+            let columnWidth =
+              document.getElementById("table").rows[1].cells[i].offsetWidth;
             var td = document.createElement("td");
             td.innerHTML = value;
             td.setAttribute("style", "width:" + columnWidth + "px;");
@@ -217,23 +421,21 @@
       }
 
       function editTable(isDetail, eTargetId, tdId) {
-
         var clickedTd = document.getElementById(tdId);
 
-         var checkEditableInput = document.getElementById("editable-input");
-
-        console.log("******",checkEditableInput,clickedTd, eTargetId, tdId)
-        if (eTargetId !== '' && tdId !== '' && eTargetId === tdId && checkEditableInput === null) { 
-
+        var checkEditableInput = document.getElementById("editable-input");
+        if (
+          eTargetId !== "" &&
+          tdId !== "" &&
+          eTargetId === tdId &&
+          checkEditableInput === null
+        ) {
           var editableInput = document.createElement("input");
           editableInput.setAttribute("id", "editable-input");
           editableInput.setAttribute("value", clickedTd.innerHTML);
           clickedTd.innerHTML = "";
           clickedTd.appendChild(editableInput);
-         
-
         } else {
-
           var editableInput = document.getElementById("editable-input");
 
           editableInput.addEventListener("keyup", function (event) {
@@ -241,21 +443,20 @@
               event.preventDefault();
               clickedTd.innerHTML = editableInput.value;
               editableInput.remove();
-              editAjax(tdId.split("-")[0],tdId.split("-")[1])
-            
+              editAjax(tdId.split("-")[0], tdId.split("-")[1]);
             }
           });
-          
+
           editableInput.addEventListener("mouseout", function (event) {
             clickedTd.innerHTML = editableInput.value;
             editableInput.remove();
-            editAjax()
+            editAjax();
           });
         }
       }
 
-      function editAjax(rowId, columnName){
-        alert("id:" +  rowId + ", column: " +columnName)
+      function editAjax(rowId, columnName) {
+        console.log("id:" + rowId + ", column: " + columnName);
       }
     </script>
   </body>
