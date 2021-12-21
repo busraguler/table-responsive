@@ -24,11 +24,17 @@
       rel="stylesheet"
       href="https://unpkg.com/bootstrap-table@1.19.1/dist/extensions/fixed-columns/bootstrap-table-fixed-columns.css"
     />
+    <link
+      rel="stylesheet"
+      type="text/css"
+      href="https://cdn.jsdelivr.net/npm/daterangepicker/daterangepicker.css"
+    />
     <link rel="stylesheet" href="./bootstrap-editable.css" />
     <link rel="stylesheet" href="./table.css" />
   </head>
   <body>
     <div style="padding: 30px"></div>
+    <input type="text" name="daterange" value="" />
 
     <div style="padding: 20px">
       <table
@@ -222,6 +228,47 @@
     </div>
     <!-- workOrderDetail Modal -->
 
+    <div data-toggle="modal" data-target="#kt_modal_1">sfsdşlflşsdf</div>
+    <!--DateRangePicker::Modal-->
+    <div class="modal fade" tabindex="-1" id="kt_modal_1">
+      <div class="modal-dialog">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title">Başlangıç-ve</h5>
+
+            <!--begin::Close-->
+            <div
+              class="btn btn-icon btn-sm btn-active-light-primary ms-2"
+              data-bs-dismiss="modal"
+              aria-label="Close"
+            >
+              <span class="svg-icon svg-icon-2x"></span>
+            </div>
+            <!--end::Close-->
+          </div>
+
+          <div class="modal-body">
+            <div class="mb-0">
+              <label for="" class="form-label">Select date</label>
+              <input
+                class="form-control form-control-solid"
+                placeholder="Pick date"
+                id="kt_datepicker_10"
+              />
+            </div>
+          </div>
+
+          <div class="modal-footer">
+            <button type="button" class="btn btn-light" data-bs-dismiss="modal">
+              Close
+            </button>
+            <button type="button" class="btn btn-primary">Save changes</button>
+          </div>
+        </div>
+      </div>
+    </div>
+    <!--DateRangePicker::Modal-->
+
     <script src="https://cdn.jsdelivr.net/npm/jquery/dist/jquery.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js"></script>
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
@@ -236,6 +283,14 @@
     <script src="https://cdn.jsdelivr.net/npm/tableexport.jquery.plugin@1.10.21/libs/jsPDF/jspdf.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/tableexport.jquery.plugin@1.10.21/libs/jsPDF-AutoTable/jspdf.plugin.autotable.js"></script>
     <script src="https://unpkg.com/bootstrap-table@1.19.1/dist/extensions/export/bootstrap-table-export.min.js"></script>
+    <script
+      type="text/javascript"
+      src="https://cdn.jsdelivr.net/momentjs/latest/moment.min.js"
+    ></script>
+    <script
+      type="text/javascript"
+      src="https://cdn.jsdelivr.net/npm/daterangepicker/daterangepicker.min.js"
+    ></script>
     <!-- Export -->
     <script src="./mockTable.js"></script>
     <script>
@@ -267,6 +322,39 @@
           });
           /*****Seçili checkbox sayısı */ //
         });
+
+        $("#kt_datepicker_10").daterangepicker(
+          {
+            format: "DD/MMM/YYYY",
+          },
+          {
+            locale: {
+              format: "DD/MMM/YYYY",
+            },
+          },
+          function (start, end, label) {
+            console.log(
+              "A new date selection was made: " +
+                start.format("YYYY-MM-DD") +
+                " to " +
+                end.format("YYYY-MM-DD")
+            );
+          }
+        );
+        /*$('input[name="daterange"]').daterangepicker(
+          {
+            opens: "left",
+          },
+          function (start, end, label) {
+            console.log(
+              "A new date selection was made: " +
+                start.format("YYYY-MM-DD") +
+                " to " +
+                end.format("YYYY-MM-DD")
+            );
+          }
+        );
+        */
 
         $("#table")
           .bootstrapTable("destroy")
@@ -323,15 +411,19 @@
             }
             const row = cell.parentElement;
 
-            if (cell.cellIndex === 2) {
-              if (e.target.id !== "") {
-                $("#workOrderDetailModal").modal("show");
-                openWorkOrderDetailModal(cell);
-              } else {
-              }
+            if (
+              cell.cellIndex === 2 &&
+              cell.getAttribute("data-toggle") === "modal" &&
+              e.target.id !== ""
+            ) {
+              $("#workOrderDetailModal").modal("show");
+              openWorkOrderDetailModal(cell);
             }
 
-            if (cell.cellIndex === 6) {
+            if (
+              cell.cellIndex === 6 &&
+              cell.getAttribute("data-toggle") === "modal"
+            ) {
               $("#orderModal").modal("show");
               openOrderModal(cell);
             }
@@ -358,12 +450,14 @@
       });
 
       function openToDoListModal(columnInfo) {
-        $("#toDoListModal").modal("show");
-        let Id = columnInfo.parentElement.id.split("-")[0];
-        let columnName = columnInfo.parentElement.id.split("-")[1];
-        $("#toDoList").bootstrapTable("destroy").bootstrapTable({
-          data: toDoListData,
-        });
+        if (columnInfo.getAttribute("data-toggle") === "modal") {
+          $("#toDoListModal").modal("show");
+          let Id = columnInfo.parentElement.id.split("-")[0];
+          let columnName = columnInfo.parentElement.id.split("-")[1];
+          $("#toDoList").bootstrapTable("destroy").bootstrapTable({
+            data: toDoListData,
+          });
+        }
       }
 
       function openWorkOrderDetailModal(columnInfo) {
