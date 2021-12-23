@@ -15,11 +15,16 @@
   border: unset !important;
 }
 
+.table thead th {
+  text-align: center;
+}
+
 .table tbody td {
-  max-width: 180px;
+  max-width: 200px;
   white-space: nowrap;
   overflow: hidden !important;
   text-overflow: ellipsis;
+  text-align: center;
 }
 
 .table tbody td input {
@@ -34,14 +39,16 @@
   color: white;
 }
 
-#order-table thead tr {
-  background-color: #eaf0ff;
-  color: #424e70;
+.bootstrap-table .fixed-table-container .table thead th .th-inner {
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }
 
-#component-modal thead tr {
-  background-color: #eaf0ff;
-  color: #424e70;
+#workOrderDetail thead tr,
+#toDoList thead tr {
+  background-color: #90adff;
+  color: #ffffff;
 }
 
 .table-footer {
@@ -97,6 +104,11 @@ a {
   border-radius: 0.25rem;
 }
 
+.bs-tooltip-auto[x-placement^="bottom"] .arrow::before,
+.bs-tooltip-bottom .arrow::before {
+  border-bottom-color: #0a32a3;
+}
+
 .bs-tooltip-auto[x-placement^="top"] .arrow::before,
 .bs-tooltip-top .arrow::before {
   border-top-color: #0a32a3 !important;
@@ -113,3 +125,38 @@ a {
   cursor: pointer;
 }
 /*** datepicker ***/
+
+/***** COLORS ****/
+
+.bc-blue {
+  background-color: #dfefff;
+}
+
+.bc-green {
+  background-color: #c5ffcc;
+}
+
+.bc-red {
+  background-color: #ffb0b7;
+}
+
+.bc-orange {
+  background-color: #ffdcb0;
+}
+
+.bc-vivid-red {
+  background-color: #e92828;
+  color: white;
+}
+
+.bc-vivid-green {
+  background-color: #2daf2d;
+  color: white;
+}
+
+.bc-vivid-purple {
+  background-color: #c95ec9;
+  color: white;
+}
+
+/***** COLORS ****/
