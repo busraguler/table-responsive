@@ -30,7 +30,6 @@ $(function () {
     });
 
   /*  Ana Tablo düzenleme  */
-
   const table = document.getElementById("table");
   for (let i in table.rows) {
     let row = table.rows[i];
@@ -41,7 +40,9 @@ $(function () {
         if (col.cellIndex !== undefined) {
           col.setAttribute(
             "id",
-            Object.keys(data[row.rowIndex - 1])[col.cellIndex - 1]
+            data[row.rowIndex - 1].id +
+              "-" +
+              Object.keys(data[row.rowIndex - 1])[col.cellIndex - 1]
           );
         }
 
@@ -52,9 +53,13 @@ $(function () {
           col.cellIndex === 14 ||
           col.cellIndex === 15 ||
           col.cellIndex === 21 ||
-          col.cellIndex === 22
+          col.cellIndex === 22 ||
+          col.cellIndex === 20 ||
+          col.cellIndex === 23 ||
+          col.cellIndex === 25
         ) {
-          //dataRangePickerModal
+          //dateRangePickerModal
+          //dataPickerModal
           col.setAttribute("class", "bc-blue");
           col.setAttribute("data-toggle", "modal");
         }
@@ -71,15 +76,6 @@ $(function () {
         if (col.cellIndex === 18) {
           //partsOrdersAndPickingModal
           col.setAttribute("data-toggle", "modal");
-        }
-
-        if (col.cellIndex === 8) {
-          col.setAttribute("data-toggle", "tooltip");
-          col.setAttribute("data-html", "true");
-          col.setAttribute(
-            "title",
-            "<div>" + col.innerHTML + " + ----<br/>Tooltip </div>"
-          );
         }
 
         if (col.cellIndex === 12 || col.cellIndex === 27) {
@@ -125,7 +121,6 @@ $(function () {
   /*  Ana Tablo düzenleme  */
 
   /*  Ana Tablo td click  */
-
   const tbody = document.querySelector("tbody");
   if (tbody) {
     tbody.addEventListener("click", function (e) {
@@ -163,12 +158,17 @@ $(function () {
         openPartsOrdersAndPickingModal(cell, row.id);
       }
 
-      if (cell.cellIndex === 8) {
-        $("#recipient-name").val(cell.innerHTML);
+      if (
+        (cell.cellIndex === 20 ||
+          cell.cellIndex === 23 ||
+          cell.cellIndex === 25) &&
+        cell.getAttribute("data-toggle") === "modal"
+      ) {
+        openDatePicker(cell, row.id);
       }
-      /*Tablo detayına tıklanmışsa true gidecek*/
 
       if (cell.cellIndex === 12 || cell.cellIndex === 27) {
+        //Tablo detayına tıklanmışsa ilk alan true
         editTable(
           row.className !== "detail-tr" ? false : true,
           e.target.id,
@@ -178,16 +178,34 @@ $(function () {
       }
     });
   }
-
   /*  Ana Tablo td click  */
 
   $('[data-toggle="tooltip"]').tooltip();
 });
 
+function openDatePicker(cell, rowId) {
+  $("#dataPickerModal").modal("show");
+  $("#datePicker").daterangepicker(
+    {
+      singleDatePicker: true,
+      showDropdowns: true,
+      startDate: cell.innerHTML.split("-")[0],
+      startDate: cell.innerHTML.split("-")[0],
+      locale: {
+        format: "DD.M.YYYY",
+      },
+    },
+    function (start, end, label) {
+      cell.innerHTML = start.format("DD.M.YYYY");
+      editAjax(cell.id, rowId, start.format("DD.M.YYYY"));
+      $("#dataPickerModal").modal("hide");
+    }
+  );
+}
+
 function openDateRangePicker(cell, rowId) {
-  $("#dataRangePickerModal").modal("show");
-  /**** daterangepicker ****/
-  $("#dataRangePicker").daterangepicker(
+  $("#dateRangePickerModal").modal("show");
+  $("#dateRangePicker").daterangepicker(
     {
       opens: "left",
       startDate: cell.innerHTML.split("-")[0],
@@ -199,7 +217,7 @@ function openDateRangePicker(cell, rowId) {
     function (start, end, label) {
       cell.innerHTML =
         start.format("DD.M.YYYY") + "-" + end.format("DD.MM.YYYY");
-      $("#dataRangePickerModal").modal("hide");
+      $("#dateRangePickerModal").modal("hide");
       editAjax(
         cell.id,
         rowId,
@@ -207,14 +225,14 @@ function openDateRangePicker(cell, rowId) {
       );
     }
   );
-  /**** daterangepicker ****/
 }
 
 function openToDoListModal(columnInfo) {
+  let rowId = columnInfo.parentElement.id.split("-")[0];
+  let columnName = columnInfo.parentElement.id.split("-")[1];
+  console.log(rowId, columnName);
   if (columnInfo.getAttribute("data-toggle") === "modal") {
     $("#toDoListModal").modal("show");
-    let Id = columnInfo.parentElement.id.split("-")[0];
-    let columnName = columnInfo.parentElement.id.split("-")[1];
     $("#toDoList").bootstrapTable("destroy").bootstrapTable({
       data: toDoListData,
     });
@@ -222,8 +240,9 @@ function openToDoListModal(columnInfo) {
 }
 
 function openWorkOrderDetailModal(cell, rowId) {
+  let columnName = cell.id.split("-")[1];
+  console.log(rowId, columnName);
   $("#workOrderDetailModal").modal("show");
-  let tdId = cell.id;
   $("#workOrderDetail").bootstrapTable("destroy").bootstrapTable({
     data: workOrderDetailData,
   });
@@ -251,7 +270,8 @@ function openWorkOrderDetailModal(cell, rowId) {
 }
 
 function openPartsOrdersAndPickingModal(cell, rowId) {
-  let tdId = cell.id;
+  let columnName = cell.id.split("-")[1];
+  console.log(rowId, columnName);
   $("#partsOrdersAndPickingModal").modal("show");
   $("#partsOrdersAndPicking").bootstrapTable("destroy").bootstrapTable({
     data: partsOrdersAndPickingeData,
@@ -280,7 +300,6 @@ function detailFormatter(index, row) {
     let i = 1;
     for (const [key, value] of Object.entries(item)) {
       if (key !== "id") {
-        console.log(document.getElementById("table").rows[1].cells[i]);
         tr.setAttribute("id", item.id);
         let columnWidth =
           document.getElementById("table").rows[1].cells[i].offsetWidth;
@@ -291,7 +310,7 @@ function detailFormatter(index, row) {
           "style",
           "max-width:" + columnWidth + "px; min-width:" + columnWidth + "px;"
         );
-        td.setAttribute("id", key);
+        td.setAttribute("id", item.id + "-" + key);
 
         if (
           i === 10 ||
@@ -300,7 +319,10 @@ function detailFormatter(index, row) {
           i === 14 ||
           i === 15 ||
           i === 21 ||
-          i === 22
+          i === 22 ||
+          i === 25 ||
+          i === 23 ||
+          i === 20
         ) {
           //DateRangePicker
           td.setAttribute("class", "bc-blue");

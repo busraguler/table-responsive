@@ -6,7 +6,7 @@
       name="viewport"
       content="width=device-width, initial-scale=1, shrink-to-fit=no"
     />
-    <title>Table</title>
+    <title>cdoms</title>
 
     <link
       rel="stylesheet"
@@ -32,7 +32,6 @@
     <link rel="stylesheet" href="./table.css" />
   </head>
   <body>
-    <div style="padding: 30px"></div>
     <!-- Main Table-->
     <div style="padding: 20px">
       <table
@@ -103,7 +102,7 @@
     </div>
     <!-- Main Table-->
 
-    <!-- Order Modal -->
+    <!-- Parts Orders And Picking Modal -->
     <div
       id="partsOrdersAndPickingModal"
       class="modal fade bd-example-modal-lg"
@@ -294,7 +293,7 @@
     </div>
     <!-- workOrderDetail Modal -->
     <!--DateRangePicker::Modal-->
-    <div class="modal fade" tabindex="-1" id="dataRangePickerModal">
+    <div class="modal fade" tabindex="-1" id="dateRangePickerModal">
       <div class="modal-dialog">
         <div class="modal-content">
           <div class="modal-header">
@@ -314,14 +313,46 @@
               <input
                 class="form-control form-control-solid"
                 placeholder="Pick date"
-                id="dataRangePicker"
+                id="dateRangePicker"
               />
             </div>
           </div>
         </div>
       </div>
     </div>
+
     <!--DateRangePicker::Modal-->
+
+    <!--DatePicker::Modal-->
+    <div class="modal fade" tabindex="-1" id="dataPickerModal">
+      <div class="modal-dialog">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title">Tarih</h5>
+            <button
+              type="button"
+              class="close"
+              data-dismiss="modal"
+              aria-label="Close"
+            >
+              <span aria-hidden="true">&times;</span>
+            </button>
+          </div>
+
+          <div class="modal-body pb-5">
+            <div class="mb-0">
+              <input
+                class="form-control form-control-solid"
+                placeholder="Pick date"
+                id="datePicker"
+                data-date-format="dd.mm.yyyy"
+              />
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <!--DatePicker::Modal-->
 
     <script src="https://cdn.jsdelivr.net/npm/jquery/dist/jquery.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js"></script>
@@ -339,11 +370,7 @@
       type="text/javascript"
       src="https://cdn.jsdelivr.net/momentjs/latest/moment.min.js"
     ></script>
-    <script
-      type="text/javascript"
-      src="https://cdn.jsdelivr.net/npm/daterangepicker/daterangepicker.min.js"
-    ></script>
-
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.3.0/js/bootstrap-datepicker.js"></script>
     <script src="./mockTable.js"></script>
     <script src="./cdoms.js"></script>
   </body>
