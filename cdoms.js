@@ -324,6 +324,7 @@ function openPartsOrdersAndPickingModal(cell, rowId) {
   var tdCheckboxes = $('#partsOrdersAndPicking td input[type="checkbox"]');
   var thCheckboxes = $('#partsOrdersAndPicking th input[type="checkbox"]');
   var countCheckedCheckboxes = 0;
+  $("#total-selected").text(0);
   tdCheckboxes.change(function () {
     countCheckedCheckboxes = tdCheckboxes.filter(":checked").length;
     $("#total-selected").text(countCheckedCheckboxes);
@@ -410,6 +411,7 @@ function detailFormatter(index, row) {
         }
 
         if (i === 18) {
+          td.setAttribute("data-toggle", "modal");
           // parça listesi - arka plan rengi
           if (value.includes("Var")) {
             td.setAttribute("class", "bc-green textDecoration");
