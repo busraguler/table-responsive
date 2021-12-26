@@ -227,7 +227,8 @@ var dataDetail = {
 
 var partsOrdersAndPickingeData = [
   {
-    column1: "1",
+    id: "1",
+    column1: "11",
     column2: "Jen",
     column3: "Melbourne",
     column4: "ZZZZ",
@@ -238,10 +239,10 @@ var partsOrdersAndPickingeData = [
     column9: "gggg",
     column10: "dddd",
     column11: "dddd",
-    column12: "dddd",
   },
   {
-    column1: "1",
+    id: "2",
+    column1: "11",
     column2: "Jen",
     column3: "Melbourne",
     column4: "Turkey",
@@ -252,7 +253,34 @@ var partsOrdersAndPickingeData = [
     column9: "gggg",
     column10: "dddd",
     column11: "dddd",
-    column12: "dddd",
+  },
+  {
+    id: "3",
+    column1: "11",
+    column2: "Jen",
+    column3: "Melbourne",
+    column4: "Turkey",
+    column5: "Lisans",
+    column6: "65",
+    column7: "fake",
+    column8: "rtrt",
+    column9: "gggg",
+    column10: "dddd",
+    column11: "dddd",
+  },
+  {
+    id: "4",
+    column1: "11",
+    column2: "Jen",
+    column3: "Melbourne",
+    column4: "Turkey",
+    column5: "Lisans",
+    column6: "65",
+    column7: "fake",
+    column8: "rtrt",
+    column9: "gggg",
+    column10: "dddd",
+    column11: "dddd",
   },
 ];
 

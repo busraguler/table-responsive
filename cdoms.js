@@ -1,25 +1,5 @@
 $(function () {
-  $(document).ready(function () {
-    /*****Seçili checkbox sayısı */ //
-    var checkedRows = [];
-    $("#partsOrdersAndPicking").on("check.bs.table", function (e, row) {
-      let checkRow = checkedRows.find((x) => x.id === row.id);
-      if (!checkRow) {
-        checkedRows.push({ id: row.id });
-      }
-      document.getElementById("total-selected").innerHTML = checkedRows.length;
-    });
-
-    $("#partsOrdersAndPicking").on("uncheck.bs.table", function (e, row) {
-      $.each(checkedRows, function (index, value) {
-        if (row !== undefined && value !== undefined && value.id === row.id) {
-          checkedRows.splice(index, 1);
-        }
-      });
-      document.getElementById("total-selected").innerHTML = checkedRows.length;
-    });
-    /*****Seçili checkbox sayısı */ //
-  });
+  $(document).ready(function () {});
 
   $("#table")
     .bootstrapTable("destroy")
@@ -236,7 +216,7 @@ function changeSelect(selectElement) {
   let td = document.getElementById(selectElement.id).parentElement;
 
   if (columnName === "customerPartsInformation") {
-    if (selected === "1 " || selected === "2") {
+    if (selected === "1" || selected === "2") {
       td.setAttribute("class", "bc-green");
     }
     if (selected === "3") {
@@ -339,6 +319,34 @@ function openPartsOrdersAndPickingModal(cell, rowId) {
   });
   document.getElementById("total-record").innerHTML =
     partsOrdersAndPickingeData.length;
+
+  // Seçili checkbox sayısı
+  var tdCheckboxes = $('#partsOrdersAndPicking td input[type="checkbox"]');
+  var thCheckboxes = $('#partsOrdersAndPicking th input[type="checkbox"]');
+  var countCheckedCheckboxes = 0;
+  tdCheckboxes.change(function () {
+    countCheckedCheckboxes = tdCheckboxes.filter(":checked").length;
+    $("#total-selected").text(countCheckedCheckboxes);
+  });
+
+  thCheckboxes.change(function () {
+    countCheckedCheckboxes = tdCheckboxes.filter(":checked").length;
+    $("#total-selected").text(countCheckedCheckboxes);
+  });
+
+  // Beklenen Teslim tarihi
+  $("#deliveryDate").daterangepicker(
+    {
+      singleDatePicker: true,
+      showDropdowns: true,
+      locale: {
+        format: "DD.M.YYYY",
+      },
+    },
+    function (start, end, label) {
+      console.log(start.format("DD.M.YYYY"));
+    }
+  );
 }
 
 function detailFormatter(index, row) {
