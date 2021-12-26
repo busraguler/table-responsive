@@ -28,7 +28,7 @@
 }
 
 .table tbody td input {
-  max-width: 150px;
+  max-width: 200px;
   white-space: nowrap;
   overflow: hidden !important;
   text-overflow: ellipsis;
@@ -160,3 +160,33 @@ a {
 }
 
 /***** COLORS ****/
+
+.custom-select-box {
+  background-color: unset;
+  border: unset;
+}
+
+/**** Modal  ***/
+.modal-dialog {
+  width: 100%;
+
+  padding: 0;
+}
+
+.modal-content {
+  height: auto;
+  min-height: 100%;
+  border-radius: 0;
+}
+
+@media (min-width: 1200px) {
+  .modal-xl {
+    max-width: 95%;
+  }
+}
+
+/**** Modal  ***/
+
+.textDecoration {
+  text-decoration: underline;
+}

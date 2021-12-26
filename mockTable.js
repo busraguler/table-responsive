@@ -12,7 +12,7 @@ var data = [
     status: "Söküm",
     externalWashing: "04.10.2021-04.10.2021",
     entryAppraisal: "09.10.2021-10.12.2021",
-    isDismantling: "Evet",
+    isDismantling: "Hayır",
     dismantling: "04.10.2021-04.10.2021",
     defectList: "04.10.2021-04.10.2021",
     offer: "04.10.2021-04.10.2021",
@@ -49,7 +49,7 @@ var data = [
     offerTat: "6/7",
     offerStatus: "Reddedildi-07.10.2021",
     partsList: "Var",
-    customerPartsInformation: "Parça Bekleniyor",
+    customerPartsInformation: "Hayır",
     customerPartDeliveryDate: "09.10.2021",
     assembly: "04.10.2021-04.10.2021",
     ersRepair: "04.10.2021-04.10.2021",
@@ -82,7 +82,7 @@ var detailTableData1 = [
     offerTat: "6/7",
     offerStatus: "Onaylandı-07.10.2021",
     partsList: "Yok",
-    customerPartsInformation: "Parça Bekleniyor",
+    customerPartsInformation: "Stokta",
     customerPartDeliveryDate: "04.10.2021",
     assembly: "04.10.2021-04.10.2021",
     ersRepair: "04.10.2021-04.10.2021",
@@ -112,7 +112,7 @@ var detailTableData1 = [
     offerTat: "6/7",
     offerStatus: "Onaylandı-07.10.2021",
     partsList: "Var",
-    customerPartsInformation: "Parça Bekleniyor",
+    customerPartsInformation: "Hayır",
     customerPartDeliveryDate: "04.10.2021",
     assembly: "04.10.2021-04.10.2021",
     ersRepair: "04.10.2021-04.10.2021",
@@ -144,7 +144,7 @@ var detailTableData2 = [
     offerTat: "6/7",
     offerStatus: "Onaylandı-07.10.2021",
     partsList: "Var",
-    customerPartsInformation: "Hayır",
+    customerPartsInformation: "Stokta",
     customerPartDeliveryDate: "04.10.2021",
     assembly: "04.10.2021-04.10.2021",
     ersRepair: "04.10.2021-04.10.2021",
@@ -174,7 +174,7 @@ var detailTableData2 = [
     offerTat: "6/7",
     offerStatus: "Onaylandı-07.10.2021",
     partsList: "Var",
-    customerPartsInformation: "Stokta",
+    customerPartsInformation: "Parça Bekleniyor",
     customerPartDeliveryDate: "04.10.2021",
     assembly: "04.10.2021-04.10.2021",
     ersRepair: "04.10.2021-04.10.2021",
@@ -207,7 +207,7 @@ var detailTableData3 = [
     offerTat: "6/7",
     offerStatus: "Onaylandı-07.10.2021",
     partsList: "Var",
-    customerPartsInformation: "Parça Bekleniyor",
+    customerPartsInformation: "Hayır",
     customerPartDeliveryDate: "04.10.2021",
     assembly: "04.10.2021-04.10.2021",
     ersRepair: "04.10.2021-04.10.2021",
@@ -385,3 +385,14 @@ var workOrderDetailData = [
     plannedEnthusiasmDate: "10/7/21",
   },
 ];
+
+var dismantlingSelectOptions = {
+  1: "Evet",
+  2: "Hayır",
+};
+
+var trackInformation = {
+  1: "Parça Bekleniyor",
+  2: "Stokta",
+  3: "Hayır",
+};

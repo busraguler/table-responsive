@@ -36,13 +36,14 @@ $(function () {
     if (row.rowIndex !== 0) {
       for (let j in row.cells) {
         let col = row.cells[j];
-        row.setAttribute("id", data[row.rowIndex - 1].id);
-        if (col.cellIndex !== undefined) {
+        if (col.cellIndex !== undefined && col.cellIndex !== 0) {
+          row.setAttribute("id", data[row.getAttribute("data-index")].id);
+
           col.setAttribute(
             "id",
-            data[row.rowIndex - 1].id +
+            data[row.getAttribute("data-index")].id +
               "-" +
-              Object.keys(data[row.rowIndex - 1])[col.cellIndex - 1]
+              Object.keys(data[row.getAttribute("data-index")])[col.cellIndex]
           );
         }
 
@@ -62,6 +63,7 @@ $(function () {
           //dataPickerModal
           col.setAttribute("class", "bc-blue");
           col.setAttribute("data-toggle", "modal");
+          col.setAttribute("style", "text-decoration:underline;");
         }
 
         if (col.cellIndex === 2) {
@@ -76,6 +78,7 @@ $(function () {
         if (col.cellIndex === 18) {
           //partsOrdersAndPickingModal
           col.setAttribute("data-toggle", "modal");
+          col.setAttribute("style", "text-decoration:underline;");
         }
 
         if (col.cellIndex === 12 || col.cellIndex === 27) {
@@ -102,6 +105,32 @@ $(function () {
             col.setAttribute("class", "bc-orange");
           }
         }
+
+        if (col.cellIndex === 12) {
+          var columnValue = col.innerHTML;
+          col.innerHTML = "";
+
+          var selectBox = document.createElement("SELECT");
+          selectBox.setAttribute("id", col.id + "-select");
+          selectBox.setAttribute("class", "custom-select-box");
+          selectBox.setAttribute("onchange", "changeSelect(this)");
+          document.getElementById(col.id).appendChild(selectBox);
+          Object.keys(dismantlingSelectOptions).map(function (key) {
+            var option = document.createElement("option");
+            option.setAttribute("value", key);
+            var optionValue = document.createTextNode(
+              dismantlingSelectOptions[key]
+            );
+            option.appendChild(optionValue);
+
+            if (columnValue === dismantlingSelectOptions[key]) {
+              option.setAttribute("selected", true);
+            }
+
+            document.getElementById(col.id + "-select").appendChild(option);
+          });
+        }
+
         if (col.cellIndex === 19) {
           // müşteri parça bilgisi - arka plan rengi
           if (
@@ -113,11 +142,28 @@ $(function () {
           if (col.innerHTML.includes("Hayır")) {
             col.setAttribute("class", "bc-orange");
           }
+          var columnValue = col.innerHTML;
+          col.innerHTML = "";
+          var selectBox = document.createElement("SELECT");
+          selectBox.setAttribute("id", col.id + "-select");
+          selectBox.setAttribute("class", "custom-select-box");
+          selectBox.setAttribute("onchange", "changeSelect(this)");
+          document.getElementById(col.id).appendChild(selectBox);
+
+          Object.keys(trackInformation).map(function (key) {
+            var option = document.createElement("option");
+            option.setAttribute("value", key);
+            var optionValue = document.createTextNode(trackInformation[key]);
+            option.appendChild(optionValue);
+            if (columnValue === trackInformation[key]) {
+              option.setAttribute("selected", true);
+            }
+            document.getElementById(col.id + "-select").appendChild(option);
+          });
         }
       }
     }
   }
-
   /*  Ana Tablo düzenleme  */
 
   /*  Ana Tablo td click  */
@@ -167,7 +213,7 @@ $(function () {
         openDatePicker(cell, row.id);
       }
 
-      if (cell.cellIndex === 12 || cell.cellIndex === 27) {
+      if (cell.cellIndex === 27) {
         //Tablo detayına tıklanmışsa ilk alan true
         editTable(
           row.className !== "detail-tr" ? false : true,
@@ -182,6 +228,24 @@ $(function () {
 
   $('[data-toggle="tooltip"]').tooltip();
 });
+
+function changeSelect(selectElement) {
+  let rowId = selectElement.id.split("-")[0];
+  let columnName = selectElement.id.split("-")[1];
+  let selected = selectElement.value;
+  let td = document.getElementById(selectElement.id).parentElement;
+
+  if (columnName === "customerPartsInformation") {
+    if (selected === "1 " || selected === "2") {
+      td.setAttribute("class", "bc-green");
+    }
+    if (selected === "3") {
+      td.setAttribute("class", "bc-orange");
+    }
+  }
+
+  editAjax(columnName, rowId, selected);
+}
 
 function openDatePicker(cell, rowId) {
   $("#dataPickerModal").modal("show");
@@ -230,7 +294,6 @@ function openDateRangePicker(cell, rowId) {
 function openToDoListModal(columnInfo) {
   let rowId = columnInfo.parentElement.id.split("-")[0];
   let columnName = columnInfo.parentElement.id.split("-")[1];
-  console.log(rowId, columnName);
   if (columnInfo.getAttribute("data-toggle") === "modal") {
     $("#toDoListModal").modal("show");
     $("#toDoList").bootstrapTable("destroy").bootstrapTable({
@@ -241,7 +304,6 @@ function openToDoListModal(columnInfo) {
 
 function openWorkOrderDetailModal(cell, rowId) {
   let columnName = cell.id.split("-")[1];
-  console.log(rowId, columnName);
   $("#workOrderDetailModal").modal("show");
   $("#workOrderDetail").bootstrapTable("destroy").bootstrapTable({
     data: workOrderDetailData,
@@ -271,7 +333,6 @@ function openWorkOrderDetailModal(cell, rowId) {
 
 function openPartsOrdersAndPickingModal(cell, rowId) {
   let columnName = cell.id.split("-")[1];
-  console.log(rowId, columnName);
   $("#partsOrdersAndPickingModal").modal("show");
   $("#partsOrdersAndPicking").bootstrapTable("destroy").bootstrapTable({
     data: partsOrdersAndPickingeData,
@@ -299,6 +360,7 @@ function detailFormatter(index, row) {
 
     let i = 1;
     for (const [key, value] of Object.entries(item)) {
+      console.log(value);
       if (key !== "id") {
         tr.setAttribute("id", item.id);
         let columnWidth =
@@ -325,7 +387,7 @@ function detailFormatter(index, row) {
           i === 20
         ) {
           //DateRangePicker
-          td.setAttribute("class", "bc-blue");
+          td.setAttribute("class", "bc-blue textDecoration");
           td.setAttribute("data-toggle", "modal");
         }
 
@@ -342,10 +404,10 @@ function detailFormatter(index, row) {
         if (i === 18) {
           // parça listesi - arka plan rengi
           if (value.includes("Var")) {
-            td.setAttribute("class", "bc-green");
+            td.setAttribute("class", "bc-green textDecoration");
           }
           if (value.includes("Yok")) {
-            td.setAttribute("class", "bc-orange");
+            td.setAttribute("class", "bc-orange textDecoration");
           }
         }
 
@@ -354,14 +416,60 @@ function detailFormatter(index, row) {
           if (value.includes("Bekleniyor") || value.includes("Stokta")) {
             td.setAttribute("class", "bc-green");
           }
+
           if (value.includes("Hayır")) {
             td.setAttribute("class", "bc-orange");
           }
+          console.log(td.innerHTML);
+          var columnValue = td.innerHTML;
+          td.innerHTML = "";
+
+          var selectBox = document.createElement("SELECT");
+          selectBox.setAttribute("id", td.id + "-select");
+          selectBox.setAttribute("class", "custom-select-box");
+          selectBox.setAttribute("onchange", "changeSelect(this)");
+          td.appendChild(selectBox);
+
+          Object.keys(trackInformation).map(function (key) {
+            var option = document.createElement("option");
+            option.setAttribute("value", key);
+            var optionValue = document.createTextNode(trackInformation[key]);
+            option.appendChild(optionValue);
+            if (columnValue === trackInformation[key]) {
+              option.setAttribute("selected", true);
+            }
+            selectBox.appendChild(option);
+          });
         }
 
         if (i === 12 || i === 27) {
           //düzenlenebilir kolonların - arka plan rengi
           td.setAttribute("class", "bc-blue");
+        }
+
+        if (i === 12) {
+          var columnValue = td.innerHTML;
+          td.innerHTML = "";
+
+          var selectBox = document.createElement("SELECT");
+          selectBox.setAttribute("id", td.id + "-select");
+          selectBox.setAttribute("class", "custom-select-box");
+          selectBox.setAttribute("onchange", "changeSelect(this)");
+          td.appendChild(selectBox);
+          Object.keys(dismantlingSelectOptions).map(function (key) {
+            var option = document.createElement("option");
+            option.setAttribute("value", key);
+            var optionValue = document.createTextNode(
+              dismantlingSelectOptions[key]
+            );
+            option.appendChild(optionValue);
+
+            if (columnValue === dismantlingSelectOptions[key]) {
+              option.setAttribute("selected", true);
+            }
+
+            selectBox.appendChild(option);
+          });
         }
 
         tr.appendChild(td);
@@ -381,12 +489,8 @@ function editTable(isDetail, eTargetId, tdId, rowId) {
   clickedTd = clickedTr.getElementsByTagName("td")[tdId];
 
   var checkEditableInput = document.getElementById("editable-input");
-  if (
-    eTargetId !== "" &&
-    tdId !== "" &&
-    eTargetId === tdId &&
-    checkEditableInput === null
-  ) {
+
+  if (checkEditableInput === null) {
     var editableInput = document.createElement("input");
     editableInput.setAttribute("id", "editable-input");
     editableInput.setAttribute("value", clickedTd.innerHTML);
@@ -394,23 +498,22 @@ function editTable(isDetail, eTargetId, tdId, rowId) {
     clickedTd.appendChild(editableInput);
   } else {
     var editableInput = document.getElementById("editable-input");
-
     editableInput.addEventListener("keyup", function (event) {
       if (event.keyCode === 13) {
         event.preventDefault();
         clickedTd.innerHTML = editableInput.value;
         editableInput.remove();
-        editAjax(tdId, rowId, editableInput.value);
+        editAjax(tdId.split("-")[1], rowId, editableInput.value);
       }
     });
+  }
 
-    editableInput.addEventListener("mouseout", function (event) {
+  /* editableInput.addEventListener("mouseout", function (event) {
       event.preventDefault();
       clickedTd.innerHTML = editableInput.value;
       editableInput.remove();
       editAjax(tdId, rowId, editableInput.value);
-    });
-  }
+    });*/
 }
 
 function editAjax(columnName, rowId, newValue) {
