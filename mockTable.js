@@ -18,7 +18,7 @@ var data = [
     offer: "04.10.2021-04.10.2021",
     offerTat: "6/7",
     offerStatus: "Onaylandı-07.10.2021",
-    partsList: "Var",
+    partsList: "Yok",
     customerPartsInformation: "Parça Bekleniyor",
     customerPartDeliveryDate: "04.10.2021",
     assembly: "04.10.2021-04.10.2021",

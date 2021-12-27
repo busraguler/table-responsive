@@ -39,6 +39,10 @@
   color: white;
 }
 
+.table-hover tbody tr:hover {
+  background-color: white;
+}
+
 .bootstrap-table .fixed-table-container .table thead th .th-inner {
   display: flex;
   justify-content: center;

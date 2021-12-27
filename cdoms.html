@@ -55,12 +55,24 @@
             <th data-field="serialNumber">Seri No</th>
             <th data-field="acceptanceDate">Kabul Tarihi</th>
             <th data-field="status">Durum</th>
-            <th data-field="externalWashing">Dış Yıkama</th>
-            <th data-field="entryAppraisal">Giriş Ekspertizi</th>
-            <th data-field="isDismantling">Söküm Yapılacak Mı</th>
-            <th data-field="dismantling">Söküm</th>
-            <th data-field="defectList">Defect List Oluşturma</th>
-            <th data-field="offer">Teklif İletme</th>
+            <th data-field="externalWashing" class="editableDateRangePicker">
+              Dış Yıkama
+            </th>
+            <th data-field="entryAppraisal" class="editableDateRangePicker">
+              Giriş Ekspertizi
+            </th>
+            <th data-field="isDismantling" class="editableSelect">
+              Söküm Yapılacak Mı
+            </th>
+            <th data-field="dismantling" class="editableDateRangePicker">
+              Söküm
+            </th>
+            <th data-field="defectList" class="editableDateRangePicker">
+              Defect List Oluşturma
+            </th>
+            <th data-field="offer" class="editableDateRangePicker">
+              Teklif İletme
+            </th>
             <th data-field="offerTat">
               Teklif TAT
               <i
@@ -70,14 +82,27 @@
               ></i>
             </th>
             <th data-field="offerStatus">Tekif Durumu</th>
-            <th data-field="partsList">Parça Listesi</th>
-            <th data-field="customerPartsInformation">Müşteri Parça Bilgisi</th>
-            <th data-field="customerPartDeliveryDate">
+            <th data-field="partsList" class="openModalPartsList">
+              Parça Listesi
+            </th>
+            <th data-field="customerPartsInformation" class="editableSelect">
+              Müşteri Parça Bilgisi
+            </th>
+            <th
+              data-field="customerPartDeliveryDate"
+              class="editableDatePicker"
+            >
               Müşteri Parça Teslim Tar.
             </th>
-            <th data-field="assembly">Montaj</th>
-            <th data-field="ersRepair">ERS Onarım</th>
-            <th data-field="exitAppraisal">Çıkış Ekspertiz</th>
+            <th data-field="assembly" class="editableDateRangePicker">
+              Montaj
+            </th>
+            <th data-field="ersRepair" class="editableDateRangePicker">
+              ERS Onarım
+            </th>
+            <th data-field="exitAppraisal" class="editableDatePicker">
+              Çıkış Ekspertiz
+            </th>
             <th data-field="tatErs">
               TAT ERS
               <i
@@ -86,7 +111,7 @@
                 title="Hesaplama Yöntemi"
               ></i>
             </th>
-            <th data-field="enthusiasm">Sevk</th>
+            <th data-field="enthusiasm" class="editableDatePicker">Sevk</th>
             <th data-field="tatGeneralCrc">
               TAT Genel CRC
               <i
@@ -95,7 +120,7 @@
                 title="Hesaplama Yöntemi"
               ></i>
             </th>
-            <th data-field="notes">Notlar</th>
+            <th data-field="notes" class="editableInput">Notlar</th>
           </tr>
         </thead>
       </table>

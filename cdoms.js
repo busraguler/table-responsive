@@ -9,44 +9,79 @@ $(function () {
       exportTypes: ["excel", "pdf"],
     });
 
-  /*  Ana Tablo düzenleme  */
+  /*  Ana Tablo düzenleme */
+
   const table = document.getElementById("table");
   for (let i in table.rows) {
     let row = table.rows[i];
     if (row.rowIndex !== 0) {
       for (let j in row.cells) {
         let col = row.cells[j];
+        let colName = Object.keys(data[row.getAttribute("data-index")])[
+          col.cellIndex
+        ];
         if (col.cellIndex !== undefined && col.cellIndex !== 0) {
           row.setAttribute("id", data[row.getAttribute("data-index")].id);
 
           col.setAttribute(
             "id",
-            data[row.getAttribute("data-index")].id +
-              "-" +
-              Object.keys(data[row.getAttribute("data-index")])[col.cellIndex]
+            data[row.getAttribute("data-index")].id + "-" + colName
           );
         }
 
-        if (
-          col.cellIndex === 10 ||
-          col.cellIndex === 11 ||
-          col.cellIndex === 13 ||
-          col.cellIndex === 14 ||
-          col.cellIndex === 15 ||
-          col.cellIndex === 21 ||
-          col.cellIndex === 22 ||
-          col.cellIndex === 20 ||
-          col.cellIndex === 23 ||
-          col.cellIndex === 25
-        ) {
-          //dateRangePickerModal
-          //dataPickerModal
-          col.setAttribute("class", "bc-blue");
-          col.setAttribute("data-toggle", "modal");
-          col.setAttribute("style", "text-decoration:underline;");
+        if (col.classList) {
+          // Editable input
+          if (col.classList.contains("editableInput")) {
+            col.classList.add("bc-blue");
+          }
+          // DateRangePicker ve DatePicker kolonları
+          if (
+            col.classList.contains("editableDateRangePicker") ||
+            col.classList.contains("editableDatePicker")
+          ) {
+            col.classList.add("bc-blue");
+            col.setAttribute("data-toggle", "modal");
+            col.classList.add("textDecoration");
+          }
+
+          // Select kolonları
+          if (col.classList.contains("editableSelect")) {
+            if (colName === "isDismantling") {
+              col.classList.add("bc-blue");
+              createSelectBox(col, dismantlingSelectOptions);
+            }
+
+            if (colName === "customerPartsInformation") {
+              // müşteri parça bilgisi - arka plan rengi
+              if (
+                col.innerHTML.includes("Bekleniyor") ||
+                col.innerHTML.includes("Stokta")
+              ) {
+                col.classList.add("bc-green");
+              }
+              if (col.innerHTML.includes("Hayır")) {
+                col.classList.add("bc-orange");
+              }
+              createSelectBox(col, trackInformation);
+            }
+          }
+
+          // Parça Listesi Modal
+          if (col.classList.contains("openModalPartsList")) {
+            col.setAttribute("data-toggle", "modal");
+            col.classList.add("textDecoration");
+            // parça listesi
+            if (col.innerHTML.includes("Var")) {
+              col.classList.add("bc-green");
+            }
+            if (col.innerHTML.includes("Yok")) {
+              col.classList.add("bc-orange");
+            }
+          }
         }
 
-        if (col.cellIndex === 2) {
+        if (colName === "itemNo") {
+          // ERS İşemri/Kalem No
           //workOrderDetailModal
           //toDoListModal
           col.setAttribute("data-toggle", "modal");
@@ -55,18 +90,7 @@ $(function () {
             "<a class='ml-2' onclick='openToDoListModal(this)' data-toggle='modal'><img src='./workOrder.png' width='20px' height='20px' /></a>";
         }
 
-        if (col.cellIndex === 18) {
-          //partsOrdersAndPickingModal
-          col.setAttribute("data-toggle", "modal");
-          col.setAttribute("style", "text-decoration:underline;");
-        }
-
-        if (col.cellIndex === 12 || col.cellIndex === 27) {
-          //düzenlenebilir kolonların - arka plan rengi
-          col.setAttribute("class", "bc-blue");
-        }
-
-        if (col.cellIndex === 17) {
+        if (colName === "offerStatus") {
           // teklif durumu - arka plan rengi
           if (col.innerHTML.includes("Onay")) {
             col.setAttribute("class", "bc-green");
@@ -74,72 +98,6 @@ $(function () {
           if (col.innerHTML.includes("Red")) {
             col.setAttribute("class", "bc-orange");
           }
-        }
-
-        if (col.cellIndex === 18) {
-          // parça listesi - arka plan rengi
-          if (col.innerHTML.includes("Var")) {
-            col.setAttribute("class", "bc-green");
-          }
-          if (col.innerHTML.includes("Yok")) {
-            col.setAttribute("class", "bc-orange");
-          }
-        }
-
-        if (col.cellIndex === 12) {
-          var columnValue = col.innerHTML;
-          col.innerHTML = "";
-
-          var selectBox = document.createElement("SELECT");
-          selectBox.setAttribute("id", col.id + "-select");
-          selectBox.setAttribute("class", "custom-select-box");
-          selectBox.setAttribute("onchange", "changeSelect(this)");
-          document.getElementById(col.id).appendChild(selectBox);
-          Object.keys(dismantlingSelectOptions).map(function (key) {
-            var option = document.createElement("option");
-            option.setAttribute("value", key);
-            var optionValue = document.createTextNode(
-              dismantlingSelectOptions[key]
-            );
-            option.appendChild(optionValue);
-
-            if (columnValue === dismantlingSelectOptions[key]) {
-              option.setAttribute("selected", true);
-            }
-
-            document.getElementById(col.id + "-select").appendChild(option);
-          });
-        }
-
-        if (col.cellIndex === 19) {
-          // müşteri parça bilgisi - arka plan rengi
-          if (
-            col.innerHTML.includes("Bekleniyor") ||
-            col.innerHTML.includes("Stokta")
-          ) {
-            col.setAttribute("class", "bc-green");
-          }
-          if (col.innerHTML.includes("Hayır")) {
-            col.setAttribute("class", "bc-orange");
-          }
-          var columnValue = col.innerHTML;
-          col.innerHTML = "";
-          var selectBox = document.createElement("SELECT");
-          selectBox.setAttribute("id", col.id + "-select");
-          selectBox.setAttribute("class", "custom-select-box");
-          selectBox.setAttribute("onchange", "changeSelect(this)");
-          document.getElementById(col.id).appendChild(selectBox);
-
-          Object.keys(trackInformation).map(function (key) {
-            var option = document.createElement("option");
-            option.setAttribute("value", key);
-            var optionValue = document.createTextNode(trackInformation[key]);
-            option.appendChild(optionValue);
-            if (columnValue === trackInformation[key]) {
-              option.setAttribute("selected", true);
-            }
-            document.getElementById(col.id + "-select").appendChild(option);
-          });
         }
       }
     }
@@ -154,23 +112,18 @@ $(function () {
       if (!cell) {
         return;
       }
+
       const row = cell.parentElement;
 
       if (
-        (cell.cellIndex === 10 ||
-          cell.cellIndex === 11 ||
-          cell.cellIndex === 13 ||
-          cell.cellIndex === 14 ||
-          cell.cellIndex === 15 ||
-          cell.cellIndex === 21 ||
-          cell.cellIndex === 22) &&
+        cell.classList.contains("editableDateRangePicker") &&
         cell.getAttribute("data-toggle") === "modal"
       ) {
         openDateRangePicker(cell, row.id);
       }
 
       if (
-        cell.cellIndex === 2 &&
+        cell.id.split("-")[1] === "itemNo" &&
         cell.getAttribute("data-toggle") === "modal" &&
         e.target.id !== ""
       ) {
@@ -178,22 +131,20 @@ $(function () {
       }
 
       if (
-        cell.cellIndex === 18 &&
+        cell.classList.contains("openModalPartsList") &&
         cell.getAttribute("data-toggle") === "modal"
       ) {
         openPartsOrdersAndPickingModal(cell, row.id);
       }
 
       if (
-        (cell.cellIndex === 20 ||
-          cell.cellIndex === 23 ||
-          cell.cellIndex === 25) &&
+        cell.classList.contains("editableDatePicker") &&
         cell.getAttribute("data-toggle") === "modal"
       ) {
         openDatePicker(cell, row.id);
       }
 
-      if (cell.cellIndex === 27) {
+      if (cell.classList.contains("editableInput")) {
         //Tablo detayına tıklanmışsa ilk alan true
         editTable(
           row.className !== "detail-tr" ? false : true,
@@ -217,10 +168,10 @@ function changeSelect(selectElement) {
 
   if (columnName === "customerPartsInformation") {
     if (selected === "1" || selected === "2") {
-      td.setAttribute("class", "bc-green");
+      td.classList.replace("bc-orange", "bc-green");
     }
     if (selected === "3") {
-      td.setAttribute("class", "bc-orange");
+      td.classList.replace("bc-green", "bc-orange");
     }
   }
 
@@ -369,7 +320,6 @@ function detailFormatter(index, row) {
 
     let i = 1;
     for (const [key, value] of Object.entries(item)) {
-      console.log(value);
       if (key !== "id") {
         tr.setAttribute("id", item.id);
         let columnWidth =
@@ -383,103 +333,77 @@ function detailFormatter(index, row) {
         );
         td.setAttribute("id", item.id + "-" + key);
 
-        if (
-          i === 10 ||
-          i === 11 ||
-          i === 13 ||
-          i === 14 ||
-          i === 15 ||
-          i === 21 ||
-          i === 22 ||
-          i === 25 ||
-          i === 23 ||
-          i === 20
-        ) {
-          //DateRangePicker
-          td.setAttribute("class", "bc-blue textDecoration");
-          td.setAttribute("data-toggle", "modal");
+        let mainRow = document.getElementById(row.id).cells[i];
+
+        if (mainRow && mainRow.classList !== undefined && mainRow.classList) {
+          if (mainRow.classList.contains("editableInput")) {
+            td.classList.add("bc-blue");
+          }
+          if (mainRow.classList.contains("editableDateRangePicker")) {
+            td.classList.add("editableDateRangePicker");
+          }
+
+          if (mainRow.classList.contains("editableDatePicker")) {
+            td.classList.add("editableDatePicker");
+          }
+          if (
+            mainRow.classList.contains("editableDateRangePicker") ||
+            mainRow.classList.contains("editableDatePicker")
+          ) {
+            td.classList.add("bc-blue");
+            td.classList.add("textDecoration");
+            td.setAttribute("data-toggle", "modal");
+          }
+
+          if (mainRow.classList.contains("editableInput")) {
+            td.classList.add("editableInput");
+          }
+
+          if (mainRow.classList.contains("editableSelect")) {
+            td.classList.add("editableSelect");
+
+            if (key === "isDismantling") {
+              td.classList.add("bc-blue");
+
+              createSelectBox(td, dismantlingSelectOptions);
+            }
+
+            if (key === "customerPartsInformation") {
+              // müşteri parça bilgisi - arka plan rengi
+              if (value.includes("Bekleniyor") || value.includes("Stokta")) {
+                td.classList.add("bc-green");
+              }
+
+              if (value.includes("Hayır")) {
+                td.classList.add("bc-orange");
+              }
+
+              createSelectBox(td, trackInformation);
+            }
+          }
+
+          if (mainRow.classList.contains("openModalPartsList")) {
+            td.classList.add("openModalPartsList");
+            td.setAttribute("data-toggle", "modal");
+            td.classList.add("textDecoration");
+            // parça listesi
+            if (value.includes("Var")) {
+              td.classList.add("bc-green");
+            }
+            if (value.includes("Yok")) {
+              td.classList.add("bc-orange");
+            }
+          }
         }
 
-        if (i === 17) {
-          // teklif durumu - arka plan rengi
+        if (key === "offerStatus") {
+          // teklif durumu
           if (value.includes("Onay")) {
             td.setAttribute("class", "bc-green");
           }
           if (value.includes("Red")) {
             td.setAttribute("class", "bc-orange");
           }
-        }
-
-        if (i === 18) {
-          td.setAttribute("data-toggle", "modal");
-          // parça listesi - arka plan rengi
-          if (value.includes("Var")) {
-            td.setAttribute("class", "bc-green textDecoration");
-          }
-          if (value.includes("Yok")) {
-            td.setAttribute("class", "bc-orange textDecoration");
-          }
-        }
-
-        if (i === 19) {
-          // müşteri parça bilgisi - arka plan rengi
-          if (value.includes("Bekleniyor") || value.includes("Stokta")) {
-            td.setAttribute("class", "bc-green");
-          }
-
-          if (value.includes("Hayır")) {
-            td.setAttribute("class", "bc-orange");
-          }
-          console.log(td.innerHTML);
-          var columnValue = td.innerHTML;
-          td.innerHTML = "";
-
-          var selectBox = document.createElement("SELECT");
-          selectBox.setAttribute("id", td.id + "-select");
-          selectBox.setAttribute("class", "custom-select-box");
-          selectBox.setAttribute("onchange", "changeSelect(this)");
-          td.appendChild(selectBox);
-
-          Object.keys(trackInformation).map(function (key) {
-            var option = document.createElement("option");
-            option.setAttribute("value", key);
-            var optionValue = document.createTextNode(trackInformation[key]);
-            option.appendChild(optionValue);
-            if (columnValue === trackInformation[key]) {
-              option.setAttribute("selected", true);
-            }
-            selectBox.appendChild(option);
-          });
-        }
-
-        if (i === 12 || i === 27) {
-          //düzenlenebilir kolonların - arka plan rengi
-          td.setAttribute("class", "bc-blue");
-        }
-
-        if (i === 12) {
-          var columnValue = td.innerHTML;
-          td.innerHTML = "";
-
-          var selectBox = document.createElement("SELECT");
-          selectBox.setAttribute("id", td.id + "-select");
-          selectBox.setAttribute("class", "custom-select-box");
-          selectBox.setAttribute("onchange", "changeSelect(this)");
-          td.appendChild(selectBox);
-          Object.keys(dismantlingSelectOptions).map(function (key) {
-            var option = document.createElement("option");
-            option.setAttribute("value", key);
-            var optionValue = document.createTextNode(
-              dismantlingSelectOptions[key]
-            );
-            option.appendChild(optionValue);
-
-            if (columnValue === dismantlingSelectOptions[key]) {
-              option.setAttribute("selected", true);
-            }
-
-            selectBox.appendChild(option);
-          });
         }
 
         tr.appendChild(td);
@@ -524,6 +448,27 @@ function editTable(isDetail, eTargetId, tdId, rowId) {
       editableInput.remove();
       editAjax(tdId, rowId, editableInput.value);
     });*/
+}
+
+function createSelectBox(col, optionsData) {
+  var columnValue = col.innerHTML;
+  col.innerHTML = "";
+  var selectBox = document.createElement("SELECT");
+  selectBox.setAttribute("id", col.id + "-select");
+  selectBox.setAttribute("class", "custom-select-box");
+  selectBox.setAttribute("onchange", "changeSelect(this)");
+  col.appendChild(selectBox);
+
+  Object.keys(optionsData).map(function (key) {
+    var option = document.createElement("option");
+    option.setAttribute("value", key);
+    var optionValue = document.createTextNode(optionsData[key]);
+    option.appendChild(optionValue);
+    if (columnValue === optionsData[key]) {
+      option.setAttribute("selected", true);
+    }
+    selectBox.appendChild(option);
+  });
 }
 
 function editAjax(columnName, rowId, newValue) {
