@@ -194,3 +194,55 @@ a {
 .textDecoration {
   text-decoration: underline;
 }
+
+/*******Fixed Column *****/
+
+thead th {
+  top: 0;
+  position: sticky;
+  z-index: 20;
+  background-color: #90adff;
+  color: #ffffff;
+}
+
+tbody td {
+  background-color: white;
+}
+
+.detail-view td:first-child {
+  overflow: unset !important;
+}
+
+/*******Fixed Column *****/
+
+.cursorPointer {
+  cursor: pointer;
+}
+
+.search-input {
+  height: 30px;
+}
+
+.input-group-append {
+  margin-left: 20px;
+}
+
+.openAllDetailsDiv {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.openAllDetails {
+  font-size: 16px;
+  font-weight: 700;
+  color: #90adff;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 24px;
+  height: 24px;
+  border-radius: 100%;
+  background-color: #fff;
+  cursor: pointer;
+}

@@ -22,8 +22,9 @@
     />
     <link
       rel="stylesheet"
-      href="https://unpkg.com/bootstrap-table@1.19.1/dist/extensions/fixed-columns/bootstrap-table-fixed-columns.css"
+      href="https://unpkg.com/bootstrap-table@1.19.1/dist/extensions/filter-control/bootstrap-table-filter-control.css"
     />
+
     <link
       rel="stylesheet"
       type="text/css"
@@ -37,43 +38,118 @@
       <table
         data-toggle="table"
         id="table"
+        data-filter-control="true"
         data-detail-view="true"
         data-search="true"
         data-show-export="true"
-        data-fixed-columns="true"
-        data-fixed-number="3"
         data-detail-formatter="detailFormatter"
+        data-show-search-clear-button="true"
       >
         <thead>
           <tr>
-            <th data-field="requestNumber">Talep No</th>
-            <th data-field="itemNo">ERS İşemri/Kalem No</th>
-            <th data-field="customer">Müşteri</th>
-            <th data-field="customerSegment">Müşteri Segment</th>
-            <th data-field="pssr">PSSR</th>
-            <th data-field="model">Model</th>
-            <th data-field="serialNumber">Seri No</th>
-            <th data-field="acceptanceDate">Kabul Tarihi</th>
-            <th data-field="status">Durum</th>
-            <th data-field="externalWashing" class="editableDateRangePicker">
+            <th data-field="requestNumber" data-filter-control="input">
+              Talep No
+            </th>
+            <th data-field="itemNo" data-filter-control="input">
+              ERS İşemri/Kalem No
+            </th>
+            <th data-field="customer" data-filter-control="input">Müşteri</th>
+            <th data-field="customerSegment" data-filter-control="input">
+              Müşteri Segment
+            </th>
+            <th data-field="pssr" data-filter-control="input">PSSR</th>
+            <th data-field="model" data-filter-control="input">Model</th>
+            <th data-field="serialNumber" data-filter-control="input">
+              Seri No
+            </th>
+            <th data-field="acceptanceDate" data-filter-control="input">
+              Kabul Tarihi
+            </th>
+            <th
+              data-field="status"
+              data-filter-control="input"
+              data-sortable="true"
+            >
+              Durum
+            </th>
+            <th
+              data-field="externalWashingPlan"
+              data-filter-control="input"
+              class="editableDateRangePicker"
+            >
+              Dış Yıkama Plan
+            </th>
+            <th
+              data-field="externalWashing"
+              data-filter-control="input"
+              class="editableDateRangePicker"
+            >
               Dış Yıkama
             </th>
-            <th data-field="entryAppraisal" class="editableDateRangePicker">
+            <th
+              data-field="entryAppraisalPlan"
+              data-filter-control="input"
+              class="editableDateRangePicker"
+            >
+              Giriş Ekspertiz Plan
+            </th>
+            <th
+              data-field="entryAppraisal"
+              data-filter-control="input"
+              class="editableDateRangePicker"
+            >
               Giriş Ekspertizi
             </th>
-            <th data-field="isDismantling" class="editableSelect">
+            <th
+              data-field="isDismantling"
+              data-filter-control="input"
+              class="editableSelect"
+            >
               Söküm Yapılacak Mı
             </th>
-            <th data-field="dismantling" class="editableDateRangePicker">
+            <th
+              data-field="dismantlingPlan"
+              data-filter-control="input"
+              class="editableDateRangePicker"
+            >
+              Söküm Plan
+            </th>
+            <th
+              data-field="dismantling"
+              data-filter-control="input"
+              class="editableDateRangePicker"
+            >
               Söküm
             </th>
-            <th data-field="defectList" class="editableDateRangePicker">
-              Defect List Oluşturma
+            <th
+              data-field="defectListPlan"
+              data-filter-control="input"
+              class="editableDatePicker"
+            >
+              Defect List Plan
             </th>
-            <th data-field="offer" class="editableDateRangePicker">
+            <th
+              data-field="defectList"
+              data-filter-control="input"
+              class="editableDatePicker"
+            >
+              Defect List
+            </th>
+            <th
+              data-field="offerPlan"
+              data-filter-control="input"
+              class="editableDatePicker"
+            >
+              Teklif İletme Plan
+            </th>
+            <th
+              data-field="offer"
+              data-filter-control="input"
+              class="editableDatePicker"
+            >
               Teklif İletme
             </th>
-            <th data-field="offerTat">
+            <th data-field="offerTat" data-filter-control="input">
               Teklif TAT
               <i
                 class="fas fa-info-circle ml-3"
@@ -81,29 +157,73 @@
                 title="Hesaplama Yöntemi"
               ></i>
             </th>
-            <th data-field="offerStatus">Tekif Durumu</th>
-            <th data-field="partsList" class="openModalPartsList">
+            <th data-field="offerStatus" data-filter-control="input">
+              Tekif Durumu
+            </th>
+            <th
+              data-field="partsList"
+              data-filter-control="input"
+              class="openModalPartsList"
+            >
               Parça Listesi
             </th>
-            <th data-field="customerPartsInformation" class="editableSelect">
+            <th
+              data-field="customerPartsInformation"
+              data-filter-control="input"
+              class="editableSelect"
+            >
               Müşteri Parça Bilgisi
             </th>
             <th
               data-field="customerPartDeliveryDate"
+              data-filter-control="input"
               class="editableDatePicker"
             >
               Müşteri Parça Teslim Tar.
             </th>
-            <th data-field="assembly" class="editableDateRangePicker">
+            <th
+              data-field="assemblyPlan"
+              data-filter-control="input"
+              class="editableDateRangePicker"
+            >
+              Montaj Plan
+            </th>
+            <th
+              data-field="assembly"
+              data-filter-control="input"
+              class="editableDateRangePicker"
+            >
               Montaj
             </th>
-            <th data-field="ersRepair" class="editableDateRangePicker">
-              ERS Onarım
+            <th
+              data-field="ersRepairPlan"
+              data-filter-control="input"
+              class="editableDateRangePicker"
+            >
+              Onarım Plan
             </th>
-            <th data-field="exitAppraisal" class="editableDatePicker">
+            <th
+              data-field="ersRepair"
+              data-filter-control="input"
+              class="editableDateRangePicker"
+            >
+              Onarım
+            </th>
+            <th
+              data-field="exitAppraisalPlan"
+              data-filter-control="input"
+              class="editableDateRangePicker"
+            >
+              Çıkış Ekspertiz Plan
+            </th>
+            <th
+              data-field="exitAppraisal"
+              data-filter-control="input"
+              class="editableDateRangePicker"
+            >
               Çıkış Ekspertiz
             </th>
-            <th data-field="tatErs">
+            <th data-field="tatErs" data-filter-control="input">
               TAT ERS
               <i
                 class="fas fa-info-circle ml-3"
@@ -111,8 +231,14 @@
                 title="Hesaplama Yöntemi"
               ></i>
             </th>
-            <th data-field="enthusiasm" class="editableDatePicker">Sevk</th>
-            <th data-field="tatGeneralCrc">
+            <th
+              data-field="enthusiasm"
+              data-filter-control="input"
+              class="editableDatePicker"
+            >
+              Sevk
+            </th>
+            <th data-field="tatGeneralCrc" data-filter-control="input">
               TAT Genel CRC
               <i
                 class="fas fa-info-circle ml-3"
@@ -120,7 +246,13 @@
                 title="Hesaplama Yöntemi"
               ></i>
             </th>
-            <th data-field="notes" class="editableInput">Notlar</th>
+            <th
+              data-field="notes"
+              data-filter-control="input"
+              class="editableInput"
+            >
+              Notlar
+            </th>
           </tr>
         </thead>
       </table>
@@ -300,17 +432,12 @@
                   <th data-field="dismantlingEnd">Söküm Bit.</th>
                   <th data-field="measurementStart">Ölçüm Başl.</th>
                   <th data-field="measurementEnd">Ölçüm Bit.</th>
-                  <th data-field="offerDate">Teklif Tarihi</th>
                   <th data-field="realOfferEnd">Gerç. Teklif Tarihi</th>
                   <th data-field="offerconfirmationDate">Teklif Onay Tarihi</th>
                   <th data-field="offerStatus">Teklif Durumu</th>
-                  <th data-field="spareParts">Yedek Parçalar</th>
-                  <th data-field="partsList">Parça Listesi</th>
                   <th data-field="montageStart">Montaj Başl.</th>
                   <th data-field="montageEnd">Montaj Bit.</th>
-                  <th data-field="repairDate">Onarım Tarihi</th>
-                  <th data-field="testStart">Test Başl.</th>
-                  <th data-field="testEnd">Test Bit.</th>
+
                   <th data-field="plannedEnthusiasmDate">
                     Planlanan Sevk Tarihi
                   </th>
@@ -389,13 +516,14 @@
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
     <script src="https://unpkg.com/bootstrap-table@1.19.1/dist/bootstrap-table.min.js"></script>
 
-    <script src="https://unpkg.com/bootstrap-table@1.19.1/dist/extensions/fixed-columns/bootstrap-table-fixed-columns.js"></script>
     <!-- Export -->
     <script src="https://cdn.jsdelivr.net/npm/tableexport.jquery.plugin@1.10.21/tableExport.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/tableexport.jquery.plugin@1.10.21/libs/jsPDF/jspdf.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/tableexport.jquery.plugin@1.10.21/libs/jsPDF-AutoTable/jspdf.plugin.autotable.js"></script>
     <script src="https://unpkg.com/bootstrap-table@1.19.1/dist/extensions/export/bootstrap-table-export.min.js"></script>
     <!-- Export -->
+
+    <script src="https://unpkg.com/bootstrap-table@1.19.1/dist/extensions/filter-control/bootstrap-table-filter-control.min.js"></script>
     <script
       type="text/javascript"
       src="https://cdn.jsdelivr.net/momentjs/latest/moment.min.js"

@@ -1,19 +1,108 @@
-$(function () {
-  $(document).ready(function () {});
+const numberOfColumnsFixed = 5;
+const table = document.getElementById("table");
 
+$(document).ready(function () {
   $("#table")
     .bootstrapTable("destroy")
     .bootstrapTable({
+      onSort: function () {
+        //tableConfig();
+      },
+      onSearch: function () {
+        tableConfig();
+      },
       data: data,
       exportDataType: $(this).val(),
-      exportTypes: ["excel", "pdf"],
+      exportTypes: ["excel"],
     });
+});
 
+$(function () {
+  tableConfig();
+
+  // Tüm detayları açmak için
+  const thead = document.querySelector("thead");
+  if (thead) {
+    thead.addEventListener("click", function (e) {
+      const cell = e.target.closest("th");
+      console.log(cell.id);
+      if (cell.id === "detail-view") {
+        var detailIcons = document.getElementsByClassName("detail-icon");
+        detailIcons.forEach((element) => element.click());
+      }
+    });
+  }
+
+  /*  Ana Tablo td click  */
+  const tbody = document.querySelector("tbody");
+  if (tbody) {
+    tbody.addEventListener("click", function (e) {
+      const cell = e.target.closest("td");
+      if (!cell) {
+        return;
+      }
+      const row = cell.parentElement;
+
+      if (
+        cell.classList.contains("editableDateRangePicker") &&
+        cell.getAttribute("data-toggle") === "modal"
+      ) {
+        openDateRangePicker(cell, row.id);
+      }
+
+      if (
+        cell.id.split("-")[1] === "itemNo" &&
+        cell.getAttribute("data-toggle") === "modal" &&
+        e.target.id !== ""
+      ) {
+        openWorkOrderDetailModal(cell, row.id);
+      }
+
+      if (
+        cell.classList.contains("openModalPartsList") &&
+        cell.getAttribute("data-toggle") === "modal"
+      ) {
+        openPartsOrdersAndPickingModal(cell, row.id);
+      }
+
+      if (
+        cell.classList.contains("editableDatePicker") &&
+        cell.getAttribute("data-toggle") === "modal"
+      ) {
+        openDatePicker(cell, row.id);
+      }
+
+      if (cell.classList.contains("editableInput")) {
+        //Tablo detayına tıklanmışsa ilk alan true
+        editTable(
+          row.className !== "detail-tr" ? false : true,
+          e.target.id,
+          cell.id,
+          row.id
+        );
+      }
+    });
+  }
+  /*  Ana Tablo td click  */
+
+  $('[data-toggle="tooltip"]').tooltip();
+});
+
+function tableConfig() {
   /*  Ana Tablo düzenleme */
 
-  const table = document.getElementById("table");
   for (let i in table.rows) {
     let row = table.rows[i];
+
+    // Kolonları sabitlemek için
+    fixedColumn(table, row, i, 5);
+
+    if (row.rowIndex === 0) {
+      row.cells[0].innerHTML =
+        "<div class='th-inner'><div class='openAllDetails'>+</div></div>";
+      row.cells[0].setAttribute("id", "detail-view");
+    }
+
     if (row.rowIndex !== 0) {
       for (let j in row.cells) {
         let col = row.cells[j];
@@ -28,7 +117,7 @@ $(function () {
             data[row.getAttribute("data-index")].id + "-" + colName
           );
         }
-
+        $("#table").bootstrapTable("refresh");
         if (col.classList) {
           // Editable input
           if (col.classList.contains("editableInput")) {
@@ -85,6 +174,7 @@ $(function () {
           //workOrderDetailModal
           //toDoListModal
           col.setAttribute("data-toggle", "modal");
+          col.classList.add("cursorPointer");
           col.innerHTML =
             col.innerHTML +
             "<a class='ml-2' onclick='openToDoListModal(this)' data-toggle='modal'><img src='./workOrder.png' width='20px' height='20px' /></a>";
@@ -103,62 +193,7 @@ $(function () {
     }
   }
   /*  Ana Tablo düzenleme  */
-
-  /*  Ana Tablo td click  */
-  const tbody = document.querySelector("tbody");
-  if (tbody) {
-    tbody.addEventListener("click", function (e) {
-      const cell = e.target.closest("td");
-      if (!cell) {
-        return;
-      }
-
-      const row = cell.parentElement;
-
-      if (
-        cell.classList.contains("editableDateRangePicker") &&
-        cell.getAttribute("data-toggle") === "modal"
-      ) {
-        openDateRangePicker(cell, row.id);
-      }
-
-      if (
-        cell.id.split("-")[1] === "itemNo" &&
-        cell.getAttribute("data-toggle") === "modal" &&
-        e.target.id !== ""
-      ) {
-        openWorkOrderDetailModal(cell, row.id);
-      }
-
-      if (
-        cell.classList.contains("openModalPartsList") &&
-        cell.getAttribute("data-toggle") === "modal"
-      ) {
-        openPartsOrdersAndPickingModal(cell, row.id);
-      }
-
-      if (
-        cell.classList.contains("editableDatePicker") &&
-        cell.getAttribute("data-toggle") === "modal"
-      ) {
-        openDatePicker(cell, row.id);
-      }
-
-      if (cell.classList.contains("editableInput")) {
-        //Tablo detayına tıklanmışsa ilk alan true
-        editTable(
-          row.className !== "detail-tr" ? false : true,
-          e.target.id,
-          cell.id,
-          row.id
-        );
-      }
-    });
-  }
-  /*  Ana Tablo td click  */
-
-  $('[data-toggle="tooltip"]').tooltip();
-});
+}
 
 function changeSelect(selectElement) {
   let rowId = selectElement.id.split("-")[0];
@@ -246,7 +281,7 @@ function openWorkOrderDetailModal(cell, rowId) {
       for (let j in row.cells) {
         let col = row.cells[j];
 
-        if (col.cellIndex === 14) {
+        if (col.cellIndex === 13) {
           if (col.innerHTML.includes("Onay")) {
             col.setAttribute("class", "bc-vivid-green");
           }
@@ -314,23 +349,43 @@ function detailFormatter(index, row) {
     tr.setAttribute("class", "detail-tr");
 
     var firstTd = document.createElement("td");
-    firstTd.setAttribute("style", "width:" + firstColumnWidth + "px;");
+    firstTd.setAttribute(
+      "style",
+      "width:" + firstColumnWidth + "px;position:sticky;left:0px;z-index:60;"
+    );
 
     tr.appendChild(firstTd);
 
     let i = 1;
+    let distanceColumnWidth = 0;
     for (const [key, value] of Object.entries(item)) {
       if (key !== "id") {
         tr.setAttribute("id", item.id);
         let columnWidth =
           document.getElementById("table").rows[1].cells[i].offsetWidth;
-
         var td = document.createElement("td");
         td.innerHTML = value;
-        td.setAttribute(
-          "style",
-          "max-width:" + columnWidth + "px; min-width:" + columnWidth + "px;"
-        );
+        if (i <= 5) {
+          distanceColumnWidth +=
+            document.getElementById("table").rows[1].cells[i - 1].offsetWidth;
+
+          td.setAttribute(
+            "style",
+            "max-width:" +
+              columnWidth +
+              "px; min-width:" +
+              columnWidth +
+              "px;position:sticky;left:" +
+              distanceColumnWidth +
+              "px;z-index:60;"
+          );
+        } else {
+          td.setAttribute(
+            "style",
+            "max-width:" + columnWidth + "px; min-width:" + columnWidth + "px;"
+          );
+        }
+
         td.setAttribute("id", item.id + "-" + key);
 
         let mainRow = document.getElementById(row.id).cells[i];
@@ -476,4 +531,24 @@ function editAjax(columnName, rowId, newValue) {
     "id:" + rowId + ", column: " + columnName,
     "newValue: " + newValue
   );
+}
+
+function fixedColumn(table, row, i) {
+  let columnWidth = 0;
+  for (let x in row.cells) {
+    let col = row.cells[x];
+    if (col.cellIndex === 0) {
+      col.setAttribute("style", "left: 0px;position: sticky;z-index:60;");
+    } else {
+      columnWidth +=
+        row.cells[x - 1] !== undefined &&
+        table.rows[i].cells[x - 1].offsetWidth;
+      if (col.cellIndex <= numberOfColumnsFixed) {
+        col.setAttribute(
+          "style",
+          "left:" + columnWidth + "px;position: sticky;z-index:60;"
+        );
+      }
+    }
+  }
 }
