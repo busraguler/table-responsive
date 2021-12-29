@@ -280,7 +280,7 @@ var detailTableData3 = [
   },
 ];
 
-var dataDetail = {
+var dataDetailArrays = {
   1: detailTableData1,
   2: detailTableData2,
 };

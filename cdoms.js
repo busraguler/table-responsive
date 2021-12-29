@@ -8,6 +8,11 @@ $(document).ready(function () {
       onSearch: function () {
         tableConfig();
       },
+      onSort: function ( name, order) {
+        console.log(name,order)
+        tableConfig();
+      },
+      
       data: data,
       exportDataType: $(this).val(),
       exportTypes: ["excel"],
@@ -15,6 +20,7 @@ $(document).ready(function () {
 });
 
 $(function () {
+
   tableConfig();
 
   const thead = document.querySelector("thead");
@@ -23,7 +29,7 @@ $(function () {
       const cell = e.target.closest("th");
       // Tüm detayları açmak için
       if (cell.id === "detail-view") {
-        var detailIcons = document.getElementsByClassName("detayButton");
+        var detailIcons = document.getElementsByClassName("detailButton");
         detailIcons.forEach((element) => element.click());
       }
     });
@@ -39,23 +45,27 @@ $(function () {
       }
       const row = cell.parentElement;
 
-      /** Tablo Detayı */
+      /** Tabloda Detay alanlarının oluşturulması*/
       let rowDataIndex = row.getAttribute("data-index");
+      console.log(rowDataIndex)
       let rowId = row.getAttribute("data-uniqueid");
-      if (dataDetail[rowId] !== undefined && cell.cellIndex === 0) {
-        dataDetail[rowId].map((item) => {
+      if (dataDetailArrays[rowId] !== undefined && cell.cellIndex === 0) {
+        dataDetailArrays[rowId].map((item) => {
           let checkElement = data.find((element) => element.id === item.id);
           if (!checkElement) {
+            console.log("aaa",rowDataIndex)
             data.splice(rowDataIndex + 1, 0, item);
           } else {
+            console.log("bbb",rowDataIndex)
             data = data.filter((x) => x.id !== item.id);
           }
+          console.log("ccc",rowDataIndex)
           rowDataIndex++;
         });
-        $("#table").bootstrapTable("load", data);
-        tableConfig();
+       $("#table").bootstrapTable("load", data);
+       tableConfig();
       }
-      /** Tablo Detayı */
+       /** Tabloda Detay alanlarının oluşturulması*/
 
       if (
         cell.classList.contains("editableDateRangePicker") &&
@@ -97,15 +107,16 @@ $(function () {
 });
 
 function tableConfig() {
-  /*  Ana Tablo düzenleme */
+  console.log("A")
 
+  /*  Ana Tablo düzenleme */
   for (let i in table.rows) {
     let row = table.rows[i];
 
     // Kolonları sabitlemek için
-    fixedColumn(table, row, i, 5);
+    fixedColumn(row, i);
 
-    // Tüm detayları açacak th
+    // Tüm detayları açacak buton
     if (row.rowIndex === 0) {
       row.cells[0].innerHTML =
         "<div class='th-inner'><div class='openAllDetails'>+</div></div>";
@@ -113,14 +124,13 @@ function tableConfig() {
     }
 
     if (row.rowIndex !== 0) {
+
       for (let j in row.cells) {
+
         let col = row.cells[j];
         let colName = Object.keys(
           data.find((item) => item.id === row.getAttribute("data-uniqueid"))
         )[col.cellIndex];
-
-        //  console.log(colName, col.cellIndex);
-        // row.setAttribute("id", data[row.getAttribute("data-uniqueid")].id);
 
         if (col.cellIndex !== undefined && col.cellIndex !== 0) {
           col.setAttribute(
@@ -131,22 +141,23 @@ function tableConfig() {
               colName
           );
         }
-        $("#table").bootstrapTable("refresh");
-        // Eğer row id si dataDetail içinde varsa bu row ana tablonundur ve detayı açılabilir
+        //$("#table").bootstrapTable("refresh");
+        // Eğer row id si dataDetailArrays içinde varsa bu row ana tablonundur ve detayı açılabilir
         if (col.cellIndex !== undefined && col.cellIndex === 0) {
-          if (dataDetail[row.getAttribute("data-uniqueid")] !== undefined) {
-            col.innerHTML = "<div class='detayButton'>+</div>";
+          if (dataDetailArrays[row.getAttribute("data-uniqueid")] !== undefined) {
+            col.innerHTML = "<div class='detailButton'>+</div>";
           } else {
             col.innerHTML = "";
           }
         }
 
         if (col.classList) {
+
           // Editable input
           if (col.classList.contains("editableInput")) {
             col.classList.add("bc-blue");
           }
-          // DateRangePicker ve DatePicker kolonları
+          // Editable DateRangePicker ve DatePicker
           if (
             col.classList.contains("editableDateRangePicker") ||
             col.classList.contains("editableDatePicker")
@@ -156,7 +167,7 @@ function tableConfig() {
             col.classList.add("textDecoration");
           }
 
-          // Select kolonları
+          // Editable Select
           if (col.classList.contains("editableSelect")) {
             if (colName === "isDismantling") {
               col.classList.add("bc-blue");
@@ -194,7 +205,7 @@ function tableConfig() {
 
         if (
           colName === "itemNo" &&
-          dataDetail[row.getAttribute("data-uniqueid")] !== undefined
+          dataDetailArrays[row.getAttribute("data-uniqueid")] !== undefined
         ) {
           // ERS İşemri/Kalem No
           //workOrderDetailModal
@@ -362,144 +373,6 @@ function openPartsOrdersAndPickingModal(cell, rowId) {
   );
 }
 
-/*
-function detailFormatter(index, row) {
-  let detailTable = document.createElement("table");
-
-  let detailTableBody = document.createElement("tbody");
-
-  dataDetail[row.id].map((item) => {
-    let firstColumnWidth =
-      document.getElementById("table").rows[1].cells[0].offsetWidth;
-
-    var tr = document.createElement("tr");
-    tr.setAttribute("class", "detail-tr");
-
-    var firstTd = document.createElement("td");
-    firstTd.setAttribute(
-      "style",
-      "width:" + firstColumnWidth + "px;position:sticky;left:0px;z-index:60;"
-    );
-
-    tr.appendChild(firstTd);
-
-    let i = 1;
-    let distanceColumnWidth = 0;
-    for (const [key, value] of Object.entries(item)) {
-      if (key !== "id") {
-        tr.setAttribute("id", item.id);
-        let columnWidth =
-          document.getElementById("table").rows[1].cells[i].offsetWidth;
-        var td = document.createElement("td");
-        td.innerHTML = value;
-        if (i <= 5) {
-          distanceColumnWidth +=
-            document.getElementById("table").rows[1].cells[i - 1].offsetWidth;
-
-          td.setAttribute(
-            "style",
-            "max-width:" +
-              columnWidth +
-              "px; min-width:" +
-              columnWidth +
-              "px;position:sticky;left:" +
-              distanceColumnWidth +
-              "px;z-index:60;"
-          );
-        } else {
-          td.setAttribute(
-            "style",
-            "max-width:" + columnWidth + "px; min-width:" + columnWidth + "px;"
-          );
-        }
-
-        td.setAttribute("id", item.id + "-" + key);
-
-        let mainRow = document.getElementById(row.id).cells[i];
-
-        if (mainRow && mainRow.classList !== undefined && mainRow.classList) {
-          if (mainRow.classList.contains("editableInput")) {
-            td.classList.add("bc-blue");
-          }
-          if (mainRow.classList.contains("editableDateRangePicker")) {
-            td.classList.add("editableDateRangePicker");
-          }
-
-          if (mainRow.classList.contains("editableDatePicker")) {
-            td.classList.add("editableDatePicker");
-          }
-          if (
-            mainRow.classList.contains("editableDateRangePicker") ||
-            mainRow.classList.contains("editableDatePicker")
-          ) {
-            td.classList.add("bc-blue");
-            td.classList.add("textDecoration");
-            td.setAttribute("data-toggle", "modal");
-          }
-
-          if (mainRow.classList.contains("editableInput")) {
-            td.classList.add("editableInput");
-          }
-
-          if (mainRow.classList.contains("editableSelect")) {
-            td.classList.add("editableSelect");
-
-            if (key === "isDismantling") {
-              td.classList.add("bc-blue");
-
-              createSelectBox(td, dismantlingSelectOptions);
-            }
-
-            if (key === "customerPartsInformation") {
-              // müşteri parça bilgisi - arka plan rengi
-              if (value.includes("Bekleniyor") || value.includes("Stokta")) {
-                td.classList.add("bc-green");
-              }
-
-              if (value.includes("Hayır")) {
-                td.classList.add("bc-orange");
-              }
-
-              createSelectBox(td, trackInformation);
-            }
-          }
-
-          if (mainRow.classList.contains("openModalPartsList")) {
-            td.classList.add("openModalPartsList");
-            td.setAttribute("data-toggle", "modal");
-            td.classList.add("textDecoration");
-            // parça listesi
-            if (value.includes("Var")) {
-              td.classList.add("bc-green");
-            }
-            if (value.includes("Yok")) {
-              td.classList.add("bc-orange");
-            }
-          }
-        }
-
-        if (key === "offerStatus") {
-          // teklif durumu
-          if (value.includes("Onay")) {
-            td.setAttribute("class", "bc-green");
-          }
-          if (value.includes("Red")) {
-            td.setAttribute("class", "bc-orange");
-          }
-        }
-
-        tr.appendChild(td);
-        i++;
-      }
-    }
-    detailTableBody.appendChild(tr);
-  });
-
-  detailTable.appendChild(detailTableBody);
-
-  return detailTable;
-}
-*/
 
 function editTable(tdId, rowId) {
   var clickedTr = document.getElementById(rowId);
@@ -561,7 +434,7 @@ function editAjax(columnName, rowId, newValue) {
   );
 }
 
-function fixedColumn(table, row, i) {
+function fixedColumn(row, i) {
   let columnWidth = 0;
   for (let x in row.cells) {
     let col = row.cells[x];

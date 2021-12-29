@@ -11,8 +11,9 @@
 #table.table-bordered,
 #table.table-bordered td,
 #table.table-bordered th {
-  border-bottom: unset !important;
-  border: unset !important;
+  /*border-bottom: unset !important;
+  border: unset !important;*/
+  border: 0.5px solid #dadada;
 }
 
 .table thead th {
@@ -247,7 +248,7 @@ tbody td {
   cursor: pointer;
 }
 
-.detayButton {
+.detailButton {
   font-size: 16px;
   font-weight: 700;
   color: #fff;
