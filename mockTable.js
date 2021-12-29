@@ -1,14 +1,19 @@
+var mainTableId = {
+  1: true,
+  2: true,
+};
+
 var data = [
   {
     id: "1",
-    requestNumber: "33",
+    requestNumber: "111",
     itemNo: "7721489",
-    customer: "samet makine",
-    customerSegment: "KAM",
-    pssr: "SAmet Şimşek",
-    model: "916l",
-    serialNumber: "LKM02103",
-    acceptanceDate: "44470",
+    customer: "AAAA",
+    customerSegment: "BBBBB",
+    pssr: "CCCCCC",
+    model: "5555555",
+    serialNumber: "4444444",
+    acceptanceDate: "2222",
     status: "ZZZ",
     externalWashingPlan: "04.10.2021-04.10.2021",
     externalWashing: "04.10.2021-04.10.2021",
@@ -39,7 +44,7 @@ var data = [
   },
   {
     id: "2",
-    requestNumber: "110",
+    requestNumber: "222",
     itemNo: "7721489",
     customer: "samet makine",
     customerSegment: "KAM",
@@ -80,7 +85,7 @@ var data = [
 var detailTableData1 = [
   {
     id: "3",
-    requestNumber: "110",
+    requestNumber: "111-1",
     itemNo: "7721489",
     customer: "samet makine",
     customerSegment: "KAM",
@@ -88,7 +93,7 @@ var detailTableData1 = [
     model: "916l",
     serialNumber: "LKM02103",
     acceptanceDate: "44470",
-    status: "Söküm",
+    status: "DDDD",
     externalWashingPlan: "04.10.2021-04.10.2021",
     externalWashing: "04.10.2021-04.10.2021",
     entryAppraisalPlan: "09.10.2021-10.12.2021",
@@ -118,7 +123,7 @@ var detailTableData1 = [
   },
   {
     id: "4",
-    requestNumber: "110",
+    requestNumber: "111-2",
     itemNo: "7721489",
     customer: "samet makine",
     customerSegment: "KAM",
@@ -158,7 +163,7 @@ var detailTableData1 = [
 var detailTableData2 = [
   {
     id: "5",
-    requestNumber: "110",
+    requestNumber: "222-1",
     itemNo: "7721489",
     customer: "samet makine",
     customerSegment: "KAM",
@@ -166,7 +171,7 @@ var detailTableData2 = [
     model: "916l",
     serialNumber: "LKM02103",
     acceptanceDate: "44470",
-    status: "Söküm",
+    status: "FFF",
     externalWashingPlan: "04.10.2021-04.10.2021",
     externalWashing: "04.10.2021-04.10.2021",
     entryAppraisalPlan: "09.10.2021-10.12.2021",
@@ -196,7 +201,7 @@ var detailTableData2 = [
   },
   {
     id: "6",
-    requestNumber: "110",
+    requestNumber: "222-2",
     itemNo: "7721489",
     customer: "samet makine",
     customerSegment: "KAM",
@@ -278,7 +283,6 @@ var detailTableData3 = [
 var dataDetail = {
   1: detailTableData1,
   2: detailTableData2,
-  3: detailTableData3,
 };
 
 var partsOrdersAndPickingeData = [

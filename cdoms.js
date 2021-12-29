@@ -5,9 +5,6 @@ $(document).ready(function () {
   $("#table")
     .bootstrapTable("destroy")
     .bootstrapTable({
-      onSort: function () {
-        //tableConfig();
-      },
       onSearch: function () {
         tableConfig();
       },
@@ -20,14 +17,13 @@ $(document).ready(function () {
 $(function () {
   tableConfig();
 
-  // Tüm detayları açmak için
   const thead = document.querySelector("thead");
   if (thead) {
     thead.addEventListener("click", function (e) {
       const cell = e.target.closest("th");
-      console.log(cell.id);
+      // Tüm detayları açmak için
       if (cell.id === "detail-view") {
-        var detailIcons = document.getElementsByClassName("detail-icon");
+        var detailIcons = document.getElementsByClassName("detayButton");
         detailIcons.forEach((element) => element.click());
       }
     });
@@ -43,11 +39,29 @@ $(function () {
       }
       const row = cell.parentElement;
 
+      /** Tablo Detayı */
+      let rowDataIndex = row.getAttribute("data-index");
+      let rowId = row.getAttribute("data-uniqueid");
+      if (dataDetail[rowId] !== undefined && cell.cellIndex === 0) {
+        dataDetail[rowId].map((item) => {
+          let checkElement = data.find((element) => element.id === item.id);
+          if (!checkElement) {
+            data.splice(rowDataIndex + 1, 0, item);
+          } else {
+            data = data.filter((x) => x.id !== item.id);
+          }
+          rowDataIndex++;
+        });
+        $("#table").bootstrapTable("load", data);
+        tableConfig();
+      }
+      /** Tablo Detayı */
+
       if (
         cell.classList.contains("editableDateRangePicker") &&
         cell.getAttribute("data-toggle") === "modal"
       ) {
-        openDateRangePicker(cell, row.id);
+        openDateRangePicker(cell, rowId);
       }
 
       if (
@@ -55,31 +69,25 @@ $(function () {
         cell.getAttribute("data-toggle") === "modal" &&
         e.target.id !== ""
       ) {
-        openWorkOrderDetailModal(cell, row.id);
+        openWorkOrderDetailModal(cell, rowId);
       }
 
       if (
         cell.classList.contains("openModalPartsList") &&
         cell.getAttribute("data-toggle") === "modal"
       ) {
-        openPartsOrdersAndPickingModal(cell, row.id);
+        openPartsOrdersAndPickingModal(cell, rowId);
       }
 
       if (
         cell.classList.contains("editableDatePicker") &&
         cell.getAttribute("data-toggle") === "modal"
       ) {
-        openDatePicker(cell, row.id);
+        openDatePicker(cell, rowId);
       }
 
       if (cell.classList.contains("editableInput")) {
-        //Tablo detayına tıklanmışsa ilk alan true
-        editTable(
-          row.className !== "detail-tr" ? false : true,
-          e.target.id,
-          cell.id,
-          row.id
-        );
+        editTable(cell.id, rowId);
       }
     });
   }
@@ -97,6 +105,7 @@ function tableConfig() {
     // Kolonları sabitlemek için
     fixedColumn(table, row, i, 5);
 
+    // Tüm detayları açacak th
     if (row.rowIndex === 0) {
       row.cells[0].innerHTML =
         "<div class='th-inner'><div class='openAllDetails'>+</div></div>";
@@ -106,18 +115,32 @@ function tableConfig() {
     if (row.rowIndex !== 0) {
       for (let j in row.cells) {
         let col = row.cells[j];
-        let colName = Object.keys(data[row.getAttribute("data-index")])[
-          col.cellIndex
-        ];
-        if (col.cellIndex !== undefined && col.cellIndex !== 0) {
-          row.setAttribute("id", data[row.getAttribute("data-index")].id);
+        let colName = Object.keys(
+          data.find((item) => item.id === row.getAttribute("data-uniqueid"))
+        )[col.cellIndex];
 
+        //  console.log(colName, col.cellIndex);
+        // row.setAttribute("id", data[row.getAttribute("data-uniqueid")].id);
+
+        if (col.cellIndex !== undefined && col.cellIndex !== 0) {
           col.setAttribute(
             "id",
-            data[row.getAttribute("data-index")].id + "-" + colName
+            data.find((item) => item.id === row.getAttribute("data-uniqueid"))
+              .id +
+              "-" +
+              colName
           );
         }
         $("#table").bootstrapTable("refresh");
+        // Eğer row id si dataDetail içinde varsa bu row ana tablonundur ve detayı açılabilir
+        if (col.cellIndex !== undefined && col.cellIndex === 0) {
+          if (dataDetail[row.getAttribute("data-uniqueid")] !== undefined) {
+            col.innerHTML = "<div class='detayButton'>+</div>";
+          } else {
+            col.innerHTML = "";
+          }
+        }
+
         if (col.classList) {
           // Editable input
           if (col.classList.contains("editableInput")) {
@@ -169,7 +192,10 @@ function tableConfig() {
           }
         }
 
-        if (colName === "itemNo") {
+        if (
+          colName === "itemNo" &&
+          dataDetail[row.getAttribute("data-uniqueid")] !== undefined
+        ) {
           // ERS İşemri/Kalem No
           //workOrderDetailModal
           //toDoListModal
@@ -336,6 +362,7 @@ function openPartsOrdersAndPickingModal(cell, rowId) {
   );
 }
 
+/*
 function detailFormatter(index, row) {
   let detailTable = document.createElement("table");
 
@@ -472,8 +499,9 @@ function detailFormatter(index, row) {
 
   return detailTable;
 }
+*/
 
-function editTable(isDetail, eTargetId, tdId, rowId) {
+function editTable(tdId, rowId) {
   var clickedTr = document.getElementById(rowId);
   clickedTd = clickedTr.getElementsByTagName("td")[tdId];
 
