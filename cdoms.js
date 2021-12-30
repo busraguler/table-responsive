@@ -1,18 +1,18 @@
 const numberOfColumnsFixed = 5;
 const table = document.getElementById("table");
-
+let mainTableColumnName = Object.keys(data[0]).length - 1;
+let count = 0;
 $(document).ready(function () {
   $("#table")
     .bootstrapTable("destroy")
     .bootstrapTable({
-      onSearch: function () {
+      onSearch: function (text) {
         tableConfig();
       },
-      onSort: function ( name, order) {
-        console.log(name,order)
+      onSort: function (name, order) {
         tableConfig();
       },
-      
+
       data: data,
       exportDataType: $(this).val(),
       exportTypes: ["excel"],
@@ -20,7 +20,6 @@ $(document).ready(function () {
 });
 
 $(function () {
-
   tableConfig();
 
   const thead = document.querySelector("thead");
@@ -47,25 +46,22 @@ $(function () {
 
       /** Tabloda Detay alanlarının oluşturulması*/
       let rowDataIndex = row.getAttribute("data-index");
-      console.log(rowDataIndex)
+
       let rowId = row.getAttribute("data-uniqueid");
       if (dataDetailArrays[rowId] !== undefined && cell.cellIndex === 0) {
         dataDetailArrays[rowId].map((item) => {
           let checkElement = data.find((element) => element.id === item.id);
           if (!checkElement) {
-            console.log("aaa",rowDataIndex)
             data.splice(rowDataIndex + 1, 0, item);
           } else {
-            console.log("bbb",rowDataIndex)
             data = data.filter((x) => x.id !== item.id);
           }
-          console.log("ccc",rowDataIndex)
           rowDataIndex++;
         });
-       $("#table").bootstrapTable("load", data);
-       tableConfig();
+        $("#table").bootstrapTable("load", data);
+        tableConfig();
       }
-       /** Tabloda Detay alanlarının oluşturulması*/
+      /** Tabloda Detay alanlarının oluşturulması*/
 
       if (
         cell.classList.contains("editableDateRangePicker") &&
@@ -107,8 +103,6 @@ $(function () {
 });
 
 function tableConfig() {
-  console.log("A")
-
   /*  Ana Tablo düzenleme */
   for (let i in table.rows) {
     let row = table.rows[i];
@@ -124,14 +118,12 @@ function tableConfig() {
     }
 
     if (row.rowIndex !== 0) {
-
       for (let j in row.cells) {
-
         let col = row.cells[j];
         let colName = Object.keys(
           data.find((item) => item.id === row.getAttribute("data-uniqueid"))
         )[col.cellIndex];
-
+        row.setAttribute("id", row.getAttribute("data-uniqueid"));
         if (col.cellIndex !== undefined && col.cellIndex !== 0) {
           col.setAttribute(
             "id",
@@ -143,16 +135,20 @@ function tableConfig() {
         }
         //$("#table").bootstrapTable("refresh");
         // Eğer row id si dataDetailArrays içinde varsa bu row ana tablonundur ve detayı açılabilir
+
         if (col.cellIndex !== undefined && col.cellIndex === 0) {
-          if (dataDetailArrays[row.getAttribute("data-uniqueid")] !== undefined) {
+          if (
+            dataDetailArrays[row.getAttribute("data-uniqueid")] !== undefined
+          ) {
             col.innerHTML = "<div class='detailButton'>+</div>";
+
+            //    if (row.nextSibling.cells[0].innerHTML === "-") console.log("sc");
           } else {
             col.innerHTML = "";
           }
         }
 
         if (col.classList) {
-
           // Editable input
           if (col.classList.contains("editableInput")) {
             col.classList.add("bc-blue");
@@ -372,7 +368,6 @@ function openPartsOrdersAndPickingModal(cell, rowId) {
     }
   );
 }
-
 
 function editTable(tdId, rowId) {
   var clickedTr = document.getElementById(rowId);
