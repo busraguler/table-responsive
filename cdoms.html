@@ -22,6 +22,10 @@
     />
     <link
       rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-select/1.13.18/css/bootstrap-select.min.css"
+    />
+    <link
+      rel="stylesheet"
       href="https://unpkg.com/bootstrap-table@1.19.1/dist/extensions/filter-control/bootstrap-table-filter-control.css"
     />
 
@@ -35,6 +39,16 @@
   <body>
     <!-- Main Table-->
     <div style="padding: 20px">
+      <select
+        class="selectpicker"
+        id="1-isDismantling-selects"
+        onchange="changeSelect(this)"
+      >
+        <option value="0">Mustard</option>
+        <option value="1">Ketchup</option>
+        <option value="2">Relish</option>
+      </select>
+
       <table
         data-toggle="table"
         id="table"
@@ -515,6 +529,7 @@
     <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js"></script>
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
     <script src="https://unpkg.com/bootstrap-table@1.19.1/dist/bootstrap-table.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-select/1.13.18/js/bootstrap-select.min.js"></script>
 
     <!-- Export -->
     <script src="https://cdn.jsdelivr.net/npm/tableexport.jquery.plugin@1.10.21/tableExport.min.js"></script>

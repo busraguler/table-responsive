@@ -1,4 +1,4 @@
-const numberOfColumnsFixed = 5;
+const numberOfColumnsFixed = 9;
 const table = document.getElementById("table");
 
 $(document).ready(function () {
@@ -7,6 +7,7 @@ $(document).ready(function () {
     .bootstrapTable({
       onPostBody: function (data) {
         tableConfig();
+        $("select").selectpicker("refresh");
       },
 
       data: data,
@@ -14,6 +15,11 @@ $(document).ready(function () {
       exportTypes: ["excel"],
     });
 });
+
+function toggleZoomScreen() {
+  document.body.style.zoom = "80%";
+}
+toggleZoomScreen();
 
 $(function () {
   const thead = document.querySelector("thead");
@@ -399,7 +405,7 @@ function createSelectBox(col, optionsData) {
   col.innerHTML = "";
   var selectBox = document.createElement("SELECT");
   selectBox.setAttribute("id", col.id + "-select");
-  selectBox.setAttribute("class", "custom-select-box");
+  selectBox.setAttribute("class", "selectpicker");
   selectBox.setAttribute("onchange", "changeSelect(this)");
   col.appendChild(selectBox);
 
@@ -429,15 +435,42 @@ function fixedColumn(row, i) {
     if (col.cellIndex === 0) {
       col.setAttribute("style", "left: 0px;position: sticky;z-index:60;");
     } else {
-      columnWidth +=
-        row.cells[x - 1] !== undefined &&
-        table.rows[i].cells[x - 1].offsetWidth;
-      if (col.cellIndex <= numberOfColumnsFixed) {
-        col.setAttribute(
-          "style",
-          "left:" + columnWidth + "px;position: sticky;z-index:60;"
-        );
+      if (col.cellIndex <= numberOfColumnsFixed + 1) {
+        columnWidth +=
+          row.cells[x - 1] !== undefined &&
+          table.rows[i].cells[x - 1].offsetWidth;
+
+        if (col.cellIndex <= numberOfColumnsFixed) {
+          col.setAttribute(
+            "style",
+            "left:" + columnWidth + "px;position: sticky;z-index:60;"
+          );
+        }
+
+        if (col.cellIndex === numberOfColumnsFixed + 1) {
+          scrollBarPosition(columnWidth);
+        }
       }
     }
   }
+}
+
+/**** Scroll bar çubuğunu sabit kolonlardan sonra başlatır */
+function scrollBarPosition(columnWidth) {
+  var style = document.createElement("style");
+  style.innerHTML =
+    `::-webkit-scrollbar {
+  width: 2px;
+  height: 8px;
+}::-webkit-scrollbar-track {
+  background: #f1f1f1;
+  margin-left: ` +
+    columnWidth +
+    `px;
+}::-webkit-scrollbar-thumb {
+  background: #888;
+}::-webkit-scrollbar-thumb:hover {
+  background: rgb(145, 145, 145);
+}`;
+  document.body.appendChild(style);
 }
