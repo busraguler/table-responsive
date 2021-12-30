@@ -1,15 +1,11 @@
 const numberOfColumnsFixed = 5;
 const table = document.getElementById("table");
-let mainTableColumnName = Object.keys(data[0]).length - 1;
-let count = 0;
+
 $(document).ready(function () {
   $("#table")
     .bootstrapTable("destroy")
     .bootstrapTable({
-      onSearch: function (text) {
-        tableConfig();
-      },
-      onSort: function (name, order) {
+      onPostBody: function (data) {
         tableConfig();
       },
 
@@ -20,8 +16,6 @@ $(document).ready(function () {
 });
 
 $(function () {
-  tableConfig();
-
   const thead = document.querySelector("thead");
   if (thead) {
     thead.addEventListener("click", function (e) {
@@ -59,7 +53,6 @@ $(function () {
           rowDataIndex++;
         });
         $("#table").bootstrapTable("load", data);
-        tableConfig();
       }
       /** Tabloda Detay alanlarının oluşturulması*/
 
@@ -260,7 +253,7 @@ function openDatePicker(cell, rowId) {
     },
     function (start, end, label) {
       cell.innerHTML = start.format("DD.M.YYYY");
-      editAjax(cell.id, rowId, start.format("DD.M.YYYY"));
+      editAjax(cell.id.split("-")[1], rowId, start.format("DD.M.YYYY"));
       $("#dataPickerModal").modal("hide");
     }
   );
@@ -282,7 +275,7 @@ function openDateRangePicker(cell, rowId) {
         start.format("DD.M.YYYY") + "-" + end.format("DD.MM.YYYY");
       $("#dateRangePickerModal").modal("hide");
       editAjax(
-        cell.id,
+        cell.id.split("-")[1],
         rowId,
         start.format("DD.M.YYYY") + "-" + end.format("DD.MM.YYYY")
       );
