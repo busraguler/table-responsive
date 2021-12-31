@@ -39,16 +39,6 @@
   <body>
     <!-- Main Table-->
     <div style="padding: 20px">
-      <select
-        class="selectpicker"
-        id="1-isDismantling-selects"
-        onchange="changeSelect(this)"
-      >
-        <option value="0">Mustard</option>
-        <option value="1">Ketchup</option>
-        <option value="2">Relish</option>
-      </select>
-
       <table
         data-toggle="table"
         id="table"
@@ -60,7 +50,7 @@
       >
         <thead>
           <tr>
-            <th></th>
+            <th data-field="detailButton"></th>
             <th data-field="requestNumber" data-filter-control="input">
               Talep No
             </th>

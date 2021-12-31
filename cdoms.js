@@ -1,19 +1,22 @@
 const numberOfColumnsFixed = 9;
 const table = document.getElementById("table");
-
 $(document).ready(function () {
   $("#table")
     .bootstrapTable("destroy")
     .bootstrapTable({
-      onPostBody: function (data) {
+      onPostBody: function () {
         tableConfig();
         $("select").selectpicker("refresh");
       },
-
+      onClickCell: function (field, value, row, $element) {
+        // console.log(field, value, row, $element);
+      },
       data: data,
       exportDataType: $(this).val(),
       exportTypes: ["excel"],
     });
+
+  scrollBarPosition();
 });
 
 function toggleZoomScreen() {
@@ -132,6 +135,7 @@ function tableConfig() {
               colName
           );
         }
+
         //$("#table").bootstrapTable("refresh");
         // Eğer row id si dataDetailArrays içinde varsa bu row ana tablonundur ve detayı açılabilir
 
@@ -140,8 +144,6 @@ function tableConfig() {
             dataDetailArrays[row.getAttribute("data-uniqueid")] !== undefined
           ) {
             col.innerHTML = "<div class='detailButton'>+</div>";
-
-            //    if (row.nextSibling.cells[0].innerHTML === "-") console.log("sc");
           } else {
             col.innerHTML = "";
           }
@@ -164,6 +166,9 @@ function tableConfig() {
 
           // Editable Select
           if (col.classList.contains("editableSelect")) {
+            col.classList.add("d-flex");
+            col.classList.add("justify-content-center");
+
             if (colName === "isDismantling") {
               col.classList.add("bc-blue");
               createSelectBox(col, dismantlingSelectOptions);
@@ -231,7 +236,8 @@ function changeSelect(selectElement) {
   let rowId = selectElement.id.split("-")[0];
   let columnName = selectElement.id.split("-")[1];
   let selected = selectElement.value;
-  let td = document.getElementById(selectElement.id).parentElement;
+  let td = document.getElementById(selectElement.id).parentElement
+    .parentElement;
 
   if (columnName === "customerPartsInformation") {
     if (selected === "1" || selected === "2") {
@@ -391,13 +397,6 @@ function editTable(tdId, rowId) {
       }
     });
   }
-
-  /* editableInput.addEventListener("mouseout", function (event) {
-      event.preventDefault();
-      clickedTd.innerHTML = editableInput.value;
-      editableInput.remove();
-      editAjax(tdId, rowId, editableInput.value);
-    });*/
 }
 
 function createSelectBox(col, optionsData) {
@@ -428,6 +427,7 @@ function editAjax(columnName, rowId, newValue) {
   );
 }
 
+// Sabitlenecek kolonlar
 function fixedColumn(row, i) {
   let columnWidth = 0;
   for (let x in row.cells) {
@@ -438,7 +438,9 @@ function fixedColumn(row, i) {
       if (col.cellIndex <= numberOfColumnsFixed + 1) {
         columnWidth +=
           row.cells[x - 1] !== undefined &&
-          table.rows[i].cells[x - 1].offsetWidth;
+          calculateOffsetWidth(
+            table.rows[i].cells[x - 1].getBoundingClientRect()
+          );
 
         if (col.cellIndex <= numberOfColumnsFixed) {
           col.setAttribute(
@@ -448,29 +450,49 @@ function fixedColumn(row, i) {
         }
 
         if (col.cellIndex === numberOfColumnsFixed + 1) {
-          scrollBarPosition(columnWidth);
         }
       }
     }
   }
 }
 
-/**** Scroll bar çubuğunu sabit kolonlardan sonra başlatır */
-function scrollBarPosition(columnWidth) {
+// Scrollbar pozisyonunun sabit kolonlara göre ayarlar
+function scrollBarPosition() {
+  let totalWidth = 0;
+  let row = table.rows[0];
+  for (let j in row.cells) {
+    if (j <= numberOfColumnsFixed) {
+      totalWidth +=
+        row.cells[j] !== undefined &&
+        calculateOffsetWidth(row.cells[j].getBoundingClientRect());
+    }
+  }
   var style = document.createElement("style");
   style.innerHTML =
     `::-webkit-scrollbar {
-  width: 2px;
-  height: 8px;
-}::-webkit-scrollbar-track {
-  background: #f1f1f1;
-  margin-left: ` +
-    columnWidth +
+      width: 2px;
+      height: 10px;
+    }::-webkit-scrollbar-track {
+      background: #f1f1f1;
+      margin-left: ` +
+    totalWidth +
     `px;
-}::-webkit-scrollbar-thumb {
-  background: #888;
-}::-webkit-scrollbar-thumb:hover {
-  background: rgb(145, 145, 145);
-}`;
+    }::-webkit-scrollbar-thumb {
+      background: #888;
+    }::-webkit-scrollbar-thumb:hover {
+      background: rgb(145, 145, 145);
+    }`;
   document.body.appendChild(style);
+}
+
+// Sütun genişliğini hesaplar
+function calculateOffsetWidth(element) {
+  var width;
+  if (element.width) {
+    width = element.width;
+  } else {
+    width = element.right - element.left;
+  }
+
+  return parseFloat(width.toFixed(2));
 }
