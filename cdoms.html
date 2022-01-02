@@ -46,114 +46,54 @@
         data-filter-control="true"
         data-search="true"
         data-show-export="true"
-        data-show-search-clear-button="true"
       >
         <thead>
           <tr>
             <th data-field="detailButton"></th>
-            <th data-field="requestNumber" data-filter-control="input">
-              Talep No
-            </th>
-            <th data-field="itemNo" data-filter-control="input">
-              ERS İşemri/Kalem No
-            </th>
-            <th data-field="customer" data-filter-control="input">Müşteri</th>
-            <th data-field="customerSegment" data-filter-control="input">
-              Müşteri Segment
-            </th>
-            <th data-field="pssr" data-filter-control="input">PSSR</th>
-            <th data-field="model" data-filter-control="input">Model</th>
-            <th data-field="serialNumber" data-filter-control="input">
-              Seri No
-            </th>
-            <th data-field="acceptanceDate" data-filter-control="input">
-              Kabul Tarihi
-            </th>
-            <th
-              data-field="status"
-              data-filter-control="input"
-              data-sortable="true"
-            >
-              Durum
-            </th>
+            <th data-field="requestNumber">Talep No</th>
+            <th data-field="itemNo">ERS İşemri/Kalem No</th>
+            <th data-field="customer">Müşteri</th>
+            <th data-field="customerSegment">Müşteri Segment</th>
+            <th data-field="pssr">PSSR</th>
+            <th data-field="model">Model</th>
+            <th data-field="serialNumber">Seri No</th>
+            <th data-field="acceptanceDate">Kabul Tarihi</th>
+            <th data-field="status" data-sortable="true">Durum</th>
             <th
               data-field="externalWashingPlan"
-              data-filter-control="input"
               class="editableDateRangePicker"
             >
               Dış Yıkama Plan
             </th>
-            <th
-              data-field="externalWashing"
-              data-filter-control="input"
-              class="editableDateRangePicker"
-            >
+            <th data-field="externalWashing" class="editableDateRangePicker">
               Dış Yıkama
             </th>
-            <th
-              data-field="entryAppraisalPlan"
-              data-filter-control="input"
-              class="editableDateRangePicker"
-            >
+            <th data-field="entryAppraisalPlan" class="editableDateRangePicker">
               Giriş Ekspertiz Plan
             </th>
-            <th
-              data-field="entryAppraisal"
-              data-filter-control="input"
-              class="editableDateRangePicker"
-            >
+            <th data-field="entryAppraisal" class="editableDateRangePicker">
               Giriş Ekspertizi
             </th>
-            <th
-              data-field="isDismantling"
-              data-filter-control="input"
-              class="editableSelect"
-            >
+            <th data-field="isDismantling" class="editableSelect">
               Söküm Yapılacak Mı
             </th>
-            <th
-              data-field="dismantlingPlan"
-              data-filter-control="input"
-              class="editableDateRangePicker"
-            >
+            <th data-field="dismantlingPlan" class="editableDateRangePicker">
               Söküm Plan
             </th>
-            <th
-              data-field="dismantling"
-              data-filter-control="input"
-              class="editableDateRangePicker"
-            >
+            <th data-field="dismantling" class="editableDateRangePicker">
               Söküm
             </th>
-            <th
-              data-field="defectListPlan"
-              data-filter-control="input"
-              class="editableDatePicker"
-            >
+            <th data-field="defectListPlan" class="editableDatePicker">
               Defect List Plan
             </th>
-            <th
-              data-field="defectList"
-              data-filter-control="input"
-              class="editableDatePicker"
-            >
+            <th data-field="defectList" class="editableDatePicker">
               Defect List
             </th>
-            <th
-              data-field="offerPlan"
-              data-filter-control="input"
-              class="editableDatePicker"
-            >
+            <th data-field="offerPlan" class="editableDatePicker">
               Teklif İletme Plan
             </th>
-            <th
-              data-field="offer"
-              data-filter-control="input"
-              class="editableDatePicker"
-            >
-              Teklif İletme
-            </th>
-            <th data-field="offerTat" data-filter-control="input">
+            <th data-field="offer" class="editableDatePicker">Teklif İletme</th>
+            <th data-field="offerTat">
               Teklif TAT
               <i
                 class="fas fa-info-circle ml-3"
@@ -161,73 +101,38 @@
                 title="Hesaplama Yöntemi"
               ></i>
             </th>
-            <th data-field="offerStatus" data-filter-control="input">
-              Tekif Durumu
-            </th>
-            <th
-              data-field="partsList"
-              data-filter-control="input"
-              class="openModalPartsList"
-            >
+            <th data-field="offerStatus">Tekif Durumu</th>
+            <th data-field="partsList" class="openModalPartsList">
               Parça Listesi
             </th>
-            <th
-              data-field="customerPartsInformation"
-              data-filter-control="input"
-              class="editableSelect"
-            >
+            <th data-field="customerPartsInformation" class="editableSelect">
               Müşteri Parça Bilgisi
             </th>
             <th
               data-field="customerPartDeliveryDate"
-              data-filter-control="input"
               class="editableDatePicker"
             >
               Müşteri Parça Teslim Tar.
             </th>
-            <th
-              data-field="assemblyPlan"
-              data-filter-control="input"
-              class="editableDateRangePicker"
-            >
+            <th data-field="assemblyPlan" class="editableDateRangePicker">
               Montaj Plan
             </th>
-            <th
-              data-field="assembly"
-              data-filter-control="input"
-              class="editableDateRangePicker"
-            >
+            <th data-field="assembly" class="editableDateRangePicker">
               Montaj
             </th>
-            <th
-              data-field="ersRepairPlan"
-              data-filter-control="input"
-              class="editableDateRangePicker"
-            >
+            <th data-field="ersRepairPlan" class="editableDateRangePicker">
               Onarım Plan
             </th>
-            <th
-              data-field="ersRepair"
-              data-filter-control="input"
-              class="editableDateRangePicker"
-            >
+            <th data-field="ersRepair" class="editableDateRangePicker">
               Onarım
             </th>
-            <th
-              data-field="exitAppraisalPlan"
-              data-filter-control="input"
-              class="editableDateRangePicker"
-            >
+            <th data-field="exitAppraisalPlan" class="editableDateRangePicker">
               Çıkış Ekspertiz Plan
             </th>
-            <th
-              data-field="exitAppraisal"
-              data-filter-control="input"
-              class="editableDateRangePicker"
-            >
+            <th data-field="exitAppraisal" class="editableDateRangePicker">
               Çıkış Ekspertiz
             </th>
-            <th data-field="tatErs" data-filter-control="input">
+            <th data-field="tatErs">
               TAT ERS
               <i
                 class="fas fa-info-circle ml-3"
@@ -235,14 +140,8 @@
                 title="Hesaplama Yöntemi"
               ></i>
             </th>
-            <th
-              data-field="enthusiasm"
-              data-filter-control="input"
-              class="editableDatePicker"
-            >
-              Sevk
-            </th>
-            <th data-field="tatGeneralCrc" data-filter-control="input">
+            <th data-field="enthusiasm" class="editableDatePicker">Sevk</th>
+            <th data-field="tatGeneralCrc">
               TAT Genel CRC
               <i
                 class="fas fa-info-circle ml-3"
@@ -250,13 +149,7 @@
                 title="Hesaplama Yöntemi"
               ></i>
             </th>
-            <th
-              data-field="notes"
-              data-filter-control="input"
-              class="editableInput"
-            >
-              Notlar
-            </th>
+            <th data-field="notes" class="editableInput">Notlar</th>
           </tr>
         </thead>
       </table>

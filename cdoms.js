@@ -1,5 +1,7 @@
 const numberOfColumnsFixed = 9;
 const table = document.getElementById("table");
+let data = mainTableData;
+
 $(document).ready(function () {
   $("#table")
     .bootstrapTable("destroy")
@@ -7,15 +9,41 @@ $(document).ready(function () {
       onPostBody: function () {
         tableConfig();
         $("select").selectpicker("refresh");
-      },
-      onClickCell: function (field, value, row, $element) {
-        // console.log(field, value, row, $element);
+
+        /* Detail Button + or - */
+        mainTableData.map((item) => {
+          if (dataDetailArrays[item.id] !== undefined) {
+            dataDetailArrays[item.id].map((x) => {
+              data.map((t) => {
+                if (t.id === x.id) {
+                  $("#detail" + item.id)
+                    .children()
+                    .text("-");
+                }
+              });
+            });
+          }
+        });
+
+        let isPlus = false;
+        var detailIcons = document.getElementsByClassName("detailButton");
+        detailIcons.forEach((element) => {
+          element.innerHTML === "+" ? (isPlus = true) : (isPlus = false);
+        });
+
+        if (!isPlus) {
+          $(".openAllDetails").text("-");
+        } else {
+          $(".openAllDetails").text("+");
+        }
+
+        /* Detail Button + or - */
       },
       data: data,
       exportDataType: $(this).val(),
       exportTypes: ["excel"],
     });
-
+  $("select").selectpicker("refresh");
   scrollBarPosition();
 });
 
@@ -31,8 +59,18 @@ $(function () {
       const cell = e.target.closest("th");
       // Tüm detayları açmak için
       if (cell.id === "detail-view") {
+        let allDetailsViewSign = cell
+          .querySelector("div")
+          .querySelector("div").innerHTML;
+
         var detailIcons = document.getElementsByClassName("detailButton");
-        detailIcons.forEach((element) => element.click());
+        detailIcons.forEach((element) => {
+          if (allDetailsViewSign === "+") {
+            element.innerHTML === "+" && element.click();
+          } else {
+            element.innerHTML === "-" && element.click();
+          }
+        });
       }
     });
   }
@@ -115,7 +153,7 @@ function tableConfig() {
     // Tüm detayları açacak buton
     if (row.rowIndex === 0) {
       row.cells[0].innerHTML =
-        "<div class='th-inner'><div class='openAllDetails'>+</div></div>";
+        "<div class='th-inner'><div class='openAllDetails'>+</div></div><div class='fht-cell'></div>";
       row.cells[0].setAttribute("id", "detail-view");
     }
 
@@ -140,6 +178,7 @@ function tableConfig() {
         // Eğer row id si dataDetailArrays içinde varsa bu row ana tablonundur ve detayı açılabilir
 
         if (col.cellIndex !== undefined && col.cellIndex === 0) {
+          col.setAttribute("id", "detail" + row.id);
           if (
             dataDetailArrays[row.getAttribute("data-uniqueid")] !== undefined
           ) {
@@ -441,7 +480,6 @@ function fixedColumn(row, i) {
           calculateOffsetWidth(
             table.rows[i].cells[x - 1].getBoundingClientRect()
           );
-
         if (col.cellIndex <= numberOfColumnsFixed) {
           col.setAttribute(
             "style",

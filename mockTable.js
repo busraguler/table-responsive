@@ -1,9 +1,4 @@
-var mainTableId = {
-  1: true,
-  2: true,
-};
-
-var data = [
+var mainTableData = [
   {
     id: "1",
     requestNumber: "111",
