@@ -10,34 +10,8 @@ $(document).ready(function () {
         tableConfig();
         $("select").selectpicker("refresh");
 
-        /* Detail Button + or - */
-        mainTableData.map((item) => {
-          if (dataDetailArrays[item.id] !== undefined) {
-            dataDetailArrays[item.id].map((x) => {
-              data.map((t) => {
-                if (t.id === x.id) {
-                  $("#detail" + item.id)
-                    .children()
-                    .text("-");
-                }
-              });
-            });
-          }
-        });
-
-        let isPlus = false;
-        var detailIcons = document.getElementsByClassName("detailButton");
-        detailIcons.forEach((element) => {
-          element.innerHTML === "+" ? (isPlus = true) : (isPlus = false);
-        });
-
-        if (!isPlus) {
-          $(".openAllDetails").text("-");
-        } else {
-          $(".openAllDetails").text("+");
-        }
-
-        /* Detail Button + or - */
+        /* Detail Button işareti */
+        detailButtonSign();
       },
       data: data,
       exportDataType: $(this).val(),
@@ -533,4 +507,35 @@ function calculateOffsetWidth(element) {
   }
 
   return parseFloat(width.toFixed(2));
+}
+
+function detailButtonSign() {
+  mainTableData.map((item) => {
+    if (dataDetailArrays[item.id] !== undefined) {
+      dataDetailArrays[item.id].map((x) => {
+        data.map((t) => {
+          if (t.id === x.id) {
+            $("#detail" + item.id)
+              .children()
+              .text("-");
+          }
+        });
+      });
+    }
+  });
+
+  let plusNumber = 0;
+  let minusNumber = 0;
+  var detailIcons = document.getElementsByClassName("detailButton");
+  detailIcons.forEach((element) => {
+    element.innerHTML === "+" && plusNumber++;
+    element.innerHTML === "-" && minusNumber++;
+  });
+
+  if (detailIcons.length === plusNumber) {
+    $(".openAllDetails").text("+");
+  } else if (detailIcons.length === minusNumber) {
+    $(".openAllDetails").text("-");
+  } else {
+  }
 }
