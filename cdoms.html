@@ -36,9 +36,9 @@
     />
     <link rel="stylesheet" href="./table.css" />
   </head>
-  <body>
+  <body onScroll="handleOnScroll();">
     <!-- Main Table-->
-    <div style="padding: 20px">
+    <div style="padding: 20px" onScroll="handleOnScroll();">
       <table
         data-toggle="table"
         id="table"
@@ -46,6 +46,7 @@
         data-filter-control="true"
         data-search="true"
         data-show-export="true"
+        onScroll="handleOnScroll();"
       >
         <thead>
           <tr>

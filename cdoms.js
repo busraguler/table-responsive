@@ -27,6 +27,8 @@ function toggleZoomScreen() {
 toggleZoomScreen();
 
 $(function () {
+  $("#table").bootstrapTable("load", data);
+  $("select").selectpicker("refresh");
   const thead = document.querySelector("thead");
   if (thead) {
     thead.addEventListener("click", function (e) {
@@ -117,6 +119,7 @@ $(function () {
 });
 
 function tableConfig() {
+  console.log("object");
   /*  Ana Tablo düzenleme */
   for (let i in table.rows) {
     let row = table.rows[i];
@@ -174,7 +177,6 @@ function tableConfig() {
           ) {
             col.classList.add("bc-blue");
             col.setAttribute("data-toggle", "modal");
-            col.classList.add("textDecoration");
           }
 
           // Editable Select
@@ -184,7 +186,7 @@ function tableConfig() {
 
             if (colName === "isDismantling") {
               col.classList.add("bc-blue");
-              createSelectBox(col, dismantlingSelectOptions);
+              createSelectBox(col, dismantlingSelectOptions, "isDismantling");
             }
 
             if (colName === "customerPartsInformation") {
@@ -198,7 +200,11 @@ function tableConfig() {
               if (col.innerHTML.includes("Hayır")) {
                 col.classList.add("bc-orange");
               }
-              createSelectBox(col, trackInformation);
+              createSelectBox(
+                col,
+                trackInformation,
+                "customerPartsInformation"
+              );
             }
           }
 
@@ -412,7 +418,7 @@ function editTable(tdId, rowId) {
   }
 }
 
-function createSelectBox(col, optionsData) {
+function createSelectBox(col, optionsData, columnName) {
   var columnValue = col.innerHTML;
   col.innerHTML = "";
   var selectBox = document.createElement("SELECT");
@@ -429,6 +435,19 @@ function createSelectBox(col, optionsData) {
     if (columnValue === optionsData[key]) {
       option.setAttribute("selected", true);
     }
+    if (columnName === "customerPartsInformation") {
+      let backColor = "white";
+      if (optionsData[key] === "Parça Bekleniyor") {
+        backColor = "#b1d7ff";
+      } else if ((backColor = optionsData[key] === "Stokta")) {
+        backColor = "#c5fecc";
+      } else {
+        backColor = "white";
+      }
+      option.style.color = "black";
+      option.style.backgroundColor = backColor;
+    }
+
     selectBox.appendChild(option);
   });
 }
