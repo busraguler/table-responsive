@@ -436,16 +436,14 @@ function createSelectBox(col, optionsData, columnName) {
       option.setAttribute("selected", true);
     }
     if (columnName === "customerPartsInformation") {
-      let backColor = "white";
       if (optionsData[key] === "Parça Bekleniyor") {
-        backColor = "#b1d7ff";
+        option.classList.add("bc-blue-select");
       } else if ((backColor = optionsData[key] === "Stokta")) {
-        backColor = "#c5fecc";
+        option.classList.add("bc-green");
       } else {
-        backColor = "white";
+        option.classList.add("bc-white");
       }
       option.style.color = "black";
-      option.style.backgroundColor = backColor;
     }
 
     selectBox.appendChild(option);

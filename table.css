@@ -136,13 +136,19 @@ a {
 /*** datepicker ***/
 
 /***** COLORS ****/
+.bc-blue-select {
+  background-color: #b1d7ff !important;
+}
+.bc-white {
+  background-color: #ffffff !important;
+}
 
 .bc-blue {
   background-color: #dfefff;
 }
 
 .bc-green {
-  background-color: #c5ffcc;
+  background-color: #c5ffcc !important;
 }
 
 .bc-red {
@@ -286,3 +292,9 @@ tbody td {
   background-color: transparent;
   border: unset;
 }
+
+/**Select box arka plan renkleri */
+.s-blue {
+}
+
+/**Select box arka plan renkleri */
