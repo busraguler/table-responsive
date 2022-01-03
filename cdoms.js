@@ -13,6 +13,7 @@ $(document).ready(function () {
         /* Detail Button işareti */
         detailButtonSign();
       },
+      sortReset: true,
       data: data,
       exportDataType: $(this).val(),
       exportTypes: ["excel"],
@@ -22,7 +23,7 @@ $(document).ready(function () {
 });
 
 function toggleZoomScreen() {
-  document.body.style.zoom = "80%";
+  document.body.style.zoom = "60%";
 }
 toggleZoomScreen();
 
@@ -119,7 +120,6 @@ $(function () {
 });
 
 function tableConfig() {
-  console.log("object");
   /*  Ana Tablo düzenleme */
   for (let i in table.rows) {
     let row = table.rows[i];
@@ -185,26 +185,24 @@ function tableConfig() {
             col.classList.add("justify-content-center");
 
             if (colName === "isDismantling") {
-              col.classList.add("bc-blue");
-              createSelectBox(col, dismantlingSelectOptions, "isDismantling");
+              if (col.innerHTML.includes("Evet")) {
+                col.classList.add("bc-green");
+              }
+
+              createSelectBox(col, dismantlingSelectOptions);
             }
 
             if (colName === "customerPartsInformation") {
               // müşteri parça bilgisi - arka plan rengi
-              if (
-                col.innerHTML.includes("Bekleniyor") ||
-                col.innerHTML.includes("Stokta")
-              ) {
+              if (col.innerHTML.includes("Bekleniyor")) {
+                col.classList.add("bc-blue");
+              }
+
+              if (col.innerHTML.includes("Stokta")) {
                 col.classList.add("bc-green");
               }
-              if (col.innerHTML.includes("Hayır")) {
-                col.classList.add("bc-orange");
-              }
-              createSelectBox(
-                col,
-                trackInformation,
-                "customerPartsInformation"
-              );
+
+              createSelectBox(col, trackInformation);
             }
           }
 
@@ -258,12 +256,23 @@ function changeSelect(selectElement) {
   let td = document.getElementById(selectElement.id).parentElement
     .parentElement;
 
-  if (columnName === "customerPartsInformation") {
-    if (selected === "1" || selected === "2") {
-      td.classList.replace("bc-orange", "bc-green");
+  if (columnName === "isDismantling") {
+    if (selected === "1") {
+      td.classList.add("bc-green");
     }
-    if (selected === "3") {
-      td.classList.replace("bc-green", "bc-orange");
+    if (selected === "2") {
+      td.classList.remove("bc-green");
+    }
+  }
+
+  if (columnName === "customerPartsInformation") {
+    td.classList.remove("bc-blue");
+    td.classList.remove("bc-green");
+    if (selected === "1") {
+      td.classList.add("bc-blue");
+    }
+    if (selected === "2") {
+      td.classList.add("bc-green");
     }
   }
 
@@ -418,7 +427,7 @@ function editTable(tdId, rowId) {
   }
 }
 
-function createSelectBox(col, optionsData, columnName) {
+function createSelectBox(col, optionsData) {
   var columnValue = col.innerHTML;
   col.innerHTML = "";
   var selectBox = document.createElement("SELECT");
@@ -435,17 +444,6 @@ function createSelectBox(col, optionsData, columnName) {
     if (columnValue === optionsData[key]) {
       option.setAttribute("selected", true);
     }
-    if (columnName === "customerPartsInformation") {
-      if (optionsData[key] === "Parça Bekleniyor") {
-        option.classList.add("bc-blue-select");
-      } else if ((backColor = optionsData[key] === "Stokta")) {
-        option.classList.add("bc-green");
-      } else {
-        option.classList.add("bc-white");
-      }
-      option.style.color = "black";
-    }
-
     selectBox.appendChild(option);
   });
 }
