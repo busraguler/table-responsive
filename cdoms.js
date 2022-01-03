@@ -330,6 +330,7 @@ function openToDoListModal(columnInfo) {
     $("#toDoListModal").modal("show");
     $("#toDoList").bootstrapTable("destroy").bootstrapTable({
       data: toDoListData,
+      sortReset: true,
     });
   }
 }
@@ -339,6 +340,7 @@ function openWorkOrderDetailModal(cell, rowId) {
   $("#workOrderDetailModal").modal("show");
   $("#workOrderDetail").bootstrapTable("destroy").bootstrapTable({
     data: workOrderDetailData,
+    sortReset: true,
   });
   const table = document.getElementById("workOrderDetail");
   for (let i in table.rows) {
