@@ -69,13 +69,14 @@ $(function () {
       if (dataDetailArrays[rowId] !== undefined && cell.cellIndex === 0) {
         dataDetailArrays[rowId].map((item) => {
           let checkElement = data.find((element) => element.id === item.id);
-          if (!checkElement) {
-            data.splice(rowDataIndex + 1, 0, item);
+          if (checkElement === undefined || !checkElement) {
+            data.splice(parseInt(rowDataIndex) + 1, 0, item);
           } else {
             data = data.filter((x) => x.id !== item.id);
           }
           rowDataIndex++;
         });
+
         $("#table").bootstrapTable("load", data);
       }
       /** Tabloda Detay alanlarının oluşturulması*/
@@ -169,6 +170,7 @@ function tableConfig() {
           // Editable input
           if (col.classList.contains("editableInput")) {
             col.classList.add("bc-blue");
+            col.classList.add("cursorPointer");
           }
           // Editable DateRangePicker ve DatePicker
           if (
@@ -177,10 +179,12 @@ function tableConfig() {
           ) {
             col.classList.add("bc-blue");
             col.setAttribute("data-toggle", "modal");
+            col.classList.add("cursorPointer");
           }
 
           // Editable Select
           if (col.classList.contains("editableSelect")) {
+            col.classList.add("cursorPointer");
             col.classList.add("d-flex");
             col.classList.add("justify-content-center");
 
@@ -210,6 +214,7 @@ function tableConfig() {
           if (col.classList.contains("openModalPartsList")) {
             col.setAttribute("data-toggle", "modal");
             col.classList.add("textDecoration");
+            col.classList.add("cursorPointer");
             // parça listesi
             if (col.innerHTML.includes("Var")) {
               col.classList.add("bc-green");
@@ -338,31 +343,35 @@ function openToDoListModal(columnInfo) {
 function openWorkOrderDetailModal(cell, rowId) {
   let columnName = cell.id.split("-")[1];
   $("#workOrderDetailModal").modal("show");
-  $("#workOrderDetail").bootstrapTable("destroy").bootstrapTable({
-    data: workOrderDetailData,
-    sortReset: true,
-  });
-  const table = document.getElementById("workOrderDetail");
-  for (let i in table.rows) {
-    let row = table.rows[i];
-    if (row.rowIndex !== 0) {
-      for (let j in row.cells) {
-        let col = row.cells[j];
+  $("#workOrderDetail")
+    .bootstrapTable("destroy")
+    .bootstrapTable({
+      data: workOrderDetailData,
+      sortReset: true,
+      onPostBody: function () {
+        const table = document.getElementById("workOrderDetail");
+        for (let i in table.rows) {
+          let row = table.rows[i];
+          if (row.rowIndex !== 0) {
+            for (let j in row.cells) {
+              let col = row.cells[j];
 
-        if (col.cellIndex === 13) {
-          if (col.innerHTML.includes("Onay")) {
-            col.setAttribute("class", "bc-vivid-green");
-          }
-          if (col.innerHTML.includes("Red")) {
-            col.setAttribute("class", "bc-vivid-red");
-          }
-          if (col.innerHTML.includes("İptal")) {
-            col.setAttribute("class", "bc-vivid-purple");
+              if (col.cellIndex === 13) {
+                if (col.innerHTML.includes("Onay")) {
+                  col.setAttribute("class", "bc-vivid-green");
+                }
+                if (col.innerHTML.includes("Red")) {
+                  col.setAttribute("class", "bc-vivid-red");
+                }
+                if (col.innerHTML.includes("İptal")) {
+                  col.setAttribute("class", "bc-vivid-purple");
+                }
+              }
+            }
           }
         }
-      }
-    }
-  }
+      },
+    });
 }
 
 function openPartsOrdersAndPickingModal(cell, rowId) {

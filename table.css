@@ -297,6 +297,5 @@ tbody td {
   overflow-y: initial !important;
 }
 .modal-body {
-  height: 80vh;
   overflow-y: auto;
 }
