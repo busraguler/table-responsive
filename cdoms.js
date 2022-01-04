@@ -36,18 +36,26 @@ $(function () {
       const cell = e.target.closest("th");
       // Tüm detayları açmak için
       if (cell.id === "detail-view") {
-        let allDetailsViewSign = cell
-          .querySelector("div")
-          .querySelector("div").innerHTML;
+          for (let i in table.rows) {         
+            let row = table.rows[i];
+            if(i !== "length" && i !== "item" && i !== "namedItem" && i !== 0){
+              if(dataDetailArrays[row.id] !== undefined){
+                console.log(i)
+                dataDetailArrays[row.id].map((item) => {
+                  let checkElement = data.find((element) => element.id === item.id);
+                  let rank = data.map(function(e) { return e.id; }).indexOf(row.id.toString());
+                  if (checkElement === undefined || !checkElement) {
+                    data.splice(parseInt(rank + 1), 0, item);
+                  } else {
+                    data = data.filter((x) => x.id !== item.id);
+                  }
 
-        var detailIcons = document.getElementsByClassName("detailButton");
-        detailIcons.forEach((element) => {
-          if (allDetailsViewSign === "+") {
-            element.innerHTML === "+" && element.click();
-          } else {
-            element.innerHTML === "-" && element.click();
+                });
+              }
+            }
           }
-        });
+
+          $("#table").bootstrapTable("load", data);
       }
     });
   }

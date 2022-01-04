@@ -299,3 +299,11 @@ tbody td {
 .modal-body {
   overflow-y: auto;
 }
+.modal-lg, .modal-xl {
+  max-width: 95% !important;
+}
+
+.daterangepicker.ltr.show-calendar.opensleft {
+  right: 45% !important;
+  left: auto !important;
+}
