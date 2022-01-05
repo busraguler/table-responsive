@@ -1,4 +1,4 @@
-var mainTableData = [
+var data = [
   {
     id: "1",
     requestNumber: "111",

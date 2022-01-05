@@ -36,9 +36,9 @@
     />
     <link rel="stylesheet" href="./table.css" />
   </head>
-  <body onScroll="handleOnScroll();">
+  <body>
     <!-- Main Table-->
-    <div style="padding: 20px" onScroll="handleOnScroll();">
+    <div style="padding: 20px">
       <table
         data-toggle="table"
         id="table"
@@ -46,11 +46,10 @@
         data-filter-control="true"
         data-search="true"
         data-show-export="true"
-        onScroll="handleOnScroll();"
       >
         <thead>
           <tr>
-            <th data-field="detailButton"></th>
+            <th></th>
             <th data-field="requestNumber">Talep No</th>
             <th data-field="itemNo">ERS İşemri/Kalem No</th>
             <th data-field="customer">Müşteri</th>

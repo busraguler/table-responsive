@@ -1,6 +1,5 @@
 const numberOfColumnsFixed = 9;
 const table = document.getElementById("table");
-let data = mainTableData;
 
 $(document).ready(function () {
   $("#table")
@@ -30,32 +29,37 @@ toggleZoomScreen();
 $(function () {
   $("#table").bootstrapTable("load", data);
   $("select").selectpicker("refresh");
+
   const thead = document.querySelector("thead");
   if (thead) {
     thead.addEventListener("click", function (e) {
       const cell = e.target.closest("th");
       // Tüm detayları açmak için
       if (cell.id === "detail-view") {
-          for (let i in table.rows) {         
-            let row = table.rows[i];
-            if(i !== "length" && i !== "item" && i !== "namedItem" && i !== 0){
-              if(dataDetailArrays[row.id] !== undefined){
-                console.log(i)
-                dataDetailArrays[row.id].map((item) => {
-                  let checkElement = data.find((element) => element.id === item.id);
-                  let rank = data.map(function(e) { return e.id; }).indexOf(row.id.toString());
-                  if (checkElement === undefined || !checkElement) {
-                    data.splice(parseInt(rank + 1), 0, item);
-                  } else {
-                    data = data.filter((x) => x.id !== item.id);
-                  }
-
-                });
-              }
+        let sign = cell.querySelector("div").querySelector("div").innerHTML;
+        for (let i in table.rows) {
+          let row = table.rows[i];
+          if (i !== "length" && i !== "item" && i !== "namedItem" && i !== 0) {
+            if (dataDetailArrays[row.id] !== undefined) {
+              dataDetailArrays[row.id].map((item) => {
+                let checkElement = data.find(
+                  (element) => element.id === item.id
+                );
+                let rank = data
+                  .map(function (e) {
+                    return e.id;
+                  })
+                  .indexOf(row.id.toString());
+                if (checkElement === undefined || !checkElement) {
+                  if (sign === "+") data.splice(parseInt(rank + 1), 0, item);
+                } else {
+                  if (sign === "-") data = data.filter((x) => x.id !== item.id);
+                }
+              });
             }
           }
-
-          $("#table").bootstrapTable("load", data);
+        }
+        $("#table").bootstrapTable("load", data);
       }
     });
   }
@@ -544,16 +548,15 @@ function calculateOffsetWidth(element) {
 }
 
 function detailButtonSign() {
-  mainTableData.map((item) => {
+  data.map((item) => {
     if (dataDetailArrays[item.id] !== undefined) {
       dataDetailArrays[item.id].map((x) => {
-        data.map((t) => {
-          if (t.id === x.id) {
-            $("#detail" + item.id)
-              .children()
-              .text("-");
-          }
-        });
+        let check = data.find((t) => t.id === x.id);
+        if (check) {
+          $("#detail" + item.id)
+            .children()
+            .text("-");
+        }
       });
     }
   });
@@ -566,10 +569,9 @@ function detailButtonSign() {
     element.innerHTML === "-" && minusNumber++;
   });
 
-  if (detailIcons.length === plusNumber) {
+  if (plusNumber > minusNumber) {
     $(".openAllDetails").text("+");
-  } else if (detailIcons.length === minusNumber) {
-    $(".openAllDetails").text("-");
   } else {
+    $(".openAllDetails").text("-");
   }
 }
