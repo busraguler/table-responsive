@@ -189,9 +189,11 @@ function tableConfig() {
             col.classList.contains("editableDateRangePicker") ||
             col.classList.contains("editableDatePicker")
           ) {
-            col.classList.add("bc-blue");
-            col.setAttribute("data-toggle", "modal");
-            col.classList.add("cursorPointer");
+            if (colName !== "externalWashingPlan" || row.rowIndex !== 2) {
+              col.classList.add("bc-blue");
+              col.setAttribute("data-toggle", "modal");
+              col.classList.add("cursorPointer");
+            }
           }
 
           // Editable Select
