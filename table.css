@@ -181,6 +181,17 @@ a {
   border: unset;
 }
 
+.editableSelect {
+  border: unset !important;
+}
+
+.bootstrap-select > .dropdown-toggle {
+  width: unset !important;
+}
+.bootstrap-select .dropdown-toggle .filter-option-inner-inner {
+  margin-right: 4px;
+}
+
 /**** Modal  ***/
 .modal-dialog {
   width: 100%;
@@ -299,7 +310,8 @@ tbody td {
 .modal-body {
   overflow-y: auto;
 }
-.modal-lg, .modal-xl {
+.modal-lg,
+.modal-xl {
   max-width: 95% !important;
 }
 

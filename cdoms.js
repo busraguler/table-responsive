@@ -22,7 +22,7 @@ $(document).ready(function () {
 });
 
 function toggleZoomScreen() {
-  document.body.style.zoom = "60%";
+  document.body.style.zoom = "70%";
 }
 toggleZoomScreen();
 
@@ -189,7 +189,14 @@ function tableConfig() {
             col.classList.contains("editableDateRangePicker") ||
             col.classList.contains("editableDatePicker")
           ) {
-            if (colName !== "externalWashingPlan" || row.rowIndex !== 2) {
+            // dataDetailArrays içinde varsa detay değil ana satırdır
+
+            if (
+              dataDetailArrays[row.id] !== undefined ||
+              colName === "assemblyPlan" ||
+              colName === "ersRepairPlan" ||
+              colName === "dismantlingPlan"
+            ) {
               col.classList.add("bc-blue");
               col.setAttribute("data-toggle", "modal");
               col.classList.add("cursorPointer");
@@ -197,7 +204,10 @@ function tableConfig() {
           }
 
           // Editable Select
-          if (col.classList.contains("editableSelect")) {
+          if (
+            col.classList.contains("editableSelect") &&
+            dataDetailArrays[row.id] !== undefined
+          ) {
             col.classList.add("cursorPointer");
             col.classList.add("d-flex");
             col.classList.add("justify-content-center");
@@ -225,7 +235,10 @@ function tableConfig() {
           }
 
           // Parça Listesi Modal
-          if (col.classList.contains("openModalPartsList")) {
+          if (
+            col.classList.contains("openModalPartsList") &&
+            dataDetailArrays[row.id] !== undefined
+          ) {
             col.setAttribute("data-toggle", "modal");
             col.classList.add("textDecoration");
             col.classList.add("cursorPointer");
@@ -253,7 +266,10 @@ function tableConfig() {
             "<a class='ml-2' onclick='openToDoListModal(this)' data-toggle='modal'><img src='./workOrder.png' width='20px' height='20px' /></a>";
         }
 
-        if (colName === "offerStatus") {
+        if (
+          colName === "offerStatus" &&
+          dataDetailArrays[row.id] !== undefined
+        ) {
           // teklif durumu - arka plan rengi
           if (col.innerHTML.includes("Onay")) {
             col.setAttribute("class", "bc-green");
