@@ -34,7 +34,7 @@ var data = [
     exitAppraisal: "04.10.2021-04.10.2021",
     tatErs: "8/10",
     enthusiasm: "04.10.2021",
-    tatGeneralCrc: "11/12",
+
     notes: "Lorem ipsum dolar sit ahmet aadkd",
   },
   {
@@ -72,7 +72,7 @@ var data = [
     exitAppraisal: "04.10.2021-04.10.2021",
     tatErs: "8/10",
     enthusiasm: "04.10.2021",
-    tatGeneralCrc: "11/12",
+
     notes: "Lorem ipsum dolar sit ahmet aadkd",
   },
   {
@@ -110,7 +110,7 @@ var data = [
     exitAppraisal: "04.10.2021-04.10.2021",
     tatErs: "8/10",
     enthusiasm: "04.10.2021",
-    tatGeneralCrc: "11/12",
+
     notes: "Lorem ipsum dolar sit ahmet aadkd",
   },
   {
@@ -148,7 +148,7 @@ var data = [
     exitAppraisal: "04.10.2021-04.10.2021",
     tatErs: "8/10",
     enthusiasm: "04.10.2021",
-    tatGeneralCrc: "11/12",
+
     notes: "Lorem ipsum dolar sit ahmet aadkd",
   },
   {
@@ -186,7 +186,7 @@ var data = [
     exitAppraisal: "04.10.2021-04.10.2021",
     tatErs: "8/10",
     enthusiasm: "04.10.2021",
-    tatGeneralCrc: "11/12",
+
     notes: "Lorem ipsum dolar sit ahmet aadkd",
   },
   {
@@ -224,7 +224,7 @@ var data = [
     exitAppraisal: "04.10.2021-04.10.2021",
     tatErs: "8/10",
     enthusiasm: "04.10.2021",
-    tatGeneralCrc: "11/12",
+
     notes: "Lorem ipsum dolar sit ahmet aadkd",
   },
   {
@@ -262,7 +262,7 @@ var data = [
     exitAppraisal: "04.10.2021-04.10.2021",
     tatErs: "8/10",
     enthusiasm: "04.10.2021",
-    tatGeneralCrc: "11/12",
+
     notes: "Lorem ipsum dolar sit ahmet aadkd",
   },
   {
@@ -300,7 +300,7 @@ var data = [
     exitAppraisal: "04.10.2021-04.10.2021",
     tatErs: "8/10",
     enthusiasm: "04.10.2021",
-    tatGeneralCrc: "11/12",
+
     notes: "Lorem ipsum dolar sit ahmet aadkd",
   },
   {
@@ -338,7 +338,7 @@ var data = [
     exitAppraisal: "04.10.2021-04.10.2021",
     tatErs: "8/10",
     enthusiasm: "04.10.2021",
-    tatGeneralCrc: "11/12",
+
     notes: "Lorem ipsum dolar sit ahmet aadkd",
   },
   {
@@ -376,7 +376,7 @@ var data = [
     exitAppraisal: "04.10.2021-04.10.2021",
     tatErs: "8/10",
     enthusiasm: "04.10.2021",
-    tatGeneralCrc: "11/12",
+
     notes: "Lorem ipsum dolar sit ahmet aadkd",
   },
   {
@@ -414,7 +414,7 @@ var data = [
     exitAppraisal: "04.10.2021-04.10.2021",
     tatErs: "8/10",
     enthusiasm: "04.10.2021",
-    tatGeneralCrc: "11/12",
+
     notes: "Lorem ipsum dolar sit ahmet aadkd",
   },
   {
@@ -452,7 +452,7 @@ var data = [
     exitAppraisal: "04.10.2021-04.10.2021",
     tatErs: "8/10",
     enthusiasm: "04.10.2021",
-    tatGeneralCrc: "11/12",
+
     notes: "Lorem ipsum dolar sit ahmet aadkd",
   },
 ];
@@ -493,7 +493,7 @@ var detailTableData1 = [
     exitAppraisal: "",
     tatErs: "8/10",
     enthusiasm: "",
-    tatGeneralCrc: "11/12",
+
     notes: "Lorem ipsum dolar sit ahmet aadkd",
   },
   {
@@ -531,7 +531,7 @@ var detailTableData1 = [
     exitAppraisal: "",
     tatErs: "8/10",
     enthusiasm: "",
-    tatGeneralCrc: "11/12",
+
     notes: "Lorem ipsum dolar sit ahmet aadkd",
   },
 ];
@@ -571,7 +571,7 @@ var detailTableData2 = [
     exitAppraisal: "",
     tatErs: "8/10",
     enthusiasm: "",
-    tatGeneralCrc: "11/12",
+
     notes: "Lorem ipsum dolar sit ahmet aadkd",
   },
   {
@@ -609,7 +609,7 @@ var detailTableData2 = [
     exitAppraisal: "",
     tatErs: "8/10",
     enthusiasm: "",
-    tatGeneralCrc: "11/12",
+
     notes: "Lorem ipsum dolar sit ahmet aadkd",
   },
 ];
@@ -650,7 +650,7 @@ var detailTableData3 = [
     exitAppraisal: "",
     tatErs: "8/10",
     enthusiasm: "",
-    tatGeneralCrc: "11/12",
+
     notes: "Lorem ipsum dolar sit ahmet aadkd",
   },
 ];
@@ -690,7 +690,7 @@ var detailTableData4 = [
     exitAppraisal: "",
     tatErs: "8/10",
     enthusiasm: "",
-    tatGeneralCrc: "11/12",
+
     notes: "Lorem ipsum dolar sit ahmet aadkd",
   },
 ];
@@ -730,7 +730,7 @@ var detailTableData5 = [
     exitAppraisal: "",
     tatErs: "8/10",
     enthusiasm: "",
-    tatGeneralCrc: "11/12",
+
     notes: "Lorem ipsum dolar sit ahmet aadkd",
   },
 ];
@@ -770,7 +770,7 @@ var detailTableData6 = [
     exitAppraisal: "",
     tatErs: "8/10",
     enthusiasm: "",
-    tatGeneralCrc: "11/12",
+
     notes: "Lorem ipsum dolar sit ahmet aadkd",
   },
 ];
@@ -810,7 +810,7 @@ var detailTableData7 = [
     exitAppraisal: "",
     tatErs: "8/10",
     enthusiasm: "",
-    tatGeneralCrc: "11/12",
+
     notes: "Lorem ipsum dolar sit ahmet aadkd",
   },
 ];
@@ -850,7 +850,7 @@ var detailTableData8 = [
     exitAppraisal: "",
     tatErs: "8/10",
     enthusiasm: "",
-    tatGeneralCrc: "11/12",
+
     notes: "Lorem ipsum dolar sit ahmet aadkd",
   },
 ];
@@ -890,7 +890,7 @@ var detailTableData9 = [
     exitAppraisal: "",
     tatErs: "8/10",
     enthusiasm: "",
-    tatGeneralCrc: "11/12",
+
     notes: "Lorem ipsum dolar sit ahmet aadkd",
   },
 ];
@@ -930,7 +930,7 @@ var detailTableData10 = [
     exitAppraisal: "",
     tatErs: "8/10",
     enthusiasm: "",
-    tatGeneralCrc: "11/12",
+
     notes: "Lorem ipsum dolar sit ahmet aadkd",
   },
 ];
@@ -970,7 +970,7 @@ var detailTableData11 = [
     exitAppraisal: "",
     tatErs: "8/10",
     enthusiasm: "",
-    tatGeneralCrc: "11/12",
+
     notes: "Lorem ipsum dolar sit ahmet aadkd",
   },
 ];
@@ -1010,7 +1010,7 @@ var detailTableData12 = [
     exitAppraisal: "",
     tatErs: "8/10",
     enthusiasm: "",
-    tatGeneralCrc: "11/12",
+
     notes: "Lorem ipsum dolar sit ahmet aadkd",
   },
 ];
