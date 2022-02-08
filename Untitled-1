@@ -1,0 +1,629 @@
+function ajaxRequest(n) {
+  $.get("/Ers/GetErsPlanDatas?" + $.param(n.data)).then(function (t) {
+    dataArray = t;
+    checkedAjax = !0;
+    data = t;
+    n.success(t);
+  });
+}
+function toggleZoomScreen() {
+  document.body.style.zoom = "70%";
+}
+function getColName(n) {
+  return (
+    (colNames = [
+      "",
+      "id",
+      "WO",
+      "CustomerName",
+      "CustomerSegment",
+      "PSSRName",
+      "Model",
+      "SN",
+      "ReceptionDate",
+      "ShortPlanStatusName",
+      "PlannedWashingDates",
+      "ActualWashingDates",
+      "PlannedInputExpertiseDates",
+      "ActualInputExpertiseDates",
+      "DisassemblyRequired",
+      "PlannedDissassemblyDates",
+      "ActualDissassemblyDates",
+      "PlannedDefectListDates",
+      "ActualDefectListDates",
+      "PlannedQuotationDate",
+      "ActualQuotationDate",
+      "OfferTAT",
+      "offerStatus",
+      "partsList",
+      "CustomerPartsStatus",
+      "CustomerPartsDate",
+      "PlannedAssemblyDates",
+      "ActualAssemblyDates",
+      "PlannedRepairDates",
+      "ActualRepairDates",
+      "PlannedOutputExpertiseDates",
+      "ActualOutputExpertiseDates",
+      "tatErs",
+      "DispatchDate",
+      "Description",
+    ]),
+    colNames[n]
+  );
+}
+function tableConfig() {
+  for (let t = 0; t < table.rows.length; ++t) {
+    let i = table.rows[t];
+    if ((fixedColumn(i, t), i.rowIndex !== 0)) {
+      i.setAttribute("id", i.getAttribute("data-uniqueid"));
+      for (let t in i.cells) {
+        let r = i.cells[t],
+          u = getColName(r.cellIndex);
+        r.cellIndex !== undefined &&
+          r.cellIndex !== 0 &&
+          r.setAttribute("id", i.getAttribute("data-uniqueid") + "-" + u);
+        var n = 0;
+        dataDetailArrays.filter((n) => n.id == i.id).length > 0 && (n = 1);
+        r.cellIndex !== undefined &&
+          r.cellIndex === 0 &&
+          (r.setAttribute("id", "detail" + i.id),
+          (r.innerHTML =
+            dataArray[i.rowIndex - 1] != undefined &&
+            dataArray[i.rowIndex - 1].rowId != 0
+              ? ""
+              : "<div class='detailButton'>+</div>"));
+        r.classList &&
+          (r.classList.contains("editableInput") &&
+            (r.classList.add("bc-blue"), r.classList.add("cursorPointer")),
+          (r.classList.contains("editableDateRangePicker") ||
+            r.classList.contains("editableDatePicker")) &&
+            (u.includes("Planned") ||
+              u === "DispatchDate" ||
+              u === "CustomerPartsDate") &&
+            (r.classList.add("bc-blue"),
+            r.setAttribute("data-toggle", "modal"),
+            r.classList.add("cursorPointer")),
+          r.classList.contains("editableSelect") &&
+            (r.classList.add("cursorPointer"),
+            r.classList.add("d-flex"),
+            r.classList.add("justify-content-center"),
+            u === "DisassemblyRequired" &&
+              (r.innerHTML.includes("Evet") && r.classList.add("bc-green"),
+              createSelectBox(r, dismantlingSelectOptions)),
+            u === "CustomerPartsStatus" &&
+              (r.innerHTML.includes("Bekleniyor") && r.classList.add("bc-blue"),
+              r.innerHTML.includes("Stokta") && r.classList.add("bc-green"),
+              createSelectBox(r, trackInformation))),
+          r.classList.contains("openModalPartsList") &&
+            (r.setAttribute("data-toggle", "modal"),
+            r.classList.add("textDecoration"),
+            r.classList.add("cursorPointer"),
+            r.innerHTML.includes("Var") && r.classList.add("bc-green"),
+            r.innerHTML.includes("Yok") && r.classList.add("bc-orange")));
+        u === "WO" &&
+          (r.setAttribute("data-toggle", "modal"),
+          r.classList.add("cursorPointer"),
+          n == 0 &&
+            (r.innerHTML =
+              r.innerHTML +
+              "<a class='ml-2' onclick='openToDoListModal(this)' data-toggle='modal'><img src='/assets/images/workOrder.png' width='20px' height='20px' /></a>"));
+        u === "offerStatus" &&
+          (r.innerHTML.includes("Onay") && r.setAttribute("class", "bc-green"),
+          r.innerHTML.includes("Red") && r.setAttribute("class", "bc-orange"));
+      }
+    }
+  }
+}
+function changeSelect(n) {
+  let u = 0;
+  u =
+    n.id.split("-").length > 3 ? "-" + n.id.split("-")[1] : n.id.split("-")[0];
+  let r = n.id.split("-")[n.id.split("-").length - 2],
+    i = n.value,
+    t = document.getElementById(n.id).parentElement.parentElement;
+  r === "isDismantling" &&
+    (i === "1" && t.classList.add("bc-green"),
+    i === "2" && t.classList.remove("bc-green"));
+  r === "CustomerPartsStatus" &&
+    (t.classList.remove("bc-blue"),
+    t.classList.remove("bc-green"),
+    i === "2" && t.classList.add("bc-blue"),
+    i === "3" && t.classList.add("bc-green"));
+  editAjax(r, u, i, 3);
+}
+function openDatePicker(n, t) {
+  var i;
+  n.innerHTML.split("-")[0].trim() != "" && (i = n.innerHTML.split("-")[0]);
+  $("#dataPickerModal").modal("show");
+  $("#datePicker").daterangepicker(
+    {
+      timePicker: !0,
+      singleDatePicker: !0,
+      showDropdowns: !0,
+      startDate: i,
+      startDate: i,
+      locale: { format: "DD.M.YYYY" },
+    },
+    function (i) {
+      n.innerHTML = i.format("DD.M.YYYY");
+      editAjax(
+        n.id.split("-")[n.id.split("-").length - 1],
+        t,
+        i.format("DD.M.YYYY"),
+        0
+      );
+      $("#dataPickerModal").modal("hide");
+    }
+  );
+}
+function openDateRangePicker(n, t) {
+  var i, r;
+  n.innerHTML.split("-")[0].trim() != "" && (i = n.innerHTML.split("-")[0]);
+  n.innerHTML.split("-")[1].trim() != "" && (r = n.innerHTML.split("-")[1]);
+  $("#dateRangePickerModal").modal("show");
+  $("#dateRangePicker").daterangepicker(
+    {
+      opens: "left",
+      startDate: i,
+      endDate: r,
+      locale: { format: "DD.M.YYYY" },
+    },
+    function (i, r) {
+      n.innerHTML = i.format("DD.M.YYYY") + "-" + r.format("DD.MM.YYYY");
+      $("#dateRangePickerModal").modal("hide");
+      editAjax(
+        n.id.split("-")[n.id.split("-").length - 1],
+        t,
+        i.format("DD.M.YYYY") + "-" + r.format("DD.MM.YYYY"),
+        1
+      );
+    }
+  );
+}
+function openToDoListModal(n) {
+  let t = 0;
+  t =
+    n.parentElement.id.split("-").length > 2
+      ? "-" + n.parentElement.id.split("-")[1]
+      : n.parentElement.id.split("-")[0];
+  let i = n.parentElement.id.split("-")[n.parentElement.id.split("-") - 1];
+  n.getAttribute("data-toggle") === "modal" &&
+    ($("#toDoListModal").modal("show"),
+    $("#toDoList").bootstrapTable("destroy").bootstrapTable({ sortReset: !0 }),
+    $.post("/Ajax/ErsTimerDocumentHistory?planId=" + t, function (n) {
+      $("#toDoList")
+        .bootstrapTable("destroy")
+        .bootstrapTable({ data: n, sortReset: !0 });
+    }).always(function (n) {
+      n.length == undefined &&
+        $("#toDoList")
+          .bootstrapTable("destroy")
+          .bootstrapTable({ data: undefined, sortReset: !0 });
+    }));
+}
+function openWorkOrderDetailModal(n) {
+  let i = n.id.split("-")[1];
+  var t = n.innerText;
+  $("#workOrderDetailModal").modal("show");
+  $("#workOrderDetailModal").bootstrapTable("destroy").bootstrapTable({});
+  $.post("/Ers/GetWOReleatedDocumentDetail?docNumber=" + t, function (n) {
+    $("#workOrderDetail")
+      .bootstrapTable("destroy")
+      .bootstrapTable({
+        data: n,
+        sortReset: !0,
+        onPostBody: function () {
+          const n = document.getElementById("workOrderDetail");
+          for (let t in n.rows) {
+            let i = n.rows[t];
+            if (i.rowIndex !== 0)
+              for (let n in i.cells) {
+                let t = i.cells[n];
+                t.cellIndex === 13 &&
+                  (t.innerHTML.includes("Onay")
+                    ? t.setAttribute("class", "bc-vivid-green")
+                    : t.innerHTML.includes("Red")
+                    ? t.setAttribute("class", "bc-vivid-red")
+                    : t.setAttribute("class", "bc-vivid-purple"));
+              }
+          }
+        },
+      });
+  });
+}
+function openPartsOrdersAndPickingModal(n, t) {
+  let i = n.id.split("-")[1];
+  partOrderedCheckboxItemSegments = [];
+  partsOrderPlanId = t;
+  $("#partsOrdersAndPickingModal").modal("show");
+  $("#partsOrdersAndPicking").bootstrapTable("destroy").bootstrapTable({});
+  $.get("/Ajax/GetOrderParts?planId=" + t, function (n) {
+    $("#partsOrdersAndPicking")
+      .bootstrapTable("destroy")
+      .bootstrapTable({ data: n });
+    document.getElementById("total-record").innerHTML = n.length;
+    var t = $('#partsOrdersAndPicking td input[type="checkbox"]'),
+      r = $('#partsOrdersAndPicking th input[type="checkbox"]'),
+      i = 0;
+    $("#total-selected").text(0);
+    t.change(function () {
+      partOrderedCheckboxItemSegments = [];
+      t.filter(":checked").each(function (n) {
+        const i = $(t[n]).closest("td");
+        if (i) {
+          const r = i[0].parentElement;
+          let u = r.getAttribute("data-uniqueid");
+          i[0].cellIndex == 11 && partOrderedCheckboxItemSegments.push(u);
+        }
+      });
+      i = t.filter(":checked").length;
+      i > 0
+        ? $("#partsOrderBtn").prop("disabled", !1)
+        : $("#partsOrderBtn").prop("disabled", !0);
+      $("#total-selected").text(i);
+    });
+    r.change(function () {
+      partOrderedCheckboxItemSegments = [];
+      t.filter(":checked").each(function (n) {
+        const i = $(t[n]).closest("td");
+        if (i) {
+          const r = i[0].parentElement;
+          let u = r.getAttribute("data-uniqueid");
+          i[0].cellIndex == 11 && partOrderedCheckboxItemSegments.push(u);
+        }
+      });
+      i = t.filter(":checked").length;
+      $("#total-selected").text(i);
+    });
+    $("#deliveryDate").daterangepicker(
+      {
+        singleDatePicker: !0,
+        showDropdowns: !0,
+        locale: { format: "DD.M.YYYY" },
+      },
+      function (n) {
+        console.log(n.format("DD.M.YYYY"));
+      }
+    );
+  }).always(function (n) {
+    n.length == undefined &&
+      $("#partsOrdersAndPicking")
+        .bootstrapTable("destroy")
+        .bootstrapTable({ data: undefined });
+  });
+}
+function clearPartsOrdersModal(n) {
+  partOrderedCheckboxItemSegments = [];
+  partsOrderPlanId = n;
+  $("#partsOrdersAndPicking").bootstrapTable("destroy").bootstrapTable({});
+  $.get("/Ajax/GetOrderParts?planId=" + n, function (n) {
+    $("#partsOrdersAndPicking")
+      .bootstrapTable("destroy")
+      .bootstrapTable({ data: n });
+    document.getElementById("total-record").innerHTML = n.length;
+    var t = $('#partsOrdersAndPicking td input[type="checkbox"]'),
+      r = $('#partsOrdersAndPicking th input[type="checkbox"]'),
+      i = 0;
+    $("#total-selected").text(0);
+    t.change(function () {
+      partOrderedCheckboxItemSegments = [];
+      t.filter(":checked").each(function (n) {
+        const i = $(t[n]).closest("td");
+        if (i) {
+          const r = i[0].parentElement;
+          let u = r.getAttribute("data-uniqueid");
+          i[0].cellIndex == 11 && partOrderedCheckboxItemSegments.push(u);
+        }
+      });
+      i = t.filter(":checked").length;
+      $("#total-selected").text(i);
+    });
+    r.change(function () {
+      partOrderedCheckboxItemSegments = [];
+      t.filter(":checked").each(function (n) {
+        const i = $(t[n]).closest("td");
+        if (i) {
+          const r = i[0].parentElement;
+          let u = r.getAttribute("data-uniqueid");
+          i[0].cellIndex == 11 && partOrderedCheckboxItemSegments.push(u);
+        }
+      });
+      i = t.filter(":checked").length;
+      $("#total-selected").text(i);
+    });
+    $("#deliveryDate").daterangepicker(
+      {
+        singleDatePicker: !0,
+        showDropdowns: !0,
+        locale: { format: "DD.M.YYYY" },
+      },
+      function (n) {
+        console.log(n.format("DD.M.YYYY"));
+      }
+    );
+  }).always(function (n) {
+    n.length == undefined &&
+      $("#partsOrdersAndPicking")
+        .bootstrapTable("destroy")
+        .bootstrapTable({ data: undefined });
+  });
+}
+function editTable(n, t) {
+  var u = document.getElementById(t),
+    r,
+    i;
+  clickedTd = u.getElementsByTagName("td")[n];
+  r = document.getElementById("editable-input");
+  r === null
+    ? ((i = document.createElement("input")),
+      i.setAttribute("id", "editable-input"),
+      i.setAttribute("value", clickedTd.innerHTML),
+      (clickedTd.innerHTML = ""),
+      clickedTd.appendChild(i))
+    : ((i = document.getElementById("editable-input")),
+      i.addEventListener("keyup", function (r) {
+        r.keyCode === 13 &&
+          (r.preventDefault(),
+          (clickedTd.innerHTML = i.value),
+          i.remove(),
+          editAjax(n.split("-")[n.split("-").length - 1], t, i.value, 2));
+      }));
+}
+function createSelectBox(n, t) {
+  var u = n.innerHTML,
+    i,
+    r,
+    f;
+  n.innerHTML = "";
+  i = document.createElement("SELECT");
+  i.setAttribute("id", n.id + "-select");
+  i.setAttribute("class", "selectpicker");
+  i.setAttribute("onchange", "changeSelect(this)");
+  n.appendChild(i);
+  r = document.createElement("option");
+  r.setAttribute("value", "");
+  f = document.createTextNode("");
+  r.appendChild(f);
+  u.trim() === "" && r.setAttribute("selected", !0);
+  i.appendChild(r);
+  Object.keys(t).map(function (n) {
+    var r = document.createElement("option"),
+      f;
+    r.setAttribute("value", n);
+    f = document.createTextNode(t[n]);
+    r.appendChild(f);
+    u === t[n] && r.setAttribute("selected", !0);
+    i.appendChild(r);
+  });
+}
+function editAjax(n, t, i, r) {
+  console.log("id:" + t + ", column: " + n, "newValue: " + i);
+  var u = 0;
+  dataDetailArrays.filter((n) => n.id == t).length > 0 && (u = 1);
+  $.post(
+    "/Ers/ColumnsAjaxRequest?columnType=" +
+      r +
+      "&columnName=" +
+      n +
+      "&value=" +
+      i +
+      "&planId=" +
+      t +
+      "&type=" +
+      u,
+    function (n) {
+      console.log(n);
+    }
+  ).always(function (u) {
+    t < 0 &&
+      u > 0 &&
+      (dataArray
+        .filter((n) => n.id == t)
+        .map((f) => {
+          (f.id = u),
+            (f[n] =
+              n == "CustomerPartsStatus"
+                ? i == "1"
+                  ? "Hayır"
+                  : i == "2"
+                  ? "Parça Bekleniyor"
+                  : i == "3"
+                  ? "Stokta"
+                  : ""
+                : n == "isDismantling"
+                ? i == "0"
+                  ? "Hayır"
+                  : i == "1"
+                  ? "Evet"
+                  : ""
+                : i),
+            r == 1 &&
+              dataDetailArrays
+                .filter((n) => n.rowId == t)
+                .map((n) => {
+                  n.id = f.data;
+                });
+        }),
+      $("#table").bootstrapTable("load", dataArray));
+  });
+}
+function fixedColumn(n, t) {
+  let i = 0;
+  for (let r in n.cells) {
+    let u = n.cells[r];
+    u.cellIndex === 0
+      ? t === 0
+        ? u.setAttribute("style", "left: 0px;position: sticky;z-index:65;")
+        : u.setAttribute("style", "left: 0px;position: sticky;z-index:60;")
+      : u.cellIndex <= numberOfColumnsFixed + 1 &&
+        ((i +=
+          n.cells[r - 1] !== undefined &&
+          calculateOffsetWidth(
+            table.rows[t].cells[r - 1].getBoundingClientRect()
+          )),
+        u.cellIndex <= numberOfColumnsFixed &&
+          (t === 0
+            ? u.setAttribute(
+                "style",
+                "left:" + i + "px;position: sticky;z-index:65;"
+              )
+            : u.setAttribute(
+                "style",
+                "left:" + i + "px;position: sticky;z-index:60;"
+              )),
+        u.cellIndex === numberOfColumnsFixed + 1);
+  }
+}
+function scrollBarPosition() {
+  var n, t;
+  let i = 0,
+    r = table.rows[0];
+  n = $(r.cells[10]).offset().left;
+  n != undefined && n > 0 && (i = Math.round(n) - 20);
+  t = document.createElement("style");
+  t.innerHTML =
+    `::-webkit-scrollbar {
+      width: 2px;
+      height: 10px;
+    }::-webkit-scrollbar-track {
+      background: #F1F1F1;
+      margin-left: ` +
+    i +
+    `px;
+    }::-webkit-scrollbar-thumb {
+      background: #888;
+    }::-webkit-scrollbar-thumb:hover {
+      background: rgb(145, 145, 145);
+    }`;
+  document.body.appendChild(t);
+}
+function calculateOffsetWidth(n) {
+  var t;
+  return (t = n.width ? n.width : n.right - n.left), parseFloat(t.toFixed(2));
+}
+function detailButtonSign() {
+  dataArray.map((n) => {
+    dataDetailArrays.filter((t) => t.rowId == n.id) !== undefined &&
+      dataDetailArrays
+        .filter((t) => t.rowId == n.id)
+        .map((t) => {
+          let i = dataArray.find((n) => n.id === t.rowId);
+          i &&
+            $("#detail" + n.id)
+              .children()
+              .text("-");
+        });
+  });
+}
+const numberOfColumnsFixed = 9,
+  table = document.getElementById("table");
+let checkedAjax = !1,
+  partOrderedCheckboxItemSegments = [],
+  partsOrderPlanId = 0;
+$(document).ready(function () {
+  $("#table")
+    .bootstrapTable("destroy")
+    .bootstrapTable({
+      onLoadSuccess: function () {
+        checkedAjax = !1;
+        tableConfig();
+        scrollBarPosition();
+        $("select").selectpicker("refresh");
+      },
+      onPostBody: function () {
+        checkedAjax == !1 &&
+          (tableConfig(),
+          scrollBarPosition(),
+          $("select").selectpicker("refresh"),
+          detailButtonSign());
+      },
+      sortReset: !0,
+      exportDataType: $(this).val(),
+      exportTypes: ["excel"],
+    });
+  $("select").selectpicker("refresh");
+  $(".fixed-table-body").attr(
+    "style",
+    "height:" + (window.innerHeight * 2) / 1.75 + "px !important;"
+  );
+});
+toggleZoomScreen();
+$(function () {
+  $("select").selectpicker("refresh");
+  const n = document.querySelector("tbody");
+  n &&
+    n.addEventListener("click", function (n) {
+      const t = n.target.closest("td");
+      if (t) {
+        const r = t.parentElement;
+        let u = r.getAttribute("data-index"),
+          i = r.getAttribute("data-uniqueid");
+        if (i != -1) {
+          t.cellIndex === 0 &&
+            (dataDetailArrays.filter((n) => n.rowId == i).length > 0
+              ? (dataDetailArrays
+                  .filter((n) => n.rowId == i)
+                  .map((n) => {
+                    const t = dataArray.indexOf(n);
+                    t > -1 && dataArray.splice(t, 1);
+                  }),
+                (dataDetailArrays = dataDetailArrays.filter(
+                  (n) => n.rowId != i
+                )),
+                $("#table").bootstrapTable("load", dataArray))
+              : $.post("/Ers/GetSegmentDetails?planId=" + i, function (n) {
+                  n != undefined &&
+                    n.length > 0 &&
+                    (n.map((n) => {
+                      dataDetailArrays.push(n),
+                        dataArray.splice(parseInt(u) + 1, 0, n),
+                        u++;
+                    }),
+                    $("#table").bootstrapTable("load", dataArray));
+                }));
+          var f = 0;
+          dataDetailArrays.filter((n) => n.id == i).length > 0 && (f = 1);
+          t.classList.contains("editableDateRangePicker") &&
+            t.getAttribute("data-toggle") === "modal" &&
+            openDateRangePicker(t, i);
+          t.id.split("-")[t.id.split("-").length - 1] === "WO" &&
+            t.getAttribute("data-toggle") === "modal" &&
+            n.target.id !== "" &&
+            f == 0 &&
+            openWorkOrderDetailModal(t, i);
+          t.classList.contains("openModalPartsList") &&
+            t.getAttribute("data-toggle") === "modal" &&
+            openPartsOrdersAndPickingModal(t, i);
+          t.classList.contains("editableDatePicker") &&
+            t.getAttribute("data-toggle") === "modal" &&
+            openDatePicker(t, i);
+          t.classList.contains("editableInput") && editTable(t.id, i);
+        }
+      }
+    });
+  $('[data-toggle="tooltip"]').tooltip();
+});
+$("#partsOrderBtn").on("click", function () {
+  partOrderedCheckboxItemSegments != null &&
+  partOrderedCheckboxItemSegments.length > 0
+    ? ($("#partsOrderBtn").prop("disabled", !0),
+      $.post(
+        "/Ers/addOrderParts?planId=" +
+          partsOrderPlanId +
+          "&itemSegmentIds=" +
+          partOrderedCheckboxItemSegments.join() +
+          "&date=" +
+          $("#deliveryDate").val(),
+        function (n) {
+          console.log(n);
+        }
+      ).always(function () {
+        $("#partsOrderBtn").prop("disabled", !1);
+        clearPartsOrdersModal(partsOrderPlanId);
+      }))
+    : swal("Herhangi bir seçim yapmadıgınız için işlem yapılmamıştır.");
+});
+let dataArray = [],
+  dataDetailArrays = [];
+var dismantlingSelectOptions = { 0: "Hayır", 1: "Evet" },
+  trackInformation = { 1: "Hayır", 2: "Parça Bekleniyor", 3: "Stokta" };

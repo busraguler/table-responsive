@@ -143,12 +143,24 @@ a {
   background-color: #ffffff !important;
 }
 
+.bc-blue:hover {
+  background-color: #bbc9d6;
+}
+
+.bc-green:hover {
+  background-color: #a6d6ab;
+}
+
+.bc-orange:hover {
+  background-color: #d1b491;
+}
+
 .bc-blue {
   background-color: #dfefff;
 }
 
 .bc-green {
-  background-color: #c5ffcc !important;
+  background-color: #c5ffcc;
 }
 
 .bc-red {
@@ -179,10 +191,6 @@ a {
 .selectpicker {
   background-color: unset;
   border: unset;
-}
-
-.editableSelect {
-  border: unset !important;
 }
 
 .bootstrap-select > .dropdown-toggle {

@@ -8,9 +8,19 @@ $(document).ready(function () {
       onPostBody: function () {
         tableConfig();
         $("select").selectpicker("refresh");
-
-        /* Detail Button işareti */
         detailButtonSign();
+        console.log($("#table").height(), window.innerHeight);
+        if ($("#table").height() > window.innerHeight) {
+          $(".fixed-table-body").attr(
+            "style",
+            "height:" + (window.innerHeight * 2) / 1.75 + "px !important;"
+          );
+        } else {
+          $(".fixed-table-body").attr("style", "height:100% !important;");
+        }
+        scrollBarPosition();
+        scrollBarPosition();
+        $('[data-toggle="tooltip"]').tooltip();
       },
       sortReset: true,
       data: data,
@@ -18,7 +28,6 @@ $(document).ready(function () {
       exportTypes: ["excel"],
     });
   $("select").selectpicker("refresh");
-  scrollBarPosition();
 });
 
 function toggleZoomScreen() {
@@ -128,17 +137,18 @@ $(function () {
     });
   }
   /*  Ana Tablo td click  */
-
-  $('[data-toggle="tooltip"]').tooltip();
 });
 
 function tableConfig() {
   /*  Ana Tablo düzenleme */
-  for (let i in table.rows) {
+
+  //for (let i in table.rows) {
+  /*  Ana Tablo düzenleme */
+  for (let i = 0; i < table.rows.length; ++i) {
     let row = table.rows[i];
 
     // Kolonları sabitlemek için
-    fixedColumn(row, i);
+    fixedColumn(table.rows[i], i);
 
     // Tüm detayları açacak buton
     if (row.rowIndex === 0) {
@@ -261,9 +271,23 @@ function tableConfig() {
           //toDoListModal
           col.setAttribute("data-toggle", "modal");
           col.classList.add("cursorPointer");
+          col.classList.add("textDecoration");
           col.innerHTML =
             col.innerHTML +
             "<a class='ml-2' onclick='openToDoListModal(this)' data-toggle='modal'><img src='./workOrder.png' width='20px' height='20px' /></a>";
+        }
+
+        if (
+          colName === "itemNo" &&
+          dataDetailArrays[row.getAttribute("data-uniqueid")] === undefined
+        ) {
+          // ERS İşemri/Kalem No
+          //workOrderDetailModal
+          //toDoListModal
+          col.classList.add("cursorPointer");
+          col.setAttribute("data-toggle", "tooltip");
+          col.setAttribute("data-placement", "bottom");
+          col.setAttribute("title", col.innerHTML);
         }
 
         if (
@@ -315,13 +339,16 @@ function changeSelect(selectElement) {
 }
 
 function openDatePicker(cell, rowId) {
+  var startDate;
+  if (cell.innerHTML.split("-")[0].trim() != "")
+    startDate = cell.innerHTML.split("-")[0];
   $("#dataPickerModal").modal("show");
   $("#datePicker").daterangepicker(
     {
       singleDatePicker: true,
       showDropdowns: true,
-      startDate: cell.innerHTML.split("-")[0],
-      startDate: cell.innerHTML.split("-")[0],
+      startDate: startDate,
+      startDate: startDate,
       locale: {
         format: "DD.M.YYYY",
       },
@@ -332,15 +359,36 @@ function openDatePicker(cell, rowId) {
       $("#dataPickerModal").modal("hide");
     }
   );
+  $('input[id="datePicker"]').on(
+    "apply.daterangepicker",
+    function (ev, picker) {
+      if (cell.innerHTML.split("-")[0].trim() === "") {
+        cell.innerHTML = $('input[id="datePicker"]').val();
+        editAjax(
+          cell.id.split("-")[1],
+          rowId,
+          $('input[id="datePicker"]').val()
+        );
+      }
+      $("#dataPickerModal").modal("hide");
+    }
+  );
 }
 
 function openDateRangePicker(cell, rowId) {
   $("#dateRangePickerModal").modal("show");
+  var startDate, endDate;
+  if (cell.innerHTML.split("-")[0].trim() != "")
+    startDate = cell.innerHTML.split("-")[0];
+
+  if (cell.innerHTML.split("-")[1].trim() != "")
+    endDate = cell.innerHTML.split("-")[1];
+
   $("#dateRangePicker").daterangepicker(
     {
       opens: "left",
-      startDate: cell.innerHTML.split("-")[0],
-      endDate: cell.innerHTML.split("-")[1],
+      startDate: startDate,
+      endDate: endDate,
       locale: {
         format: "DD.M.YYYY",
       },
@@ -354,6 +402,23 @@ function openDateRangePicker(cell, rowId) {
         rowId,
         start.format("DD.M.YYYY") + "-" + end.format("DD.MM.YYYY")
       );
+    }
+  );
+
+  $('input[id="dateRangePicker"]').on(
+    "apply.daterangepicker",
+    function (ev, picker) {
+      if (cell.innerHTML.split("-")[0].trim() === "") {
+        cell.innerHTML = $('input[id="dateRangePicker"]').val();
+        editAjax(
+          cell.id.split("-")[1],
+          rowId,
+          $('input[id="dateRangePicker"]').val().split("-")[0] +
+            "-" +
+            $('input[id="dateRangePicker"]').val().split("-")[1]
+        );
+      }
+      $("#dateRangePickerModal").modal("hide");
     }
   );
 }
@@ -410,11 +475,34 @@ function openPartsOrdersAndPickingModal(cell, rowId) {
   $("#partsOrdersAndPicking").bootstrapTable("destroy").bootstrapTable({
     data: partsOrdersAndPickingeData,
   });
+
+  const partsOrdersAndPicking = document.getElementById(
+    "partsOrdersAndPicking"
+  );
+  if (partsOrdersAndPicking) {
+    for (let i = 0; i < partsOrdersAndPicking.rows.length; ++i) {
+      let row = partsOrdersAndPicking.rows[i];
+      if (row.rowIndex !== 0) {
+        for (let j in row.cells) {
+          let col = row.cells[j];
+
+          if (col.cellIndex === 6) {
+            if (col.innerHTML === "Açık") {
+              row.cells[11]
+                .querySelector("input")
+                .setAttribute("disabled", "true");
+            }
+          }
+        }
+      }
+    }
+  }
+
   document.getElementById("total-record").innerHTML =
     partsOrdersAndPickingeData.length;
 
-  // Seçili checkbox sayısı
   var tdCheckboxes = $('#partsOrdersAndPicking td input[type="checkbox"]');
+  // Seçili checkbox sayısı
   var thCheckboxes = $('#partsOrdersAndPicking th input[type="checkbox"]');
   var countCheckedCheckboxes = 0;
   $("#total-selected").text(0);
@@ -502,7 +590,9 @@ function fixedColumn(row, i) {
   for (let x in row.cells) {
     let col = row.cells[x];
     if (col.cellIndex === 0) {
-      col.setAttribute("style", "left: 0px;position: sticky;z-index:60;");
+      i === 0
+        ? col.setAttribute("style", "left: 0px;position: sticky;z-index:65;")
+        : col.setAttribute("style", "left: 0px;position: sticky;z-index:60;");
     } else {
       if (col.cellIndex <= numberOfColumnsFixed + 1) {
         columnWidth +=
@@ -511,10 +601,15 @@ function fixedColumn(row, i) {
             table.rows[i].cells[x - 1].getBoundingClientRect()
           );
         if (col.cellIndex <= numberOfColumnsFixed) {
-          col.setAttribute(
-            "style",
-            "left:" + columnWidth + "px;position: sticky;z-index:60;"
-          );
+          i === 0
+            ? col.setAttribute(
+                "style",
+                "left:" + columnWidth + "px;position: sticky;z-index:65;"
+              )
+            : col.setAttribute(
+                "style",
+                "left:" + columnWidth + "px;position: sticky;z-index:60;"
+              );
         }
 
         if (col.cellIndex === numberOfColumnsFixed + 1) {
@@ -528,20 +623,17 @@ function fixedColumn(row, i) {
 function scrollBarPosition() {
   let totalWidth = 0;
   let row = table.rows[0];
-  for (let j in row.cells) {
-    if (j <= numberOfColumnsFixed) {
-      totalWidth +=
-        row.cells[j] !== undefined &&
-        calculateOffsetWidth(row.cells[j].getBoundingClientRect());
-    }
-  }
+
+  var left = $(row.cells[10]).offset().left;
+  if (left != undefined && left > 0) totalWidth = Math.round(left) - 20;
+
   var style = document.createElement("style");
   style.innerHTML =
     `::-webkit-scrollbar {
       width: 2px;
       height: 10px;
     }::-webkit-scrollbar-track {
-      background: #f1f1f1;
+      background: #F1F1F1;
       margin-left: ` +
     totalWidth +
     `px;
